@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="nl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Alex van der Weij: blogger, iOS developer, kijkt films en series en doet middagdutjes op hoog niveau."
+    />
+    <meta name="author" content="Alex van der Weij" />
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#17062c" />
+    <link rel="canonical" href="https://www.alexvanderweij.nl/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="nl_NL" />
+    <meta property="og:site_name" content="Alex van der Weij" />
+    <meta property="og:title" content="Alex van der Weij" />
+    <meta
+      property="og:description"
+      content="Blogger, iOS developer, kijkt films en series en doet middagdutjes op hoog niveau."
+    />
+    <meta property="og:url" content="https://www.alexvanderweij.nl/" />
+    <meta property="og:image" content="https://www.alexvanderweij.nl/avatar-2025.jpg" />
+    <meta property="og:image:alt" content="Avatar van Alex van der Weij" />
+    <meta property="og:image:width" content="1000" />
+    <meta property="og:image:height" content="1000" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Alex van der Weij" />
+    <meta
+      name="twitter:description"
+      content="Blogger, iOS developer, kijkt films en series en doet middagdutjes op hoog niveau."
+    />
+    <meta name="twitter:image" content="https://www.alexvanderweij.nl/avatar-2025.jpg" />
+    <title>Alex van der Weij</title>
+    <link rel="icon" href="/favicon.png" type="image/png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+      integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Alex van der Weij",
+        "url": "https://www.alexvanderweij.nl/",
+        "image": "https://www.alexvanderweij.nl/avatar-2025.jpg",
+        "email": "hoi@alexvanderweij.nl",
+        "description": "Blogger, iOS developer, kijkt films en series en doet middagdutjes op hoog niveau.",
+        "sameAs": [
+          "https://www.alxndrr.nl",
+          "https://www.threads.com/@alxndrr.nl",
+          "https://bsky.app/profile/alxndrr.nl",
+          "https://mastodon.nl/@Alxndrr"
+        ]
+      }
+    </script>
+    <style>
+      :root {
+        --ink: #f7efff;
+        --muted: #c9b8dc;
+        --magenta: #ff3ec8;
+        --cyan: #20e7ff;
+        --green: #73ff9e;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        color: var(--ink);
+        background:
+          linear-gradient(rgba(32, 9, 58, 0.12) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(32, 9, 58, 0.12) 1px, transparent 1px),
+          radial-gradient(circle at 12% 16%, rgba(255, 62, 200, 0.18), transparent 28rem),
+          radial-gradient(circle at 88% 8%, rgba(32, 231, 255, 0.18), transparent 30rem),
+          linear-gradient(180deg, #0b0416 0%, #17062c 46%, #08030f 100%);
+        background-size: 24px 24px, 24px 24px, auto, auto, auto;
+        font-family:
+          ui-sans-serif,
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          sans-serif;
+        letter-spacing: 0;
+      }
+
+      body::before {
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        pointer-events: none;
+        content: "";
+        opacity: 0.22;
+        background: repeating-linear-gradient(
+          180deg,
+          transparent 0,
+          transparent 7px,
+          rgba(255, 255, 255, 0.14) 8px
+        );
+        mix-blend-mode: soft-light;
+      }
+
+      .page {
+        display: grid;
+        min-height: 100vh;
+        width: min(100% - 32px, 1180px);
+        margin: 0 auto;
+        padding: clamp(28px, 7vw, 78px) 0 24px;
+        grid-template-rows: 1fr auto;
+      }
+
+      .intro {
+        display: grid;
+        place-content: center;
+        justify-items: center;
+        text-align: center;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        margin: 0 0 18px;
+        color: var(--green);
+        font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
+        font-size: clamp(0.82rem, 2vw, 0.96rem);
+        font-weight: 800;
+        text-transform: uppercase;
+      }
+
+      .eyebrow::before {
+        width: 10px;
+        height: 10px;
+        content: "";
+        background: var(--green);
+        box-shadow: 0 0 18px var(--green);
+      }
+
+      h1 {
+        max-width: 100%;
+        margin: 0;
+        font-size: clamp(3rem, 13vw, 9.4rem);
+        line-height: 0.9;
+        text-transform: uppercase;
+        text-shadow:
+          5px 0 0 rgba(255, 62, 200, 0.72),
+          -5px 0 0 rgba(32, 231, 255, 0.64),
+          0 10px 34px rgba(0, 0, 0, 0.5);
+      }
+
+      .socials {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 12px;
+        margin-top: clamp(28px, 5vw, 44px);
+      }
+
+      .socials a {
+        display: grid;
+        width: clamp(54px, 9vw, 66px);
+        aspect-ratio: 1;
+        place-items: center;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 8px;
+        color: var(--ink);
+        background: rgba(255, 255, 255, 0.07);
+        box-shadow: 5px 5px 0 #000;
+        text-decoration: none;
+        transition:
+          transform 160ms ease,
+          border-color 160ms ease,
+          background 160ms ease;
+      }
+
+      .socials a:hover,
+      .socials a:focus-visible {
+        transform: translateY(-3px);
+        border-color: rgba(32, 231, 255, 0.78);
+        background: rgba(32, 231, 255, 0.12);
+        outline: none;
+      }
+
+      .socials i {
+        font-size: clamp(1.35rem, 3vw, 1.75rem);
+        filter:
+          drop-shadow(2px 0 0 rgba(255, 62, 200, 0.72))
+          drop-shadow(-2px 0 0 rgba(32, 231, 255, 0.64));
+      }
+
+      footer {
+        padding-top: 34px;
+        color: var(--muted);
+        font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
+        font-size: clamp(0.78rem, 2vw, 0.92rem);
+        text-align: center;
+      }
+
+      footer a {
+        color: var(--cyan);
+        text-decoration: none;
+      }
+
+      footer a:hover {
+        text-decoration: underline;
+      }
+
+      @media (max-width: 720px) {
+        h1 {
+          font-size: clamp(3rem, 18vw, 6.2rem);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <main class="intro" aria-label="Introductie">
+        <p class="eyebrow">ALXNDRR</p>
+        <h1>Alex van<br />der Weij</h1>
+        <nav class="socials" aria-label="Social links">
+          <a href="https://www.alxndrr.nl" aria-label="Blog">
+            <i class="fa-solid fa-pen-nib" aria-hidden="true"></i>
+          </a>
+          <a href="https://www.threads.com/@alxndrr.nl" aria-label="Threads">
+            <i class="fa-brands fa-threads" aria-hidden="true"></i>
+          </a>
+          <a href="https://bsky.app/profile/alxndrr.nl" aria-label="Bluesky">
+            <i class="fa-brands fa-bluesky" aria-hidden="true"></i>
+          </a>
+          <a href="https://mastodon.nl/@Alxndrr" aria-label="Mastodon">
+            <i class="fa-brands fa-mastodon" aria-hidden="true"></i>
+          </a>
+        </nav>
+      </main>
+
+      <footer>
+        © 2026 Alex van der Weij · <a href="mailto:hoi@alexvanderweij.nl">hoi@alexvanderweij.nl</a>
+      </footer>
+    </div>
+  </body>
+</html>
