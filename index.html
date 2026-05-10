@@ -2,7 +2,7 @@
 <html lang="nl">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta
       name="description"
       content="Alex van der Weij: blogger, iOS developer, kijkt films en series en doet middagdutjes op hoog niveau."
@@ -65,22 +65,32 @@
         --magenta: #ff3ec8;
         --cyan: #20e7ff;
         --green: #73ff9e;
+        --site-background:
+          linear-gradient(rgba(32, 9, 58, 0.12) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(32, 9, 58, 0.12) 1px, transparent 1px),
+          radial-gradient(circle at 12% 16%, rgba(255, 62, 200, 0.18), transparent 28rem),
+          radial-gradient(circle at 88% 8%, rgba(32, 231, 255, 0.18), transparent 30rem),
+          linear-gradient(180deg, #0b0416 0%, #17062c 46%, #08030f 100%);
       }
 
       * {
         box-sizing: border-box;
       }
 
+      html {
+        min-height: 100%;
+        background: #0b0416;
+        background: var(--site-background);
+        background-size: 24px 24px, 24px 24px, auto, auto, auto;
+      }
+
       body {
         margin: 0;
         min-height: 100vh;
+        min-height: 100svh;
         color: var(--ink);
-        background:
-          linear-gradient(rgba(32, 9, 58, 0.12) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(32, 9, 58, 0.12) 1px, transparent 1px),
-          radial-gradient(circle at 12% 16%, rgba(255, 62, 200, 0.18), transparent 28rem),
-          radial-gradient(circle at 88% 8%, rgba(32, 231, 255, 0.18), transparent 30rem),
-          linear-gradient(180deg, #0b0416 0%, #17062c 46%, #08030f 100%);
+        background: #0b0416;
+        background: var(--site-background);
         background-size: 24px 24px, 24px 24px, auto, auto, auto;
         font-family:
           ui-sans-serif,
@@ -111,10 +121,21 @@
       .page {
         display: grid;
         min-height: 100vh;
+        min-height: 100svh;
         width: min(100% - 32px, 1180px);
         margin: 0 auto;
-        padding: clamp(28px, 7vw, 78px) 0 24px;
+        padding:
+          max(clamp(28px, 7vw, 78px), env(safe-area-inset-top))
+          0
+          max(24px, env(safe-area-inset-bottom));
         grid-template-rows: 1fr auto;
+      }
+
+      @supports (min-height: 100dvh) {
+        body,
+        .page {
+          min-height: 100dvh;
+        }
       }
 
       .intro {
