@@ -11,6 +11,8 @@
     <meta name="author" content="Alex van der Weij">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://alxndrrr.github.io/alexvanderweij.nl/">
+    <link rel="icon" type="image/png" sizes="192x192" href="favicon.png">
+    <link rel="apple-touch-icon" href="favicon.png">
 
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Alex van der Weij">
@@ -63,10 +65,14 @@
       }
 
       body {
-        min-height: 100vh;
+        height: 100vh;
+        height: 100svh;
         margin: 0;
         display: grid;
-        place-items: center;
+        justify-items: center;
+        align-items: start;
+        overflow: hidden;
+        padding-top: clamp(3rem, calc(25svh - 6.75rem), 8rem);
         background: var(--background);
         color: var(--foreground);
         font-family:
@@ -147,6 +153,11 @@
       }
 
       @media (min-width: 44rem) {
+        body {
+          place-items: center;
+          padding-top: 0;
+        }
+
         main {
           padding: 3rem 2rem;
         }
