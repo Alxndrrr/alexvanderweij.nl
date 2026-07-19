@@ -30,6 +30,12 @@
     >
 
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+    >
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
@@ -41,6 +47,9 @@
         color-scheme: light;
         --background: #ffbd37;
         --foreground: #18120b;
+        --purple: #5200ff;
+        --pink: #ff0073;
+        --deep: #2300ad;
         --focus: #ffffff;
       }
 
@@ -75,10 +84,16 @@
 
       h1 {
         margin: 0;
-        font-size: clamp(3rem, 16vw, 7rem);
-        font-weight: 800;
-        line-height: 0.95;
+        color: var(--deep);
+        font-family: "Press Start 2P", ui-monospace, monospace;
+        font-size: clamp(1.85rem, 7.8vw, 4.55rem);
+        font-weight: 400;
+        line-height: 1.25;
         letter-spacing: 0;
+        text-shadow:
+          0.09em 0.09em 0 var(--pink),
+          0.18em 0.18em 0 var(--purple);
+        text-transform: uppercase;
       }
 
       .socials {
@@ -95,19 +110,35 @@
         place-items: center;
         border: 2px solid currentColor;
         border-radius: 50%;
-        color: inherit;
+        background: var(--background);
+        color: var(--deep);
         text-decoration: none;
         font-size: 1.2rem;
+        box-shadow: 0.2rem 0.2rem 0 var(--purple);
         transition:
           background-color 160ms ease,
           color 160ms ease,
-          transform 160ms ease;
+          transform 160ms ease,
+          box-shadow 160ms ease;
+      }
+
+      .social-link:nth-child(2) {
+        color: var(--purple);
+        box-shadow: 0.2rem 0.2rem 0 var(--pink);
+      }
+
+      .social-link:nth-child(3) {
+        color: var(--pink);
+        box-shadow: 0.2rem 0.2rem 0 var(--deep);
       }
 
       .social-link:hover {
-        background: var(--foreground);
-        color: var(--background);
+        background: currentColor;
         transform: translateY(-2px);
+      }
+
+      .social-link:hover i {
+        color: var(--background);
       }
 
       .social-link:focus-visible {
@@ -129,6 +160,12 @@
           width: 3.4rem;
           height: 3.4rem;
           font-size: 1.35rem;
+        }
+      }
+
+      @media (max-width: 24rem) {
+        h1 {
+          font-size: clamp(1.45rem, 8.5vw, 1.85rem);
         }
       }
     </style>
