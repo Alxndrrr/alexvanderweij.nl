@@ -6,7 +6,7 @@
     <title>Alex van der Weij</title>
     <meta
       name="description"
-      content="Digitaal visitekaartje van Alex van der Weij met blog, Threads en contact."
+      content="Alex van der Weij is schrijver, filmliefhebber en maker uit Nederland, met een zwak voor nostalgie, LEGO en kleine digitale projecten."
     >
     <meta name="author" content="Alex van der Weij">
     <meta name="robots" content="index, follow">
@@ -23,7 +23,7 @@
     <meta property="og:title" content="Alex van der Weij">
     <meta
       property="og:description"
-      content="Digitaal visitekaartje van Alex van der Weij met blog, Threads en contact."
+      content="Alex van der Weij is schrijver, filmliefhebber en maker uit Nederland, met een zwak voor nostalgie, LEGO en kleine digitale projecten."
     >
     <meta property="og:url" content="https://www.alexvanderweij.nl/">
     <meta property="og:locale" content="nl_NL">
@@ -32,7 +32,7 @@
     <meta name="twitter:title" content="Alex van der Weij">
     <meta
       name="twitter:description"
-      content="Digitaal visitekaartje van Alex van der Weij met blog, Threads en contact."
+      content="Alex van der Weij is schrijver, filmliefhebber en maker uit Nederland, met een zwak voor nostalgie, LEGO en kleine digitale projecten."
     >
 
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
@@ -40,7 +40,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Press+Start+2P&display=swap"
     >
     <link
       rel="stylesheet"
@@ -53,17 +53,6 @@
       src="https://knowing-anteater.pikapod.net/script.js"
       data-website-id="ca159ab6-4ea5-4c75-870a-6331ced60c22"
     ></script>
-    <script>
-      try {
-        const savedTheme = window.localStorage?.getItem("theme");
-
-        if (savedTheme === "light" || savedTheme === "dark") {
-          document.documentElement.dataset.theme = savedTheme;
-        }
-      } catch {
-        document.documentElement.removeAttribute("data-theme");
-      }
-    </script>
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -84,68 +73,16 @@
     </script>
     <style>
       :root {
-        color-scheme: light dark;
-        --background: #ffbd37;
-        --foreground: #18120b;
-        --purple: #5200ff;
-        --pink: #ff0073;
-        --deep: #2300ad;
-        --focus: #ffffff;
-        --card: #ffc852;
-        --route-green: #11c86f;
-        --route-blue: #009fd1;
-        --route-yellow: #ffe166;
-        --line-soft: rgb(35 0 173 / 0.18);
-        --theme-icon: "\f186";
-      }
-
-      @media (prefers-color-scheme: dark) {
-        :root {
-          --background: #18120b;
-          --foreground: #ffbd37;
-          --purple: #9b67ff;
-          --pink: #ff4fa0;
-          --deep: #ffbd37;
-          --focus: #ff0073;
-          --card: #231a11;
-          --route-green: #11c86f;
-          --route-blue: #00a9d8;
-          --route-yellow: #ffbd37;
-          --line-soft: rgb(255 189 55 / 0.16);
-          --theme-icon: "\f185";
-        }
-      }
-
-      :root[data-theme="light"] {
-        color-scheme: light;
-        --background: #ffbd37;
-        --foreground: #18120b;
-        --purple: #5200ff;
-        --pink: #ff0073;
-        --deep: #2300ad;
-        --focus: #ffffff;
-        --card: #ffc852;
-        --route-green: #11c86f;
-        --route-blue: #009fd1;
-        --route-yellow: #ffe166;
-        --line-soft: rgb(35 0 173 / 0.18);
-        --theme-icon: "\f186";
-      }
-
-      :root[data-theme="dark"] {
         color-scheme: dark;
         --background: #18120b;
         --foreground: #ffbd37;
-        --purple: #9b67ff;
-        --pink: #ff4fa0;
+        --purple: #5200ff;
+        --pink: #ff0073;
         --deep: #ffbd37;
         --focus: #ff0073;
-        --card: #231a11;
-        --route-green: #11c86f;
-        --route-blue: #00a9d8;
-        --route-yellow: #ffbd37;
-        --line-soft: rgb(255 189 55 / 0.16);
-        --theme-icon: "\f185";
+        --purple-glow: #9b67ff;
+        --pink-glow: #ff4fa0;
+        --rule: rgb(255 189 55 / 0.28);
       }
 
       * {
@@ -161,12 +98,13 @@
         min-height: 100vh;
         min-height: 100svh;
         margin: 0;
-        display: grid;
-        justify-items: center;
-        align-items: start;
-        overflow-x: hidden;
-        padding: clamp(3rem, 8svh, 5.5rem) 1.25rem 2rem;
-        background: var(--background);
+        overflow: hidden;
+        background:
+          radial-gradient(circle at 76% 20%, rgb(255 0 115 / 0.88) 0 16%, transparent 43%),
+          radial-gradient(circle at 68% 70%, rgb(82 0 255 / 0.9) 0 20%, transparent 50%),
+          radial-gradient(circle at 18% 66%, rgb(255 0 115 / 0.38) 0 20%, transparent 48%),
+          radial-gradient(circle at 42% 36%, rgb(255 189 55 / 0.35) 0 16%, transparent 42%),
+          linear-gradient(110deg, var(--background) 0 42%, #241127 63%, #2a0928 100%);
         color: var(--foreground);
         font-family:
           Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
@@ -175,109 +113,226 @@
         -webkit-font-smoothing: antialiased;
       }
 
-      .theme-toggle {
+      body::before {
         position: fixed;
-        top: 1rem;
-        right: 1rem;
-        width: 2rem;
-        height: 2rem;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140' viewBox='0 0 140 140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.75' numOctaves='4' seed='11' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0.50 0 0 0 0 0.50 0 0 0 0 0.50 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+        background-size: 140px 140px;
+        filter: contrast(240%);
+        mix-blend-mode: hard-light;
+        opacity: 0.38;
+      }
+
+      body::after {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        background-image:
+          radial-gradient(circle, rgb(255 244 217 / 0.18) 0 0.45px, transparent 0.55px),
+          radial-gradient(circle, rgb(0 0 0 / 0.22) 0 0.45px, transparent 0.55px);
+        background-position: 0 0, 1.5px 1.5px;
+        background-size: 3px 3px;
+        mix-blend-mode: overlay;
+        opacity: 0.28;
+      }
+
+      main {
+        position: relative;
+        z-index: 1;
+        min-height: 100vh;
+        min-height: 100svh;
+        display: grid;
+        grid-template-rows: auto 1fr auto;
+        border-block: 1px solid var(--rule);
+      }
+
+      h1 {
+        margin: 0;
+        padding: clamp(1rem, 2.8vw, 1.8rem);
+        border-bottom: 1px solid var(--rule);
+        color: var(--foreground);
+        font-family: "Press Start 2P", ui-monospace, monospace;
+        font-size: clamp(0.95rem, 2.4vw, 1.55rem);
+        font-weight: 400;
+        line-height: 1.35;
+        letter-spacing: 0;
+        text-align: left;
+        text-shadow: 0.08em 0.08em 0 rgb(255 0 115 / 0.58);
+        text-transform: uppercase;
+      }
+
+      .intro {
+        align-self: center;
+        width: min(54rem, 100%);
+        margin: 0 auto;
+        padding: clamp(2rem, 4.5vw, 3.75rem) clamp(1.25rem, 7vw, 5rem);
+        color: var(--foreground);
+        font-family: "Instrument Serif", Georgia, serif;
+        font-size: clamp(2.35rem, 4.8vw, 4.35rem);
+        font-weight: 400;
+        line-height: 1.08;
+        text-align: left;
+      }
+
+      .intro-emphasis {
+        position: relative;
+        z-index: 0;
+        display: inline-block;
+        font-style: italic;
+      }
+
+      .intro-emphasis::after {
+        position: absolute;
+        right: -0.08em;
+        bottom: 0.07em;
+        left: -0.08em;
+        z-index: -1;
+        height: 0.22em;
+        content: "";
+        opacity: 0.88;
+      }
+
+      .intro-emphasis:nth-of-type(1)::after {
+        background: var(--pink);
+        box-shadow: 0.12em 0.12em 0 var(--purple);
+      }
+
+      .intro-blog {
+        color: var(--foreground);
+        text-decoration: none;
+        transform: rotate(-1.5deg);
+      }
+
+      .intro-blog::before {
+        position: absolute;
+        top: -0.04em;
+        right: -0.12em;
+        bottom: -0.02em;
+        left: -0.12em;
+        z-index: -2;
+        border: 1px solid rgb(255 189 55 / 0.42);
+        background: rgb(255 0 115 / 0.24);
+        content: "";
+      }
+
+      .intro-blog::after {
+        height: 0.34em;
+        background: var(--pink);
+        box-shadow:
+          0.12em 0.12em 0 var(--purple),
+          -0.08em 0.22em 0 rgb(255 189 55 / 0.72);
+      }
+
+      .intro-blog:hover,
+      .intro-blog:focus {
+        color: #fff4d9;
+      }
+
+      .intro-blog:hover::after,
+      .intro-blog:focus-visible::after {
+        height: 0.74em;
+        transform: translateY(0.07em);
+      }
+
+      .intro-blog:focus-visible {
+        border-radius: 0.15rem;
+        outline: 3px solid var(--focus);
+        outline-offset: 0.2rem;
+      }
+
+      .intro-emphasis:nth-of-type(2)::after {
+        background: var(--purple);
+        box-shadow: 0.12em 0.12em 0 var(--pink);
+      }
+
+      .intro-emphasis:nth-of-type(3)::after,
+      .intro-emphasis:nth-of-type(4)::after {
+        background: rgb(255 189 55 / 0.38);
+        box-shadow: 0.12em 0.12em 0 var(--pink);
+      }
+
+      .contact-strip {
+        display: grid;
+        grid-template-columns: minmax(7rem, 0.8fr) minmax(0, 1.7fr) auto;
+        align-items: center;
+        gap: 1rem;
+        padding: clamp(1rem, 2.8vw, 1.6rem) clamp(1.25rem, 3vw, 2rem);
+        border-top: 1px solid var(--rule);
+        color: var(--foreground);
+      }
+
+      .contact-label {
+        font-family: "Press Start 2P", ui-monospace, monospace;
+        font-size: clamp(0.7rem, 1.5vw, 1rem);
+        text-align: left;
+        text-transform: lowercase;
+      }
+
+      .email-link {
+        justify-self: start;
+        color: var(--foreground);
+        font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+        font-size: clamp(1.05rem, 2.4vw, 1.75rem);
+        font-weight: 800;
+        text-decoration: none;
+      }
+
+      .email-link::after {
+        margin-left: 0.35em;
+        content: "->";
+      }
+
+      .email-link:hover,
+      .email-link:focus {
+        color: var(--deep);
+      }
+
+      .email-link:focus-visible {
+        border-radius: 0.15rem;
+        outline: 3px solid var(--focus);
+        outline-offset: 0.2rem;
+      }
+
+      .socials {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .social-link {
+        width: auto;
+        height: auto;
         display: inline-grid;
         place-items: center;
         border: 0;
         background: transparent;
-        color: var(--foreground);
-        cursor: pointer;
-        font: inherit;
-        opacity: 0.72;
+        color: var(--deep);
+        text-decoration: none;
+        font-size: 1.45rem;
+        text-shadow: 0.08em 0.08em 0 var(--purple);
         transition:
           color 160ms ease,
           opacity 160ms ease,
           transform 160ms ease;
       }
 
-      .theme-toggle::before {
-        content: var(--theme-icon);
-        font-family: "Font Awesome 6 Free";
-        font-size: 1rem;
-        font-weight: 900;
-      }
-
-      .theme-toggle:hover {
-        color: var(--deep);
-        opacity: 1;
-        transform: translateY(-2px);
-      }
-
-      .theme-toggle:focus-visible {
-        border-radius: 0.25rem;
-        outline: 2px solid var(--focus);
-        outline-offset: 0.25rem;
-      }
-
-      main {
-        position: relative;
-        width: min(100%, 64rem);
-        padding: 2rem 0;
-        text-align: center;
-      }
-
-      h1 {
-        margin: 0;
-        color: var(--deep);
-        font-family: "Press Start 2P", ui-monospace, monospace;
-        font-size: clamp(1.85rem, 7.8vw, 4.55rem);
-        font-weight: 400;
-        line-height: 1.25;
-        letter-spacing: 0;
-        text-shadow:
-          0.09em 0.09em 0 var(--pink),
-          0.18em 0.18em 0 var(--purple);
-        text-transform: uppercase;
-      }
-
-      .socials {
-        display: flex;
-        justify-content: center;
-        gap: 0.875rem;
-        margin-top: 1.5rem;
-      }
-
-      .social-link {
-        width: 3rem;
-        height: 3rem;
-        display: inline-grid;
-        place-items: center;
-        border: 2px solid currentColor;
-        border-radius: 50%;
-        background: var(--background);
-        color: var(--deep);
-        text-decoration: none;
-        font-size: 1.2rem;
-        box-shadow: 0.2rem 0.2rem 0 var(--purple);
-        transition:
-          background-color 160ms ease,
-          color 160ms ease,
-          transform 160ms ease,
-          box-shadow 160ms ease;
-      }
-
       .social-link:nth-child(2) {
-        color: var(--purple);
-        box-shadow: 0.2rem 0.2rem 0 var(--pink);
+        color: var(--purple-glow);
+        text-shadow: 0.08em 0.08em 0 var(--pink);
       }
 
       .social-link:nth-child(3) {
         color: var(--pink);
-        box-shadow: 0.2rem 0.2rem 0 var(--deep);
+        text-shadow: 0.08em 0.08em 0 var(--deep);
       }
 
       .social-link:hover {
-        background: currentColor;
+        opacity: 0.78;
         transform: translateY(-2px);
-      }
-
-      .social-link:hover i {
-        color: var(--background);
       }
 
       .social-link:focus-visible {
@@ -285,350 +340,86 @@
         outline-offset: 4px;
       }
 
-      .intro {
-        width: min(100%, 34rem);
-        margin: 2rem auto 0;
-        color: var(--foreground);
-        font-size: clamp(1rem, 2.6vw, 1.25rem);
-        font-weight: 700;
-        line-height: 1.45;
-      }
-
-      .card-map {
-        position: relative;
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 1rem;
-        margin-top: clamp(2.5rem, 7vw, 4rem);
-        padding: 2.75rem 0 0;
-      }
-
-      .card-map::before,
-      .card-map::after {
-        position: absolute;
-        left: 0;
-        right: 0;
-        pointer-events: none;
-        content: "";
-      }
-
-      .card-map::before {
-        top: 0;
-        height: 1px;
-        background: var(--line-soft);
-      }
-
-      .card-map::after {
-        top: 0.65rem;
-        height: 1.25rem;
-        border-radius: 999px;
-        background:
-          linear-gradient(
-            90deg,
-            var(--pink) 0 24%,
-            var(--route-yellow) 24% 48%,
-            var(--route-green) 48% 72%,
-            var(--route-blue) 72% 100%
-          );
-        box-shadow: 0 0.18rem 0 var(--deep);
-      }
-
-      .card-link {
-        position: relative;
-        z-index: 1;
-        min-height: 10rem;
-        display: grid;
-        align-content: space-between;
-        gap: 1.25rem;
-        padding: 1.1rem;
-        border: 2px solid var(--deep);
-        background: var(--card);
-        color: var(--foreground);
-        text-align: left;
-        text-decoration: none;
-        box-shadow: 0.25rem 0.25rem 0 var(--purple);
-        transition:
-          color 160ms ease,
-          transform 160ms ease,
-          box-shadow 160ms ease;
-      }
-
-      .card-link::before {
-        position: absolute;
-        top: -3.15rem;
-        left: 1.2rem;
-        width: 1.25rem;
-        height: 3.15rem;
-        border-radius: 0 0 999px 999px;
-        background: currentColor;
-        box-shadow:
-          1.45rem 0 0 var(--route-yellow),
-          2.9rem 0 0 var(--route-green),
-          4.35rem 0 0 var(--route-blue);
-        content: "";
-      }
-
-      .card-link:nth-child(1) {
-        color: var(--pink);
-      }
-
-      .card-link:nth-child(2) {
-        color: var(--purple);
-      }
-
-      .card-link:nth-child(3) {
-        color: var(--deep);
-      }
-
-      .card-link:hover {
-        color: var(--pink);
-        transform: translateY(-4px);
-        box-shadow: 0.35rem 0.35rem 0 var(--deep);
-      }
-
-      .card-link:focus-visible {
-        outline: 3px solid var(--focus);
-        outline-offset: 0.35rem;
-      }
-
-      .card-kicker {
-        color: var(--foreground);
-        font-size: 0.75rem;
-        font-weight: 800;
-        letter-spacing: 0.12em;
-        text-transform: uppercase;
-      }
-
-      .card-title {
-        display: flex;
-        align-items: center;
-        gap: 0.7rem;
-        color: currentColor;
-        font-size: clamp(1.15rem, 2.5vw, 1.45rem);
-        font-weight: 900;
-        line-height: 1;
-      }
-
-      .card-title i {
-        width: 1.5rem;
-        text-align: center;
-      }
-
-      .card-copy {
-        margin: 0;
-        color: var(--foreground);
-        font-size: 0.95rem;
-        font-weight: 650;
-        line-height: 1.35;
-      }
-
-      @media (min-width: 44rem) {
+      @media (max-width: 43.99rem) {
         body {
-          align-items: center;
+          overflow-y: auto;
+        }
+
+        .intro {
           padding-block: 3rem;
         }
 
-        main {
-          padding: 3rem 0;
+        .contact-strip {
+          grid-template-columns: 1fr;
+          gap: 1rem;
         }
 
         .socials {
-          gap: 1rem;
-          margin-top: 2rem;
-        }
-
-        .social-link {
-          width: 3.4rem;
-          height: 3.4rem;
-          font-size: 1.35rem;
-        }
-
-        .theme-toggle {
-          top: 1.5rem;
-          right: 1.5rem;
+          justify-content: flex-start;
         }
       }
 
-      @media (max-width: 24rem) {
-        h1 {
-          font-size: clamp(1.45rem, 8.5vw, 1.85rem);
-        }
-      }
-
-      @media (max-width: 43.99rem) {
-        .card-map {
-          grid-template-columns: 1fr;
-          gap: 0.9rem;
-          width: min(100%, 25rem);
-          margin-inline: auto;
-          padding: 0 0 0 3.4rem;
-        }
-
-        .card-map::before {
-          top: 0;
-          bottom: 0;
-          left: 1.1rem;
-          right: auto;
-          width: 1px;
-          height: auto;
-        }
-
-        .card-map::after {
-          top: 0;
-          bottom: 0;
-          left: 0;
-          right: auto;
-          width: 2rem;
-          height: auto;
-          background:
-            linear-gradient(
-              90deg,
-              var(--pink) 0 24%,
-              var(--route-yellow) 24% 48%,
-              var(--route-green) 48% 72%,
-              var(--route-blue) 72% 100%
-            );
-          box-shadow: 0.18rem 0 0 var(--deep);
-        }
-
-        .card-link {
-          min-height: 8.25rem;
-        }
-
-        .card-link::before {
-          top: 50%;
-          left: -3.4rem;
-          width: 3.4rem;
-          height: 1.25rem;
-          border-radius: 999px 0 0 999px;
-          transform: translateY(-50%);
-          box-shadow:
-            0 1.45rem 0 var(--route-yellow),
-            0 2.9rem 0 var(--route-green),
-            0 4.35rem 0 var(--route-blue);
-        }
-      }
     </style>
   </head>
   <body>
-    <button class="theme-toggle" type="button" aria-label="Donkere modus"></button>
     <main aria-label="Alex van der Weij">
       <h1>Alex van der Weij</h1>
       <p class="intro">
-        Dit domein gebruik ik vooral voor e-mail. Aan de voorkant vind je mijn
-        blog, korte updates en een directe lijn naar mijn inbox.
+        Hoi! 👋 mijn naam is Alex. Ik ben een
+        <a class="intro-emphasis intro-blog" href="https://alexx.fyi/">schrijvertje</a>,
+        <span class="intro-emphasis">filmliefhebber</span> en maker uit
+        Nederland, met een zwak voor
+        <span class="intro-emphasis">nostalgie</span>,
+        <span class="intro-emphasis">LEGO</span> en kleine digitale projecten.
       </p>
-      <nav class="socials" aria-label="Sociale links">
+      <section class="contact-strip" aria-label="Contact en links">
+        <span class="contact-label">contact</span>
         <a
-          class="social-link"
-          href="https://alexx.fyi/"
-          aria-label="Blog van Alex van der Weij"
-          title="Blog"
-        >
-          <i class="fa-solid fa-marker" aria-hidden="true"></i>
-        </a>
-        <a
-          class="social-link"
-          href="https://www.threads.net/@alexx.fyi"
-          aria-label="Alex van der Weij op Threads"
-          title="Threads"
-        >
-          <i class="fa-brands fa-threads" aria-hidden="true"></i>
-        </a>
-        <a
-          class="social-link"
+          class="email-link"
           href="#"
           data-email-user="hoi"
           data-email-domain="alexvanderweij.nl"
-          aria-label="Mail Alex van der Weij"
-          title="Email"
         >
-          <i class="fa-solid fa-envelope" aria-hidden="true"></i>
+          mail mij
         </a>
-      </nav>
-      <section class="card-map" aria-label="Meer over Alex van der Weij">
-        <a class="card-link" href="https://alexx.fyi/">
-          <span class="card-kicker">Schrijven</span>
-          <span class="card-title">
+        <nav class="socials" aria-label="Sociale links">
+          <a
+            class="social-link"
+            href="https://alexx.fyi/"
+            aria-label="Blog van Alex van der Weij"
+            title="Blog"
+          >
             <i class="fa-solid fa-marker" aria-hidden="true"></i>
-            Blog
-          </span>
-          <p class="card-copy">
-            Persoonlijke notities over internet, technologie, apps en dingen
-            die blijven hangen.
-          </p>
-        </a>
-        <a class="card-link" href="https://www.threads.net/@alexx.fyi">
-          <span class="card-kicker">Updates</span>
-          <span class="card-title">
+          </a>
+          <a
+            class="social-link"
+            href="https://www.threads.net/@alexx.fyi"
+            aria-label="Alex van der Weij op Threads"
+            title="Threads"
+          >
             <i class="fa-brands fa-threads" aria-hidden="true"></i>
-            Threads
-          </span>
-          <p class="card-copy">
-            Korte gedachten, links en losse observaties tussen langere stukken
-            door.
-          </p>
-        </a>
-        <a
-          class="card-link"
-          href="#"
-          data-email-user="hoi"
-          data-email-domain="alexvanderweij.nl"
-        >
-          <span class="card-kicker">Contact</span>
-          <span class="card-title">
+          </a>
+          <a
+            class="social-link"
+            href="#"
+            data-email-user="hoi"
+            data-email-domain="alexvanderweij.nl"
+            aria-label="Mail Alex van der Weij"
+            title="Email"
+          >
             <i class="fa-solid fa-envelope" aria-hidden="true"></i>
-            E-mail
-          </span>
-          <p class="card-copy">
-            Gebruik dit domein gerust om contact op te nemen of om een mail van
-            mij te herkennen.
-          </p>
-        </a>
+          </a>
+        </nav>
       </section>
     </main>
     <script>
-      const themeToggle = document.querySelector(".theme-toggle");
-      const themePreference = window.matchMedia("(prefers-color-scheme: dark)");
-
-      const saveTheme = (theme) => {
-        try {
-          window.localStorage?.setItem("theme", theme);
-        } catch {
-          return;
-        }
-      };
-
-      const getActiveTheme = () => {
-        return document.documentElement.dataset.theme
-          || (themePreference.matches ? "dark" : "light");
-      };
-
-      const updateThemeToggle = () => {
-        if (!themeToggle) {
-          return;
-        }
-
-        const nextTheme = getActiveTheme() === "dark" ? "light" : "dark";
-        themeToggle.setAttribute(
-          "aria-label",
-          nextTheme === "dark" ? "Donkere modus" : "Lichte modus"
-        );
-      };
-
-      themeToggle?.addEventListener("click", () => {
-        const nextTheme = getActiveTheme() === "dark" ? "light" : "dark";
-        document.documentElement.dataset.theme = nextTheme;
-        saveTheme(nextTheme);
-        updateThemeToggle();
-      });
-
-      themePreference.addEventListener("change", updateThemeToggle);
-      updateThemeToggle();
-
       document.querySelectorAll("[data-email-user][data-email-domain]").forEach((link) => {
         const address = `${link.dataset.emailUser}@${link.dataset.emailDomain}`;
         link.href = `mailto:${address}`;
+
+        if (link.classList.contains("email-link")) {
+          link.textContent = address;
+        }
       });
     </script>
   </body>
