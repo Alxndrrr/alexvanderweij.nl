@@ -53,6 +53,17 @@
       src="https://knowing-anteater.pikapod.net/script.js"
       data-website-id="ca159ab6-4ea5-4c75-870a-6331ced60c22"
     ></script>
+    <script>
+      try {
+        const savedTheme = window.localStorage?.getItem("theme");
+
+        if (savedTheme === "light" || savedTheme === "dark") {
+          document.documentElement.dataset.theme = savedTheme;
+        }
+      } catch {
+        document.documentElement.removeAttribute("data-theme");
+      }
+    </script>
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -73,6 +84,29 @@
     </script>
     <style>
       :root {
+        color-scheme: light dark;
+        --background: #ffbd37;
+        --foreground: #18120b;
+        --purple: #5200ff;
+        --pink: #ff0073;
+        --deep: #2300ad;
+        --focus: #ffffff;
+        --theme-icon: "\f186";
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --background: #18120b;
+          --foreground: #ffbd37;
+          --purple: #9b67ff;
+          --pink: #ff4fa0;
+          --deep: #ffbd37;
+          --focus: #ff0073;
+          --theme-icon: "\f185";
+        }
+      }
+
+      :root[data-theme="light"] {
         color-scheme: light;
         --background: #ffbd37;
         --foreground: #18120b;
@@ -80,6 +114,18 @@
         --pink: #ff0073;
         --deep: #2300ad;
         --focus: #ffffff;
+        --theme-icon: "\f186";
+      }
+
+      :root[data-theme="dark"] {
+        color-scheme: dark;
+        --background: #18120b;
+        --foreground: #ffbd37;
+        --purple: #9b67ff;
+        --pink: #ff4fa0;
+        --deep: #ffbd37;
+        --focus: #ff0073;
+        --theme-icon: "\f185";
       }
 
       * {
@@ -107,6 +153,45 @@
           "Segoe UI", sans-serif;
         text-rendering: optimizeLegibility;
         -webkit-font-smoothing: antialiased;
+      }
+
+      .theme-toggle {
+        position: fixed;
+        top: 1rem;
+        right: 1rem;
+        width: 2rem;
+        height: 2rem;
+        display: inline-grid;
+        place-items: center;
+        border: 0;
+        background: transparent;
+        color: var(--foreground);
+        cursor: pointer;
+        font: inherit;
+        opacity: 0.72;
+        transition:
+          color 160ms ease,
+          opacity 160ms ease,
+          transform 160ms ease;
+      }
+
+      .theme-toggle::before {
+        content: var(--theme-icon);
+        font-family: "Font Awesome 6 Free";
+        font-size: 1rem;
+        font-weight: 900;
+      }
+
+      .theme-toggle:hover {
+        color: var(--deep);
+        opacity: 1;
+        transform: translateY(-2px);
+      }
+
+      .theme-toggle:focus-visible {
+        border-radius: 0.25rem;
+        outline: 2px solid var(--focus);
+        outline-offset: 0.25rem;
       }
 
       main {
@@ -199,6 +284,11 @@
           height: 3.4rem;
           font-size: 1.35rem;
         }
+
+        .theme-toggle {
+          top: 1.5rem;
+          right: 1.5rem;
+        }
       }
 
       @media (max-width: 24rem) {
@@ -209,6 +299,7 @@
     </style>
   </head>
   <body>
+    <button class="theme-toggle" type="button" aria-label="Donkere modus"></button>
     <main aria-label="Alex van der Weij">
       <h1>Alex van der Weij</h1>
       <nav class="socials" aria-label="Sociale links">
@@ -241,7 +332,44 @@
       </nav>
     </main>
     <script>
+      const themeToggle = document.querySelector(".theme-toggle");
       const emailLink = document.querySelector("[data-email-user][data-email-domain]");
+      const themePreference = window.matchMedia("(prefers-color-scheme: dark)");
+
+      const saveTheme = (theme) => {
+        try {
+          window.localStorage?.setItem("theme", theme);
+        } catch {
+          return;
+        }
+      };
+
+      const getActiveTheme = () => {
+        return document.documentElement.dataset.theme
+          || (themePreference.matches ? "dark" : "light");
+      };
+
+      const updateThemeToggle = () => {
+        if (!themeToggle) {
+          return;
+        }
+
+        const nextTheme = getActiveTheme() === "dark" ? "light" : "dark";
+        themeToggle.setAttribute(
+          "aria-label",
+          nextTheme === "dark" ? "Donkere modus" : "Lichte modus"
+        );
+      };
+
+      themeToggle?.addEventListener("click", () => {
+        const nextTheme = getActiveTheme() === "dark" ? "light" : "dark";
+        document.documentElement.dataset.theme = nextTheme;
+        saveTheme(nextTheme);
+        updateThemeToggle();
+      });
+
+      themePreference.addEventListener("change", updateThemeToggle);
+      updateThemeToggle();
 
       if (emailLink) {
         const address = `${emailLink.dataset.emailUser}@${emailLink.dataset.emailDomain}`;
