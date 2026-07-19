@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://alexvanderweij.nl/sitemap.xml
+Sitemap: https://alxndrrr.github.io/alexvanderweij.nl/sitemap.xml
