@@ -6,7 +6,7 @@
     <title>Alex van der Weij</title>
     <meta
       name="description"
-      content="Alex van der Weij. Blog, Threads en contact."
+      content="Digitaal visitekaartje van Alex van der Weij met blog, Threads en contact."
     >
     <meta name="author" content="Alex van der Weij">
     <meta name="robots" content="index, follow">
@@ -23,7 +23,7 @@
     <meta property="og:title" content="Alex van der Weij">
     <meta
       property="og:description"
-      content="Alex van der Weij. Blog, Threads en contact."
+      content="Digitaal visitekaartje van Alex van der Weij met blog, Threads en contact."
     >
     <meta property="og:url" content="https://www.alexvanderweij.nl/">
     <meta property="og:locale" content="nl_NL">
@@ -32,7 +32,7 @@
     <meta name="twitter:title" content="Alex van der Weij">
     <meta
       name="twitter:description"
-      content="Alex van der Weij. Blog, Threads en contact."
+      content="Digitaal visitekaartje van Alex van der Weij met blog, Threads en contact."
     >
 
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
@@ -91,6 +91,11 @@
         --pink: #ff0073;
         --deep: #2300ad;
         --focus: #ffffff;
+        --card: #ffc852;
+        --route-green: #11c86f;
+        --route-blue: #009fd1;
+        --route-yellow: #ffe166;
+        --line-soft: rgb(35 0 173 / 0.18);
         --theme-icon: "\f186";
       }
 
@@ -102,6 +107,11 @@
           --pink: #ff4fa0;
           --deep: #ffbd37;
           --focus: #ff0073;
+          --card: #231a11;
+          --route-green: #11c86f;
+          --route-blue: #00a9d8;
+          --route-yellow: #ffbd37;
+          --line-soft: rgb(255 189 55 / 0.16);
           --theme-icon: "\f185";
         }
       }
@@ -114,6 +124,11 @@
         --pink: #ff0073;
         --deep: #2300ad;
         --focus: #ffffff;
+        --card: #ffc852;
+        --route-green: #11c86f;
+        --route-blue: #009fd1;
+        --route-yellow: #ffe166;
+        --line-soft: rgb(35 0 173 / 0.18);
         --theme-icon: "\f186";
       }
 
@@ -125,6 +140,11 @@
         --pink: #ff4fa0;
         --deep: #ffbd37;
         --focus: #ff0073;
+        --card: #231a11;
+        --route-green: #11c86f;
+        --route-blue: #00a9d8;
+        --route-yellow: #ffbd37;
+        --line-soft: rgb(255 189 55 / 0.16);
         --theme-icon: "\f185";
       }
 
@@ -138,14 +158,14 @@
       }
 
       body {
-        height: 100vh;
-        height: 100svh;
+        min-height: 100vh;
+        min-height: 100svh;
         margin: 0;
         display: grid;
         justify-items: center;
         align-items: start;
-        overflow: hidden;
-        padding-top: clamp(3rem, calc(30svh - 6.75rem), 8rem);
+        overflow-x: hidden;
+        padding: clamp(3rem, 8svh, 5.5rem) 1.25rem 2rem;
         background: var(--background);
         color: var(--foreground);
         font-family:
@@ -195,8 +215,9 @@
       }
 
       main {
-        width: min(100%, 42rem);
-        padding: 2rem 1.25rem;
+        position: relative;
+        width: min(100%, 64rem);
+        padding: 2rem 0;
         text-align: center;
       }
 
@@ -218,7 +239,7 @@
         display: flex;
         justify-content: center;
         gap: 0.875rem;
-        margin-top: 1.75rem;
+        margin-top: 1.5rem;
       }
 
       .social-link {
@@ -264,14 +285,151 @@
         outline-offset: 4px;
       }
 
+      .intro {
+        width: min(100%, 34rem);
+        margin: 2rem auto 0;
+        color: var(--foreground);
+        font-size: clamp(1rem, 2.6vw, 1.25rem);
+        font-weight: 700;
+        line-height: 1.45;
+      }
+
+      .card-map {
+        position: relative;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 1rem;
+        margin-top: clamp(2.5rem, 7vw, 4rem);
+        padding: 2.75rem 0 0;
+      }
+
+      .card-map::before,
+      .card-map::after {
+        position: absolute;
+        left: 0;
+        right: 0;
+        pointer-events: none;
+        content: "";
+      }
+
+      .card-map::before {
+        top: 0;
+        height: 1px;
+        background: var(--line-soft);
+      }
+
+      .card-map::after {
+        top: 0.65rem;
+        height: 1.25rem;
+        border-radius: 999px;
+        background:
+          linear-gradient(
+            90deg,
+            var(--pink) 0 24%,
+            var(--route-yellow) 24% 48%,
+            var(--route-green) 48% 72%,
+            var(--route-blue) 72% 100%
+          );
+        box-shadow: 0 0.18rem 0 var(--deep);
+      }
+
+      .card-link {
+        position: relative;
+        z-index: 1;
+        min-height: 10rem;
+        display: grid;
+        align-content: space-between;
+        gap: 1.25rem;
+        padding: 1.1rem;
+        border: 2px solid var(--deep);
+        background: var(--card);
+        color: var(--foreground);
+        text-align: left;
+        text-decoration: none;
+        box-shadow: 0.25rem 0.25rem 0 var(--purple);
+        transition:
+          color 160ms ease,
+          transform 160ms ease,
+          box-shadow 160ms ease;
+      }
+
+      .card-link::before {
+        position: absolute;
+        top: -3.15rem;
+        left: 1.2rem;
+        width: 1.25rem;
+        height: 3.15rem;
+        border-radius: 0 0 999px 999px;
+        background: currentColor;
+        box-shadow:
+          1.45rem 0 0 var(--route-yellow),
+          2.9rem 0 0 var(--route-green),
+          4.35rem 0 0 var(--route-blue);
+        content: "";
+      }
+
+      .card-link:nth-child(1) {
+        color: var(--pink);
+      }
+
+      .card-link:nth-child(2) {
+        color: var(--purple);
+      }
+
+      .card-link:nth-child(3) {
+        color: var(--deep);
+      }
+
+      .card-link:hover {
+        color: var(--pink);
+        transform: translateY(-4px);
+        box-shadow: 0.35rem 0.35rem 0 var(--deep);
+      }
+
+      .card-link:focus-visible {
+        outline: 3px solid var(--focus);
+        outline-offset: 0.35rem;
+      }
+
+      .card-kicker {
+        color: var(--foreground);
+        font-size: 0.75rem;
+        font-weight: 800;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      .card-title {
+        display: flex;
+        align-items: center;
+        gap: 0.7rem;
+        color: currentColor;
+        font-size: clamp(1.15rem, 2.5vw, 1.45rem);
+        font-weight: 900;
+        line-height: 1;
+      }
+
+      .card-title i {
+        width: 1.5rem;
+        text-align: center;
+      }
+
+      .card-copy {
+        margin: 0;
+        color: var(--foreground);
+        font-size: 0.95rem;
+        font-weight: 650;
+        line-height: 1.35;
+      }
+
       @media (min-width: 44rem) {
         body {
-          place-items: center;
-          padding-top: 0;
+          align-items: center;
+          padding-block: 3rem;
         }
 
         main {
-          padding: 3rem 2rem;
+          padding: 3rem 0;
         }
 
         .socials {
@@ -296,12 +454,70 @@
           font-size: clamp(1.45rem, 8.5vw, 1.85rem);
         }
       }
+
+      @media (max-width: 43.99rem) {
+        .card-map {
+          grid-template-columns: 1fr;
+          gap: 0.9rem;
+          width: min(100%, 25rem);
+          margin-inline: auto;
+          padding: 0 0 0 3.4rem;
+        }
+
+        .card-map::before {
+          top: 0;
+          bottom: 0;
+          left: 1.1rem;
+          right: auto;
+          width: 1px;
+          height: auto;
+        }
+
+        .card-map::after {
+          top: 0;
+          bottom: 0;
+          left: 0;
+          right: auto;
+          width: 2rem;
+          height: auto;
+          background:
+            linear-gradient(
+              90deg,
+              var(--pink) 0 24%,
+              var(--route-yellow) 24% 48%,
+              var(--route-green) 48% 72%,
+              var(--route-blue) 72% 100%
+            );
+          box-shadow: 0.18rem 0 0 var(--deep);
+        }
+
+        .card-link {
+          min-height: 8.25rem;
+        }
+
+        .card-link::before {
+          top: 50%;
+          left: -3.4rem;
+          width: 3.4rem;
+          height: 1.25rem;
+          border-radius: 999px 0 0 999px;
+          transform: translateY(-50%);
+          box-shadow:
+            0 1.45rem 0 var(--route-yellow),
+            0 2.9rem 0 var(--route-green),
+            0 4.35rem 0 var(--route-blue);
+        }
+      }
     </style>
   </head>
   <body>
     <button class="theme-toggle" type="button" aria-label="Donkere modus"></button>
     <main aria-label="Alex van der Weij">
       <h1>Alex van der Weij</h1>
+      <p class="intro">
+        Dit domein gebruik ik vooral voor e-mail. Aan de voorkant vind je mijn
+        blog, korte updates en een directe lijn naar mijn inbox.
+      </p>
       <nav class="socials" aria-label="Sociale links">
         <a
           class="social-link"
@@ -330,10 +546,49 @@
           <i class="fa-solid fa-envelope" aria-hidden="true"></i>
         </a>
       </nav>
+      <section class="card-map" aria-label="Meer over Alex van der Weij">
+        <a class="card-link" href="https://alexx.fyi/">
+          <span class="card-kicker">Schrijven</span>
+          <span class="card-title">
+            <i class="fa-solid fa-marker" aria-hidden="true"></i>
+            Blog
+          </span>
+          <p class="card-copy">
+            Persoonlijke notities over internet, technologie, apps en dingen
+            die blijven hangen.
+          </p>
+        </a>
+        <a class="card-link" href="https://www.threads.net/@alexx.fyi">
+          <span class="card-kicker">Updates</span>
+          <span class="card-title">
+            <i class="fa-brands fa-threads" aria-hidden="true"></i>
+            Threads
+          </span>
+          <p class="card-copy">
+            Korte gedachten, links en losse observaties tussen langere stukken
+            door.
+          </p>
+        </a>
+        <a
+          class="card-link"
+          href="#"
+          data-email-user="hoi"
+          data-email-domain="alexvanderweij.nl"
+        >
+          <span class="card-kicker">Contact</span>
+          <span class="card-title">
+            <i class="fa-solid fa-envelope" aria-hidden="true"></i>
+            E-mail
+          </span>
+          <p class="card-copy">
+            Gebruik dit domein gerust om contact op te nemen of om een mail van
+            mij te herkennen.
+          </p>
+        </a>
+      </section>
     </main>
     <script>
       const themeToggle = document.querySelector(".theme-toggle");
-      const emailLink = document.querySelector("[data-email-user][data-email-domain]");
       const themePreference = window.matchMedia("(prefers-color-scheme: dark)");
 
       const saveTheme = (theme) => {
@@ -371,10 +626,10 @@
       themePreference.addEventListener("change", updateThemeToggle);
       updateThemeToggle();
 
-      if (emailLink) {
-        const address = `${emailLink.dataset.emailUser}@${emailLink.dataset.emailDomain}`;
-        emailLink.href = `mailto:${address}`;
-      }
+      document.querySelectorAll("[data-email-user][data-email-domain]").forEach((link) => {
+        const address = `${link.dataset.emailUser}@${link.dataset.emailDomain}`;
+        link.href = `mailto:${address}`;
+      });
     </script>
   </body>
 </html>
