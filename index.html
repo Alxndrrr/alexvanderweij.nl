@@ -204,34 +204,26 @@
         z-index: 20;
         display: flex;
         justify-content: center;
-        padding: clamp(1rem, 3vw, 2rem) 1rem clamp(2rem, 5vw, 4rem);
+        padding: clamp(1rem, 3vw, 2rem) clamp(1rem, 4vw, 2rem) clamp(2rem, 5vw, 4rem);
         background: linear-gradient(
           to bottom,
           var(--background) 0 calc(100% - 2rem),
           transparent 100%
         );
-        opacity: 0;
+        opacity: var(--compact-opacity, 0);
         pointer-events: none;
-        transform: translateY(-1rem);
-        transition:
-          opacity 220ms ease,
-          transform 280ms ease,
-          visibility 0s linear 280ms;
+        transform: translateY(var(--compact-offset, 1.5rem));
         visibility: hidden;
       }
 
       .compact-intro-shell.is-visible {
-        opacity: 1;
-        transform: translateY(0);
-        transition-delay: 0s;
         visibility: visible;
       }
 
       .compact-intro {
         position: relative;
         isolation: isolate;
-        width: max-content;
-        max-width: calc(100vw - 2rem);
+        width: min(100%, 74rem);
         overflow: hidden;
         padding: 0.7rem 1.15rem 0.8rem;
         border: 1px solid var(--rule);
@@ -247,6 +239,9 @@
         font-family: "Instrument Serif", Georgia, serif;
         font-size: 2rem;
         line-height: 1;
+        text-align: center;
+        transform: scaleY(var(--compact-scale, 1.12));
+        transform-origin: center top;
         white-space: nowrap;
       }
 
@@ -590,7 +585,6 @@
         }
 
         .section-connector,
-        .compact-intro-shell,
         .section-title,
         .social-list li {
           animation: none;
@@ -695,17 +689,39 @@
     <script>
       const introEnd = document.querySelector(".intro-end-sentinel");
       const compactIntro = document.querySelector(".compact-intro-shell");
+      const introCopy = document.querySelector(".intro");
 
-      if (introEnd && compactIntro && "IntersectionObserver" in window) {
-        const compactIntroObserver = new IntersectionObserver(
-          ([entry]) => {
-            const hasPassedIntro = !entry.isIntersecting && entry.boundingClientRect.top < 104;
-            compactIntro.classList.toggle("is-visible", hasPassedIntro);
-          },
-          { rootMargin: "-104px 0px 0px", threshold: 0 }
-        );
+      if (introEnd && compactIntro && introCopy) {
+        const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+        let compactIntroFrame = 0;
 
-        compactIntroObserver.observe(introEnd);
+        const updateCompactIntro = () => {
+          const introBottom = introEnd.getBoundingClientRect().top;
+          const rawProgress = Math.min(1, Math.max(0, (220 - introBottom) / 140));
+          const progress = reducedMotion.matches
+            ? Number(introBottom <= 104)
+            : rawProgress * rawProgress * (3 - 2 * rawProgress);
+          const introCopyProgress = 1 - progress;
+
+          compactIntro.style.setProperty("--compact-opacity", progress.toFixed(3));
+          compactIntro.style.setProperty("--compact-offset", `${(1 - progress) * 64}px`);
+          compactIntro.style.setProperty("--compact-scale", (1 + (1 - progress) * 0.35).toFixed(3));
+          compactIntro.classList.toggle("is-visible", progress > 0);
+          introCopy.style.opacity = (introCopyProgress * introCopyProgress).toFixed(3);
+          introCopy.style.filter = `blur(${progress * 10}px)`;
+          compactIntroFrame = 0;
+        };
+
+        const requestCompactIntroUpdate = () => {
+          if (!compactIntroFrame) {
+            compactIntroFrame = window.requestAnimationFrame(updateCompactIntro);
+          }
+        };
+
+        updateCompactIntro();
+        window.addEventListener("scroll", requestCompactIntroUpdate, { passive: true });
+        window.addEventListener("resize", requestCompactIntroUpdate);
+        reducedMotion.addEventListener("change", requestCompactIntroUpdate);
       }
 
       document.querySelectorAll("[data-email-user][data-email-domain]").forEach((link) => {
