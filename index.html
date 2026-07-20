@@ -299,9 +299,6 @@
         padding-top: clamp(1.6rem, 4vw, 3rem);
         padding-bottom: clamp(3rem, 10vw, 7rem);
         scroll-margin-top: 2rem;
-        animation: section-rise linear both;
-        animation-timeline: view();
-        animation-range: entry 0% cover 34%;
       }
 
       .section-title {
@@ -438,15 +435,24 @@
         }
       }
 
-      @keyframes section-rise {
+      @keyframes social-unblur {
         from {
-          opacity: 0.35;
-          transform: translateY(2rem);
+          filter: blur(0.75rem);
+          opacity: 0.08;
         }
 
         to {
+          filter: blur(0);
           opacity: 1;
-          transform: translateY(0);
+        }
+      }
+
+      @supports (animation-timeline: view()) {
+        .section-title,
+        .social-list li {
+          animation: social-unblur linear both;
+          animation-timeline: view();
+          animation-range: entry 3% cover 22%;
         }
       }
 
@@ -494,7 +500,8 @@
         }
 
         .section-connector,
-        .socials-section {
+        .section-title,
+        .social-list li {
           animation: none;
         }
       }
