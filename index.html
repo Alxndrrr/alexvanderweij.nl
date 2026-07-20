@@ -534,25 +534,11 @@
         }
       }
 
-      @keyframes social-unblur {
-        from {
-          filter: blur(0.75rem);
-          opacity: 0.08;
-        }
-
-        to {
-          filter: blur(0);
-          opacity: 1;
-        }
-      }
-
-      @supports (animation-timeline: view()) {
-        .social-platform-name,
-        .social-link > span:last-child {
-          animation: social-unblur linear both;
-          animation-timeline: view();
-          animation-range: entry 3% cover 22%;
-        }
+      .social-platform-name,
+      .social-link > span:last-child {
+        filter: blur(0.32rem);
+        opacity: 0.58;
+        will-change: filter, opacity;
       }
 
       @media (max-width: 43.99rem) {
@@ -603,6 +589,8 @@
         .social-platform-name,
         .social-link > span:last-child {
           animation: none;
+          filter: none;
+          opacity: 1;
           transition: none;
         }
       }
@@ -713,6 +701,8 @@
       const introPressureLine = document.querySelector(".intro-pressure-line");
       const postIntro = document.querySelector(".post-intro");
       const sectionConnector = document.querySelector(".section-connector");
+      const socialsTitle = document.querySelector(".section-title");
+      const socialRevealRows = document.querySelectorAll(".social-link");
 
       if (
         introCard &&
@@ -723,7 +713,8 @@
         introDetails &&
         introPressureLine &&
         postIntro &&
-        sectionConnector
+        sectionConnector &&
+        socialsTitle
       ) {
         const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
         let introMorphFrame = 0;
@@ -735,6 +726,26 @@
         let resizeTimer;
 
         const mix = (from, to, progress) => from + (to - from) * progress;
+
+        const renderSocialReveal = () => {
+          socialRevealRows.forEach((row) => {
+            const rowTop = row.getBoundingClientRect().top;
+            const rawReveal = Math.min(
+              1,
+              Math.max(0, (window.innerHeight * 0.88 - rowTop) / (window.innerHeight * 0.33))
+            );
+            const reveal = reducedMotion.matches
+              ? 1
+              : rawReveal * rawReveal * (3 - 2 * rawReveal);
+            const blur = mix(5.12, 0, reveal);
+            const opacity = mix(0.58, 1, reveal);
+
+            row.querySelectorAll(".social-platform-name, :scope > span:last-child").forEach((label) => {
+              label.style.filter = blur < 0.02 ? "none" : `blur(${blur.toFixed(2)}px)`;
+              label.style.opacity = opacity.toFixed(3);
+            });
+          });
+        };
 
         const renderIntroMorph = (morphPosition) => {
           if (!introMorphMetrics) return;
@@ -749,7 +760,6 @@
             : lineProgress * lineProgress * (3 - 2 * lineProgress);
           const visibleHeight = mix(introMorphMetrics.height, introMorphMetrics.targetHeight, progress);
           const clipBottom = introMorphMetrics.height - visibleHeight;
-          const pressureHeight = introMorphMetrics.pressureHeight * (1 - easedLineProgress);
           const shouldPin = window.scrollY >= introMorphMetrics.pinStart;
           const connectorGap = introMorphMetrics.connectorGap * (1 - easedLineProgress);
           let pressureOpacity = 0;
@@ -783,9 +793,16 @@
           const cardTop = shouldPin
             ? introMorphMetrics.stickyTop
             : introCard.getBoundingClientRect().top;
+          const pressureTop = cardTop + visibleHeight + connectorGap - 1;
+          const socialsTitleTop =
+            introMorphMetrics.socialsTitleTop - window.scrollY - clipBottom;
+          const pressureHeight = Math.max(
+            0,
+            socialsTitleTop - connectorGap - pressureTop
+          );
           introPressureLine.style.setProperty(
             "--intro-pressure-top",
-            `${cardTop + visibleHeight + connectorGap - 1}px`
+            `${pressureTop}px`
           );
           introPressureLine.style.setProperty(
             "--intro-pressure-height",
@@ -798,6 +815,7 @@
           document.body.classList.toggle("intro-line-active", pressureOpacity > 0.01);
           introDetails.style.opacity = ((1 - progress) * (1 - progress)).toFixed(3);
           introDetails.style.visibility = progress > 0.98 ? "hidden" : "visible";
+          renderSocialReveal();
         };
 
         const updateIntroMorph = (time) => {
@@ -854,9 +872,7 @@
           const leadRect = introLead.getBoundingClientRect();
           const targetCopyShift = targetHeight / 2 - (leadRect.top - cardRect.top + leadRect.height / 2);
           const connectorGap = Number.parseFloat(window.getComputedStyle(sectionConnector).marginTop);
-          const pressureHeight = isMobile
-            ? Math.min(240, Math.max(180, window.innerHeight * 0.25))
-            : Math.min(360, Math.max(260, window.innerHeight * 0.34));
+          const socialsTitleTop = window.scrollY + socialsTitle.getBoundingClientRect().top;
 
           introMorphMetrics = {
             pinStart: anchorTop - stickyTop,
@@ -866,7 +882,7 @@
             targetHeight,
             targetCopyShift,
             connectorGap,
-            pressureHeight,
+            socialsTitleTop,
             stickyTop,
             radius,
             targetRadius: radius,
