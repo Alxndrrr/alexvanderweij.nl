@@ -113,6 +113,10 @@
         pointer-events: none;
       }
 
+      body.intro-is-pushed::after {
+        opacity: 0;
+      }
+
       main {
         position: relative;
         min-height: 100vh;
@@ -147,6 +151,10 @@
         text-transform: uppercase;
       }
 
+      body.intro-is-pinned h1 {
+        opacity: 0;
+      }
+
       .intro-card {
         position: sticky;
         top: clamp(1rem, 3vw, 2rem);
@@ -178,7 +186,7 @@
         position: fixed;
         left: 50%;
         width: min(calc(100% - var(--page-gutter) - var(--page-gutter)), 74rem);
-        transform: translateX(-50%);
+        transform: translate(-50%, var(--intro-push-y, 0px));
       }
 
       .intro-card-placeholder {
@@ -394,10 +402,11 @@
 
       .nostalgia-section {
         position: relative;
-        width: calc(100% + var(--page-gutter) + var(--page-gutter));
+        left: 50%;
+        width: 100vw;
         min-height: 190svh;
         margin-top: clamp(1.6rem, 4vw, 3rem);
-        margin-inline: calc(0px - var(--page-gutter));
+        margin-left: -50vw;
       }
 
       .nostalgia-stage {
@@ -420,7 +429,7 @@
         object-position: center center;
         filter: blur(var(--nostalgia-blur, 0px));
         opacity: var(--nostalgia-opacity, 1);
-        transform: scale(var(--nostalgia-scale, 1.62));
+        transform: scale(var(--nostalgia-scale, 1.24));
         transform-origin: center center;
         will-change: filter, opacity, transform;
       }
@@ -910,7 +919,7 @@
 
           nostalgiaMedia.style.setProperty(
             "--nostalgia-scale",
-            mix(1.62, 1.03, progress).toFixed(3)
+            mix(1.24, 1.01, progress).toFixed(3)
           );
           nostalgiaMedia.style.setProperty(
             "--nostalgia-blur",
@@ -993,12 +1002,25 @@
           );
           postIntro.style.setProperty("--intro-flow-lift", `${clipBottom}px`);
 
-          const cardTop = shouldPin
-            ? introMorphMetrics.stickyTop
-            : introCard.getBoundingClientRect().top;
-          const pressureTop = cardTop + visibleHeight + connectorGap - 1;
           const connectorTargetTop =
             introMorphMetrics.connectorTargetTop - window.scrollY - clipBottom;
+          const connectorBottomBall =
+            connectorTargetTop - introMorphMetrics.connectorGap;
+          const pushDistance = shouldPin && progress > 0.999
+            ? Math.max(
+                0,
+                introMorphMetrics.stickyTop + visibleHeight - connectorBottomBall
+              )
+            : 0;
+          const cardTop = shouldPin
+            ? introMorphMetrics.stickyTop - pushDistance
+            : introCard.getBoundingClientRect().top;
+          introCard.style.setProperty("--intro-push-y", `${-pushDistance}px`);
+          document.body.classList.toggle(
+            "intro-is-pushed",
+            shouldPin && cardTop + visibleHeight <= 0
+          );
+          const pressureTop = cardTop + visibleHeight + connectorGap - 1;
           const pressureHeight = Math.max(
             0,
             connectorTargetTop - connectorGap - pressureTop
@@ -1058,11 +1080,13 @@
         const measureIntroMorph = () => {
           introCard.classList.remove("is-pinned");
           document.body.classList.remove("intro-is-pinned");
+          document.body.classList.remove("intro-is-pushed");
           document.body.classList.remove("intro-line-active");
           introCardPlaceholder.style.height = "0px";
           introIsPinned = false;
           introCard.style.removeProperty("--intro-clip-bottom");
           introCard.style.removeProperty("--intro-clip-radius");
+          introCard.style.removeProperty("--intro-push-y");
           introCopy.style.removeProperty("--intro-copy-shift");
           postIntro.style.removeProperty("--intro-flow-lift");
 
