@@ -116,11 +116,16 @@
       }
 
       .hero {
+        position: relative;
+        isolation: isolate;
         display: grid;
         gap: clamp(1.1rem, 3vw, 2.1rem);
       }
 
       h1 {
+        position: sticky;
+        top: clamp(1rem, 3vw, 2rem);
+        z-index: 0;
         margin: 0;
         padding: 0;
         color: var(--foreground);
@@ -136,6 +141,7 @@
 
       .intro-card {
         position: relative;
+        z-index: 1;
         isolation: isolate;
         min-height: clamp(24rem, 58svh, 38rem);
         overflow: hidden;
@@ -199,43 +205,38 @@
       .intro-name {
         color: #fff4d9;
         font-weight: 700;
-        text-shadow:
-          0.035em 0.035em 0 var(--pink),
-          0.07em 0.07em 0 var(--purple);
       }
 
       .intro-emphasis {
-        position: relative;
-        z-index: 0;
-        display: inline-block;
-        margin-inline: 0.04em;
-        padding: 0.02em 0.14em 0.07em;
-        border: 1px solid rgb(255 244 217 / 0.28);
-        border-radius: 0.12em;
+        display: inline;
+        margin: 0;
+        padding: 0;
+        border: 0;
+        border-radius: 0;
         color: #fff4d9;
-        box-shadow: 0.08em 0.08em 0 rgb(24 18 11 / 0.38);
+        box-shadow: none;
         font-style: italic;
-        line-height: 0.95;
-      }
-
-      .intro-emphasis::after {
-        display: none;
+        line-height: inherit;
       }
 
       .keyword-blog {
-        background: rgb(255 0 115 / 0.76);
-        transform: rotate(-2deg);
+        color: #fff4d9;
       }
 
       .intro-blog {
-        color: #fff4d9;
-        text-decoration: none;
+        text-decoration-line: underline;
+        text-decoration-color: var(--pink);
+        text-decoration-thickness: 0.09em;
+        text-underline-offset: 0.12em;
+        transition:
+          color 160ms ease,
+          text-decoration-color 160ms ease;
       }
 
       .intro-blog:hover,
       .intro-blog:focus {
-        background: rgb(255 189 55 / 0.9);
-        color: var(--background);
+        color: var(--pink);
+        text-decoration-color: var(--foreground);
       }
 
       .intro-blog:focus-visible {
@@ -244,19 +245,17 @@
       }
 
       .keyword-film {
-        background: rgb(82 0 255 / 0.72);
-        transform: rotate(1.6deg);
+        color: #fff4d9;
       }
 
       .keyword-nostalgia {
-        background: rgb(255 189 55 / 0.88);
-        color: var(--background);
-        transform: rotate(-1.2deg);
+        color: #ff8fbc;
       }
 
       .keyword-lego {
-        background: rgb(35 0 173 / 0.78);
-        transform: rotate(0.8deg);
+        color: #fff4d9;
+        font-style: normal;
+        font-weight: 700;
       }
 
       .section-connector {
