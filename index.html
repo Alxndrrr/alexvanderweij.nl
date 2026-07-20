@@ -371,8 +371,10 @@
 
       .post-intro {
         display: grid;
-        margin-top: calc(0px - var(--intro-flow-lift, 0px));
+        margin-top: var(--intro-flow-margin, 0px);
         overflow-anchor: none;
+        transform: translateY(var(--intro-flow-transform, 0px));
+        will-change: transform;
       }
 
       body.intro-line-active .intro-connector {
@@ -867,6 +869,7 @@
       const nostalgiaSection = document.querySelector(".nostalgia-section");
       const nostalgiaMedia = document.querySelector(".nostalgia-media");
       const nostalgiaContent = document.querySelector(".nostalgia-content");
+      const socialsSection = document.querySelector(".socials-section");
       const socialRevealRows = document.querySelectorAll(".social-link");
 
       if (
@@ -881,7 +884,8 @@
         sectionConnector &&
         nostalgiaSection &&
         nostalgiaMedia &&
-        nostalgiaContent
+        nostalgiaContent &&
+        socialsSection
       ) {
         const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
         let introMorphFrame = 0;
@@ -891,6 +895,8 @@
         let lastMorphTime = 0;
         let measuredViewportWidth = window.innerWidth;
         let resizeTimer;
+        let lastNostalgiaProgress = -1;
+        let socialRevealZone = "";
 
         const mix = (from, to, progress) => from + (to - from) * progress;
 
@@ -910,6 +916,9 @@
             nostalgiaSection.offsetHeight - window.innerHeight
           );
           const progress = Math.min(1, Math.max(0, -sectionRect.top / scrollDistance));
+          if (Math.abs(progress - lastNostalgiaProgress) < 0.001) return;
+          lastNostalgiaProgress = progress;
+
           const rawCopyProgress = Math.min(
             1,
             Math.max(0, (progress - 0.08) / 0.58)
@@ -940,6 +949,29 @@
         };
 
         const renderSocialReveal = () => {
+          const sectionRect = socialsSection.getBoundingClientRect();
+          const nextZone = sectionRect.top > window.innerHeight * 1.15
+            ? "below"
+            : sectionRect.bottom < 0
+              ? "above"
+              : "active";
+
+          if (nextZone !== "active") {
+            if (socialRevealZone !== nextZone) {
+              const opacity = nextZone === "above" ? "1" : "0.58";
+              const filter = nextZone === "above" ? "none" : "blur(5.12px)";
+              socialRevealRows.forEach((row) => {
+                row.querySelectorAll(".social-platform-name, :scope > span:last-child").forEach((label) => {
+                  label.style.filter = filter;
+                  label.style.opacity = opacity;
+                });
+              });
+            }
+            socialRevealZone = nextZone;
+            return;
+          }
+
+          socialRevealZone = nextZone;
           socialRevealRows.forEach((row) => {
             const rowTop = row.getBoundingClientRect().top;
             const rawReveal = Math.min(
@@ -1000,7 +1032,13 @@
             "--intro-copy-shift",
             `${mix(0, introMorphMetrics.targetCopyShift, progress)}px`
           );
-          postIntro.style.setProperty("--intro-flow-lift", `${clipBottom}px`);
+          if (progress > 0.999) {
+            postIntro.style.setProperty("--intro-flow-margin", `${-clipBottom}px`);
+            postIntro.style.setProperty("--intro-flow-transform", "0px");
+          } else {
+            postIntro.style.setProperty("--intro-flow-margin", "0px");
+            postIntro.style.setProperty("--intro-flow-transform", `${-clipBottom}px`);
+          }
 
           const connectorTargetTop =
             introMorphMetrics.connectorTargetTop - window.scrollY - clipBottom;
@@ -1088,7 +1126,8 @@
           introCard.style.removeProperty("--intro-clip-radius");
           introCard.style.removeProperty("--intro-push-y");
           introCopy.style.removeProperty("--intro-copy-shift");
-          postIntro.style.removeProperty("--intro-flow-lift");
+          postIntro.style.removeProperty("--intro-flow-margin");
+          postIntro.style.removeProperty("--intro-flow-transform");
 
           const isMobile = window.innerWidth < 704;
           const height = introCard.offsetHeight;
