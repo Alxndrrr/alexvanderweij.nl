@@ -129,7 +129,7 @@
         width: min(100%, 78rem);
         margin: 0 auto;
         padding: clamp(2rem, 6vw, 5rem) var(--page-gutter);
-        padding-bottom: max(36rem, 80svh);
+        padding-bottom: clamp(2rem, 6vw, 5rem);
         display: grid;
         align-content: start;
         gap: 0;
@@ -428,17 +428,14 @@
 
       .nostalgia-media {
         position: absolute;
-        inset: -1rem;
+        inset: 0;
         z-index: -2;
-        width: calc(100% + 2rem);
-        height: calc(100% + 2rem);
+        width: 100%;
+        height: 100%;
         object-fit: cover;
         object-position: center center;
-        filter: var(--nostalgia-filter, none);
         opacity: var(--nostalgia-opacity, 1);
-        transform: scale(var(--nostalgia-scale, 1.24));
-        transform-origin: center center;
-        will-change: filter, opacity, transform;
+        will-change: opacity;
       }
 
       .nostalgia-stage::after {
@@ -921,8 +918,6 @@
 
         const renderNostalgia = () => {
           if (reducedMotion.matches) {
-            nostalgiaMedia.style.setProperty("--nostalgia-scale", "1.03");
-            nostalgiaMedia.style.setProperty("--nostalgia-filter", "none");
             nostalgiaMedia.style.setProperty("--nostalgia-opacity", "1");
             nostalgiaContent.style.setProperty("--nostalgia-copy-y", "0%");
             nostalgiaContent.style.setProperty("--nostalgia-copy-opacity", "1");
@@ -946,15 +941,6 @@
           const copyProgress =
             rawCopyProgress * rawCopyProgress * (3 - 2 * rawCopyProgress);
 
-          nostalgiaMedia.style.setProperty(
-            "--nostalgia-scale",
-            mix(1.24, 1.01, progress).toFixed(3)
-          );
-          const blur = mix(0, 1.75, progress);
-          nostalgiaMedia.style.setProperty(
-            "--nostalgia-filter",
-            blur < 0.05 ? "none" : `blur(${blur.toFixed(2)}px)`
-          );
           nostalgiaMedia.style.setProperty(
             "--nostalgia-opacity",
             mix(1, 0.48, progress).toFixed(3)
