@@ -110,7 +110,7 @@
         width: min(100%, 78rem);
         margin: 0 auto;
         padding: clamp(2rem, 6vw, 5rem) clamp(1rem, 4vw, 2rem);
-        padding-bottom: max(12rem, 55svh);
+        padding-bottom: max(36rem, 80svh);
         display: grid;
         align-content: start;
         gap: 0;
@@ -157,6 +157,9 @@
         box-shadow:
           0 2rem 5rem rgb(0 0 0 / 0.34),
           inset 0 1px 0 rgb(255 189 55 / 0.22);
+        transform: scaleY(var(--intro-card-scale, 1));
+        transform-origin: center top;
+        will-change: transform;
       }
 
       .intro-morph-anchor {
@@ -212,13 +215,19 @@
         font-weight: 700;
       }
 
-      .intro-lead,
       .intro-details {
         display: inline;
       }
 
+      .intro-lead {
+        display: block;
+        transform: scaleY(var(--intro-lead-scale, 1));
+        transform-origin: left top;
+        will-change: transform;
+      }
+
       .intro-details {
-        transform-origin: left center;
+        will-change: opacity;
       }
 
       .intro-emphasis {
@@ -616,10 +625,10 @@
     <script>
       const introCard = document.querySelector(".intro-card");
       const introMorphAnchor = document.querySelector(".intro-morph-anchor");
-      const introCopy = document.querySelector(".intro");
+      const introLead = document.querySelector(".intro-lead");
       const introDetails = document.querySelector(".intro-details");
 
-      if (introCard && introMorphAnchor && introCopy && introDetails) {
+      if (introCard && introMorphAnchor && introLead && introDetails) {
         const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
         let introMorphFrame = 0;
         let introMorphMetrics;
@@ -636,15 +645,11 @@
           const progress = reducedMotion.matches
             ? Number(rawProgress >= 0.5)
             : rawProgress * rawProgress * (3 - 2 * rawProgress);
+          const scale = mix(1, introMorphMetrics.targetScale, progress);
 
-          introCard.style.height = `${mix(introMorphMetrics.height, introMorphMetrics.targetHeight, progress)}px`;
-          introCard.style.minHeight = "0";
-          introCard.style.borderRadius = `${mix(introMorphMetrics.radius, introMorphMetrics.targetRadius, progress)}px`;
-          introCopy.style.fontSize = `${mix(introMorphMetrics.fontSize, introMorphMetrics.targetFontSize, progress)}px`;
-          introCopy.style.paddingTop = `${mix(introMorphMetrics.padding, introMorphMetrics.targetPadding, progress)}px`;
-          introCopy.style.paddingBottom = `${mix(introMorphMetrics.padding, introMorphMetrics.targetPadding, progress)}px`;
+          introCard.style.setProperty("--intro-card-scale", scale.toFixed(4));
+          introLead.style.setProperty("--intro-lead-scale", (1 / scale).toFixed(4));
           introDetails.style.opacity = ((1 - progress) * (1 - progress)).toFixed(3);
-          introDetails.style.filter = `blur(${progress * 9}px)`;
           introDetails.style.visibility = progress > 0.98 ? "hidden" : "visible";
           introMorphFrame = 0;
         };
@@ -656,30 +661,18 @@
         };
 
         const measureIntroMorph = () => {
-          introCard.style.height = "";
-          introCard.style.minHeight = "";
-          introCard.style.borderRadius = "";
-          introCopy.style.fontSize = "";
-          introCopy.style.paddingTop = "";
-          introCopy.style.paddingBottom = "";
+          introCard.style.removeProperty("--intro-card-scale");
+          introLead.style.removeProperty("--intro-lead-scale");
 
-          const cardStyles = window.getComputedStyle(introCard);
-          const copyStyles = window.getComputedStyle(introCopy);
           const isMobile = window.innerWidth < 704;
-          const height = introCard.getBoundingClientRect().height;
+          const height = introCard.offsetHeight;
           const anchorTop = introMorphAnchor.getBoundingClientRect().top + window.scrollY;
+          const targetHeight = isMobile ? 152 : 150;
 
           introMorphMetrics = {
             start: anchorTop + height - 220,
             distance: isMobile ? 250 : 320,
-            height,
-            targetHeight: isMobile ? 144 : 132,
-            radius: Number.parseFloat(cardStyles.borderTopLeftRadius),
-            targetRadius: isMobile ? 22 : 24,
-            fontSize: Number.parseFloat(copyStyles.fontSize),
-            targetFontSize: isMobile ? 36 : 48,
-            padding: Number.parseFloat(copyStyles.paddingTop),
-            targetPadding: isMobile ? 20 : 24,
+            targetScale: targetHeight / height,
           };
 
           updateIntroMorph();
