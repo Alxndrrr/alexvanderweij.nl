@@ -117,17 +117,14 @@
       }
 
       .hero {
-        position: relative;
-        isolation: isolate;
-        display: grid;
-        gap: clamp(1.1rem, 3vw, 2.1rem);
+        display: contents;
       }
 
       h1 {
         position: sticky;
         top: clamp(1rem, 3vw, 2rem);
         z-index: 0;
-        margin: 0;
+        margin: 0 0 clamp(1.1rem, 3vw, 2.1rem);
         padding: 0;
         color: var(--foreground);
         font-family: "Press Start 2P", ui-monospace, monospace;
@@ -141,8 +138,9 @@
       }
 
       .intro-card {
-        position: relative;
-        z-index: 1;
+        position: sticky;
+        top: clamp(1rem, 3vw, 2rem);
+        z-index: 10;
         isolation: isolate;
         min-height: clamp(24rem, 58svh, 38rem);
         overflow: hidden;
@@ -159,6 +157,12 @@
         box-shadow:
           0 2rem 5rem rgb(0 0 0 / 0.34),
           inset 0 1px 0 rgb(255 189 55 / 0.22);
+      }
+
+      .intro-morph-anchor {
+        width: 0;
+        height: 0;
+        pointer-events: none;
       }
 
       .intro-card::before,
@@ -189,79 +193,6 @@
         opacity: 0.34;
       }
 
-      .intro-end-sentinel {
-        position: absolute;
-        bottom: 0;
-        left: 50%;
-        width: 1px;
-        height: 1px;
-        pointer-events: none;
-      }
-
-      .compact-intro-shell {
-        position: fixed;
-        inset: 0 0 auto;
-        z-index: 20;
-        display: flex;
-        justify-content: center;
-        padding: clamp(1rem, 3vw, 2rem) clamp(1rem, 4vw, 2rem) clamp(2rem, 5vw, 4rem);
-        background: linear-gradient(
-          to bottom,
-          var(--background) 0 calc(100% - 2rem),
-          transparent 100%
-        );
-        opacity: var(--compact-opacity, 0);
-        pointer-events: none;
-        transform: translateY(var(--compact-offset, 1.5rem));
-        visibility: hidden;
-      }
-
-      .compact-intro-shell.is-visible {
-        visibility: visible;
-      }
-
-      .compact-intro {
-        position: relative;
-        isolation: isolate;
-        width: min(100%, 74rem);
-        overflow: hidden;
-        padding: 0.7rem 1.15rem 0.8rem;
-        border: 1px solid var(--rule);
-        border-radius: 1.1rem;
-        background:
-          radial-gradient(circle at 80% 10%, rgb(255 0 115 / 0.88) 0 18%, transparent 48%),
-          radial-gradient(circle at 68% 90%, rgb(82 0 255 / 0.9) 0 24%, transparent 55%),
-          linear-gradient(110deg, var(--background) 0 35%, #241127 65%, #2a0928 100%);
-        box-shadow:
-          0 1rem 2.5rem rgb(0 0 0 / 0.4),
-          inset 0 1px 0 rgb(255 189 55 / 0.2);
-        color: var(--foreground);
-        font-family: "Instrument Serif", Georgia, serif;
-        font-size: 2rem;
-        line-height: 1;
-        text-align: center;
-        transform: scaleY(var(--compact-scale, 1.12));
-        transform-origin: center top;
-        white-space: nowrap;
-      }
-
-      .compact-intro::before {
-        position: absolute;
-        inset: 0;
-        z-index: -1;
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140' viewBox='0 0 140 140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.75' numOctaves='4' seed='11' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0.50 0 0 0 0 0.50 0 0 0 0 0.50 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
-        background-size: 140px 140px;
-        content: "";
-        filter: contrast(240%);
-        mix-blend-mode: hard-light;
-        opacity: 0.36;
-      }
-
-      .compact-intro strong {
-        color: #fff4d9;
-        font-weight: 700;
-      }
-
       .intro {
         position: relative;
         z-index: 1;
@@ -279,6 +210,15 @@
       .intro-name {
         color: #fff4d9;
         font-weight: 700;
+      }
+
+      .intro-lead,
+      .intro-details {
+        display: inline;
+      }
+
+      .intro-details {
+        transform-origin: left center;
       }
 
       .intro-emphasis {
@@ -522,8 +462,8 @@
       }
 
       @supports (animation-timeline: view()) {
-        .section-title,
-        .social-list li {
+        .social-platform-name,
+        .social-link > span:last-child {
           animation: social-unblur linear both;
           animation-timeline: view();
           animation-range: entry 3% cover 22%;
@@ -557,17 +497,6 @@
           font-size: clamp(2.05rem, 10vw, 3rem);
         }
 
-        .compact-intro-shell {
-          padding-top: 1rem;
-          padding-bottom: 2.5rem;
-        }
-
-        .compact-intro {
-          padding: 0.62rem 0.85rem 0.68rem;
-          border-radius: 0.9rem;
-          font-size: 1.1rem;
-        }
-
         .section-connector {
           height: clamp(8rem, 34vw, 12rem);
         }
@@ -585,8 +514,8 @@
         }
 
         .section-connector,
-        .section-title,
-        .social-list li {
+        .social-platform-name,
+        .social-link > span:last-child {
           animation: none;
           transition: none;
         }
@@ -595,22 +524,20 @@
     </style>
   </head>
   <body>
-    <div class="compact-intro-shell" aria-hidden="true">
-      <div class="compact-intro">Hoi! 👋 mijn naam is <strong>Alex</strong></div>
-    </div>
     <main aria-label="Alex van der Weij">
       <section class="hero" aria-labelledby="site-title">
         <h1 id="site-title">Alex van der Weij</h1>
+        <span class="intro-morph-anchor" aria-hidden="true"></span>
         <div class="intro-card">
           <p class="intro">
-            Hoi! 👋 mijn naam is <strong class="intro-name">Alex</strong>. Ik ben een
-            <a class="intro-emphasis intro-blog keyword-blog" href="https://alexx.fyi/">schrijvertje</a>,
-            <span class="intro-emphasis keyword-film">filmliefhebber</span> en maker uit
-            Nederland, met een zwak voor
-            <span class="intro-emphasis keyword-nostalgia">nostalgie</span>,
-            <span class="intro-emphasis keyword-lego">LEGO</span> en kleine digitale projecten.
+            <span class="intro-lead">Hoi! 👋 mijn naam is <strong class="intro-name">Alex</strong>.</span><span class="intro-details">
+              Ik ben een
+              <a class="intro-emphasis intro-blog keyword-blog" href="https://alexx.fyi/">schrijvertje</a>,
+              <span class="intro-emphasis keyword-film">filmliefhebber</span> en maker uit
+              Nederland, met een zwak voor
+              <span class="intro-emphasis keyword-nostalgia">nostalgie</span>,
+              <span class="intro-emphasis keyword-lego">LEGO</span> en kleine digitale projecten.</span>
           </p>
-          <span class="intro-end-sentinel" aria-hidden="true"></span>
         </div>
       </section>
       <div class="section-connector" aria-hidden="true"></div>
@@ -621,7 +548,7 @@
             <a class="social-link" href="https://www.threads.net/@alexx.fyi">
               <span class="social-platform">
                 <img class="social-icon" src="assets/icons/threads.svg" alt="" aria-hidden="true">
-                Threads
+                <span class="social-platform-name">Threads</span>
               </span>
               <span>@alexx.fyi</span>
             </a>
@@ -630,7 +557,7 @@
             <a class="social-link" href="https://bsky.app/profile/alexx.fyi">
               <span class="social-platform">
                 <img class="social-icon" src="assets/icons/bluesky.svg" alt="" aria-hidden="true">
-                Bluesky
+                <span class="social-platform-name">Bluesky</span>
               </span>
               <span>@alexx.fyi</span>
             </a>
@@ -639,7 +566,7 @@
             <a class="social-link" href="https://mastodon.nl/@alxndrr" rel="me">
               <span class="social-platform">
                 <img class="social-icon" src="assets/icons/mastodon.svg" alt="" aria-hidden="true">
-                Mastodon
+                <span class="social-platform-name">Mastodon</span>
               </span>
               <span>@alxndrr@mastodon.nl</span>
             </a>
@@ -648,7 +575,7 @@
             <a class="social-link" href="https://www.instagram.com/alexx.fyi/">
               <span class="social-platform">
                 <img class="social-icon" src="assets/icons/instagram.svg" alt="" aria-hidden="true">
-                Instagram
+                <span class="social-platform-name">Instagram</span>
               </span>
               <span>@alexx.fyi</span>
             </a>
@@ -657,7 +584,7 @@
             <a class="social-link" href="https://alexx.fyi/">
               <span class="social-platform">
                 <img class="social-icon" src="assets/icons/rss.svg" alt="" aria-hidden="true">
-                Blog
+                <span class="social-platform-name">Blog</span>
               </span>
               <span>alexx.fyi</span>
             </a>
@@ -671,7 +598,7 @@
             >
               <span class="social-platform">
                 <img class="social-icon" src="assets/icons/envelope.svg" alt="" aria-hidden="true">
-                Email
+                <span class="social-platform-name">Email</span>
               </span>
               <span data-email-label>mail mij</span>
             </a>
@@ -687,41 +614,81 @@
       </footer>
     </main>
     <script>
-      const introEnd = document.querySelector(".intro-end-sentinel");
-      const compactIntro = document.querySelector(".compact-intro-shell");
+      const introCard = document.querySelector(".intro-card");
+      const introMorphAnchor = document.querySelector(".intro-morph-anchor");
       const introCopy = document.querySelector(".intro");
+      const introDetails = document.querySelector(".intro-details");
 
-      if (introEnd && compactIntro && introCopy) {
+      if (introCard && introMorphAnchor && introCopy && introDetails) {
         const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-        let compactIntroFrame = 0;
+        let introMorphFrame = 0;
+        let introMorphMetrics;
 
-        const updateCompactIntro = () => {
-          const introBottom = introEnd.getBoundingClientRect().top;
-          const rawProgress = Math.min(1, Math.max(0, (220 - introBottom) / 140));
+        const mix = (from, to, progress) => from + (to - from) * progress;
+
+        const updateIntroMorph = () => {
+          if (!introMorphMetrics) return;
+
+          const rawProgress = Math.min(
+            1,
+            Math.max(0, (window.scrollY - introMorphMetrics.start) / introMorphMetrics.distance)
+          );
           const progress = reducedMotion.matches
-            ? Number(introBottom <= 104)
+            ? Number(rawProgress >= 0.5)
             : rawProgress * rawProgress * (3 - 2 * rawProgress);
-          const introCopyProgress = 1 - progress;
 
-          compactIntro.style.setProperty("--compact-opacity", progress.toFixed(3));
-          compactIntro.style.setProperty("--compact-offset", `${(1 - progress) * 64}px`);
-          compactIntro.style.setProperty("--compact-scale", (1 + (1 - progress) * 0.35).toFixed(3));
-          compactIntro.classList.toggle("is-visible", progress > 0);
-          introCopy.style.opacity = (introCopyProgress * introCopyProgress).toFixed(3);
-          introCopy.style.filter = `blur(${progress * 10}px)`;
-          compactIntroFrame = 0;
+          introCard.style.height = `${mix(introMorphMetrics.height, introMorphMetrics.targetHeight, progress)}px`;
+          introCard.style.minHeight = "0";
+          introCard.style.borderRadius = `${mix(introMorphMetrics.radius, introMorphMetrics.targetRadius, progress)}px`;
+          introCopy.style.fontSize = `${mix(introMorphMetrics.fontSize, introMorphMetrics.targetFontSize, progress)}px`;
+          introCopy.style.paddingTop = `${mix(introMorphMetrics.padding, introMorphMetrics.targetPadding, progress)}px`;
+          introCopy.style.paddingBottom = `${mix(introMorphMetrics.padding, introMorphMetrics.targetPadding, progress)}px`;
+          introDetails.style.opacity = ((1 - progress) * (1 - progress)).toFixed(3);
+          introDetails.style.filter = `blur(${progress * 9}px)`;
+          introDetails.style.visibility = progress > 0.98 ? "hidden" : "visible";
+          introMorphFrame = 0;
         };
 
-        const requestCompactIntroUpdate = () => {
-          if (!compactIntroFrame) {
-            compactIntroFrame = window.requestAnimationFrame(updateCompactIntro);
+        const requestIntroMorphUpdate = () => {
+          if (!introMorphFrame) {
+            introMorphFrame = window.requestAnimationFrame(updateIntroMorph);
           }
         };
 
-        updateCompactIntro();
-        window.addEventListener("scroll", requestCompactIntroUpdate, { passive: true });
-        window.addEventListener("resize", requestCompactIntroUpdate);
-        reducedMotion.addEventListener("change", requestCompactIntroUpdate);
+        const measureIntroMorph = () => {
+          introCard.style.height = "";
+          introCard.style.minHeight = "";
+          introCard.style.borderRadius = "";
+          introCopy.style.fontSize = "";
+          introCopy.style.paddingTop = "";
+          introCopy.style.paddingBottom = "";
+
+          const cardStyles = window.getComputedStyle(introCard);
+          const copyStyles = window.getComputedStyle(introCopy);
+          const isMobile = window.innerWidth < 704;
+          const height = introCard.getBoundingClientRect().height;
+          const anchorTop = introMorphAnchor.getBoundingClientRect().top + window.scrollY;
+
+          introMorphMetrics = {
+            start: anchorTop + height - 220,
+            distance: isMobile ? 250 : 320,
+            height,
+            targetHeight: isMobile ? 144 : 132,
+            radius: Number.parseFloat(cardStyles.borderTopLeftRadius),
+            targetRadius: isMobile ? 22 : 24,
+            fontSize: Number.parseFloat(copyStyles.fontSize),
+            targetFontSize: isMobile ? 36 : 48,
+            padding: Number.parseFloat(copyStyles.paddingTop),
+            targetPadding: isMobile ? 20 : 24,
+          };
+
+          updateIntroMorph();
+        };
+
+        measureIntroMorph();
+        window.addEventListener("scroll", requestIntroMorphUpdate, { passive: true });
+        window.addEventListener("resize", measureIntroMorph);
+        reducedMotion.addEventListener("change", requestIntroMorphUpdate);
       }
 
       document.querySelectorAll("[data-email-user][data-email-domain]").forEach((link) => {
