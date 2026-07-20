@@ -142,7 +142,7 @@
 
       h1 {
         position: sticky;
-        top: clamp(1rem, 3vw, 2rem);
+        top: clamp(2rem, 6vw, 5rem);
         z-index: 0;
         margin: 0 0 clamp(1.1rem, 3vw, 2.1rem);
         padding: 0;
@@ -169,19 +169,10 @@
         position: sticky;
         top: clamp(1rem, 3vw, 2rem);
         z-index: 10;
-        isolation: isolate;
         min-height: clamp(24rem, 58svh, 38rem);
         overflow: hidden;
-        display: grid;
-        align-items: center;
         border: 1px solid var(--rule);
         border-radius: clamp(1.5rem, 4vw, 3rem);
-        background:
-          radial-gradient(circle at 76% 20%, rgb(255 0 115 / 0.88) 0 16%, transparent 43%),
-          radial-gradient(circle at 68% 70%, rgb(82 0 255 / 0.9) 0 20%, transparent 50%),
-          radial-gradient(circle at 18% 66%, rgb(255 0 115 / 0.38) 0 20%, transparent 48%),
-          radial-gradient(circle at 42% 36%, rgb(255 189 55 / 0.35) 0 16%, transparent 42%),
-          linear-gradient(110deg, var(--background) 0 42%, #241127 63%, #2a0928 100%);
         box-shadow:
           0 2rem 5rem rgb(0 0 0 / 0.34),
           inset 0 1px 0 rgb(255 189 55 / 0.22);
@@ -191,6 +182,22 @@
         );
         backface-visibility: hidden;
         will-change: clip-path, transform;
+      }
+
+      .intro-card-surface {
+        position: relative;
+        isolation: isolate;
+        display: grid;
+        align-items: center;
+        height: var(--intro-full-height, 100%);
+        min-height: inherit;
+        border-radius: inherit;
+        background:
+          radial-gradient(circle at 76% 20%, rgb(255 0 115 / 0.88) 0 16%, transparent 43%),
+          radial-gradient(circle at 68% 70%, rgb(82 0 255 / 0.9) 0 20%, transparent 50%),
+          radial-gradient(circle at 18% 66%, rgb(255 0 115 / 0.38) 0 20%, transparent 48%),
+          radial-gradient(circle at 42% 36%, rgb(255 189 55 / 0.35) 0 16%, transparent 42%),
+          linear-gradient(110deg, var(--background) 0 42%, #241127 63%, #2a0928 100%);
       }
 
       .intro-card.is-pinned {
@@ -219,7 +226,7 @@
         height: var(--intro-pressure-height, clamp(12rem, 28vw, 22rem));
         background-image: linear-gradient(
           to bottom,
-          rgb(255 189 55 / 0.76) 0 3px,
+          rgb(82 0 255 / 0.92) 0 3px,
           transparent 3px 12px
         );
         background-size: 1px 12px;
@@ -236,9 +243,9 @@
         left: 50%;
         width: 0.6rem;
         height: 0.6rem;
-        border: 1px solid rgb(255 189 55 / 0.7);
+        border: 1px solid var(--foreground);
         border-radius: 999px;
-        background: var(--background);
+        background: var(--foreground);
         content: "";
         transform: translateX(-50%);
       }
@@ -257,8 +264,8 @@
         pointer-events: none;
       }
 
-      .intro-card::before,
-      .intro-card::after {
+      .intro-card-surface::before,
+      .intro-card-surface::after {
         position: absolute;
         inset: 0;
         z-index: -1;
@@ -269,7 +276,7 @@
         transform: translateZ(0);
       }
 
-      .intro-card::before {
+      .intro-card-surface::before {
         background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140' viewBox='0 0 140 140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.75' numOctaves='4' seed='11' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0.50 0 0 0 0 0.50 0 0 0 0 0.50 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
         background-size: 140px 140px;
         filter: contrast(260%);
@@ -277,7 +284,7 @@
         opacity: 0.42;
       }
 
-      .intro-card::after {
+      .intro-card-surface::after {
         background-image:
           radial-gradient(circle, rgb(255 244 217 / 0.18) 0 0.45px, transparent 0.55px),
           radial-gradient(circle, rgb(0 0 0 / 0.24) 0 0.45px, transparent 0.55px);
@@ -378,7 +385,7 @@
         margin: clamp(1.6rem, 4vw, 3rem) auto 0;
         background-image: linear-gradient(
           to bottom,
-          rgb(255 189 55 / 0.76) 0 3px,
+          rgb(82 0 255 / 0.92) 0 3px,
           transparent 3px 12px
         );
         background-size: 1px 12px;
@@ -404,9 +411,9 @@
         left: 50%;
         width: 0.6rem;
         height: 0.6rem;
-        border: 1px solid rgb(255 189 55 / 0.7);
+        border: 1px solid var(--foreground);
         border-radius: 999px;
-        background: var(--background);
+        background: var(--foreground);
         content: "";
         transform: translateX(-50%);
       }
@@ -591,13 +598,20 @@
         }
 
         h1 {
+          top: clamp(1.5rem, 9vw, 2.75rem);
           font-size: clamp(0.95rem, 5.2vw, 1.35rem);
         }
 
         .intro-card {
           min-height: auto;
           border-radius: 1.4rem;
+          clip-path: none;
           --intro-clip-radius: 1.4rem;
+          will-change: height, transform;
+        }
+
+        .intro-card.is-pinned {
+          height: var(--intro-visible-height, auto);
         }
 
         .intro {
@@ -644,15 +658,17 @@
         <h1 id="site-title">Alex van der Weij</h1>
         <span class="intro-morph-anchor" aria-hidden="true"></span>
         <div class="intro-card">
-          <p class="intro">
-            <span class="intro-lead">Hoi! 👋 mijn naam is <strong class="intro-name">Alex</strong>.</span><span class="intro-details">
-              Ik ben een
-              <a class="intro-emphasis intro-blog keyword-blog" href="https://alexx.fyi/">schrijvertje</a>,
-              <span class="intro-emphasis keyword-film">filmliefhebber</span> en maker uit
-              Nederland, met een zwak voor
-              <span class="intro-emphasis keyword-nostalgia">nostalgie</span>,
-              <span class="intro-emphasis keyword-lego">LEGO</span> en kleine digitale projecten.</span>
-          </p>
+          <div class="intro-card-surface">
+            <p class="intro">
+              <span class="intro-lead">Hoi! 👋 mijn naam is <strong class="intro-name">Alex</strong>.</span><span class="intro-details">
+                Ik ben een
+                <a class="intro-emphasis intro-blog keyword-blog" href="https://alexx.fyi/">schrijvertje</a>,
+                <span class="intro-emphasis keyword-film">filmliefhebber</span> en maker uit
+                Nederland, met een zwak voor
+                <span class="intro-emphasis keyword-nostalgia">nostalgie</span>,
+                <span class="intro-emphasis keyword-lego">LEGO</span> en kleine digitale projecten.</span>
+            </p>
+          </div>
         </div>
         <div class="intro-card-placeholder" aria-hidden="true"></div>
       </section>
@@ -733,6 +749,7 @@
     </main>
     <script>
       const introCard = document.querySelector(".intro-card");
+      const introCardSurface = document.querySelector(".intro-card-surface");
       const siteTitle = document.querySelector("h1");
       const introCardPlaceholder = document.querySelector(".intro-card-placeholder");
       const introMorphAnchor = document.querySelector(".intro-morph-anchor");
@@ -747,6 +764,7 @@
 
       if (
         introCard &&
+        introCardSurface &&
         siteTitle &&
         introCardPlaceholder &&
         introMorphAnchor &&
@@ -862,9 +880,10 @@
 
           introCard.style.setProperty("--intro-clip-bottom", `${clipBottom}px`);
           const stageOffset = shouldPin
-            ? mix(introMorphMetrics.titleClearance, 0, titleProgress)
+            ? mix(introMorphMetrics.cardClearance, 0, titleProgress)
             : 0;
           introCard.style.setProperty("--intro-stage-y", `${stageOffset}px`);
+          introCard.style.setProperty("--intro-visible-height", `${visibleHeight}px`);
           introCard.style.setProperty(
             "--intro-clip-radius",
             `${mix(introMorphMetrics.radius, introMorphMetrics.targetRadius, progress)}px`
@@ -968,19 +987,19 @@
           introCard.style.removeProperty("--intro-clip-radius");
           introCard.style.removeProperty("--intro-push-y");
           introCard.style.removeProperty("--intro-stage-y");
+          introCard.style.removeProperty("--intro-visible-height");
+          introCard.style.removeProperty("--intro-full-height");
           introCopy.style.removeProperty("--intro-copy-shift");
           postIntro.style.removeProperty("--intro-flow-margin");
           postIntro.style.removeProperty("--intro-flow-transform");
 
           isMobileLayout = window.innerWidth < 704;
           const height = introCard.offsetHeight;
+          introCard.style.setProperty("--intro-full-height", `${height}px`);
           const anchorTop = introMorphAnchor.offsetTop;
           const targetHeight = isMobileLayout ? 152 : 150;
           const stickyTop = Math.min(32, Math.max(16, window.innerWidth * 0.03));
-          const titleStyle = window.getComputedStyle(siteTitle);
-          const titleClearance =
-            siteTitle.getBoundingClientRect().height +
-            Number.parseFloat(titleStyle.marginBottom);
+          const cardClearance = Math.max(0, introCard.offsetTop - stickyTop);
           const radius = Number.parseFloat(window.getComputedStyle(introCard).borderTopLeftRadius);
           const cardRect = introCard.getBoundingClientRect();
           const leadRect = introLead.getBoundingClientRect();
@@ -990,7 +1009,7 @@
             window.scrollY + socialsSection.getBoundingClientRect().top;
 
           introMorphMetrics = {
-            pinStart: anchorTop - stickyTop - titleClearance,
+            pinStart: Math.max(0, anchorTop - stickyTop - cardClearance),
             start: 0,
             distance: isMobileLayout ? 640 : 720,
             height,
@@ -999,7 +1018,7 @@
             connectorGap,
             connectorTargetTop,
             stickyTop,
-            titleClearance,
+            cardClearance,
             radius,
             targetRadius: radius,
           };
