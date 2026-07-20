@@ -429,7 +429,7 @@
       .socials-section {
         display: grid;
         gap: clamp(1rem, 2vw, 1.4rem);
-        padding-top: clamp(1.6rem, 4vw, 3rem);
+        padding-top: clamp(4rem, 7vw, 5rem);
         padding-bottom: clamp(3rem, 10vw, 7rem);
         scroll-margin-top: 2rem;
       }
@@ -918,10 +918,14 @@
             "intro-is-pushed",
             shouldPin && cardTop + visibleHeight <= 0
           );
-          const pressureTop = cardTop + visibleHeight + connectorGap - 1;
+          const pressureCalculationTop =
+            cardTop + visibleHeight + connectorGap - 1;
+          const pressureVisualGap =
+            introMorphMetrics.connectorGap - connectorGap;
+          const pressureTop = pressureCalculationTop + pressureVisualGap;
           const pressureHeight = Math.max(
-            0,
-            connectorTargetTop - connectorGap - pressureTop
+            44,
+            connectorTargetTop - connectorGap - pressureCalculationTop - pressureVisualGap
           );
           introPressureLine.style.setProperty(
             "--intro-pressure-top",
