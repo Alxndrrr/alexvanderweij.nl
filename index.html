@@ -196,81 +196,67 @@
         text-align: left;
       }
 
+      .intro-name {
+        color: #fff4d9;
+        font-weight: 700;
+        text-shadow:
+          0.035em 0.035em 0 var(--pink),
+          0.07em 0.07em 0 var(--purple);
+      }
+
       .intro-emphasis {
         position: relative;
         z-index: 0;
         display: inline-block;
+        margin-inline: 0.04em;
+        padding: 0.02em 0.14em 0.07em;
+        border: 1px solid rgb(255 244 217 / 0.28);
+        border-radius: 0.12em;
+        color: #fff4d9;
+        box-shadow: 0.08em 0.08em 0 rgb(24 18 11 / 0.38);
         font-style: italic;
+        line-height: 0.95;
       }
 
       .intro-emphasis::after {
-        position: absolute;
-        right: -0.08em;
-        bottom: 0.07em;
-        left: -0.08em;
-        z-index: -1;
-        height: 0.22em;
-        content: "";
-        opacity: 0.88;
+        display: none;
       }
 
-      .intro-emphasis:nth-of-type(1)::after {
-        background: var(--pink);
-        box-shadow: 0.12em 0.12em 0 var(--purple);
+      .keyword-blog {
+        background: rgb(255 0 115 / 0.76);
+        transform: rotate(-2deg);
       }
 
       .intro-blog {
-        color: var(--foreground);
+        color: #fff4d9;
         text-decoration: none;
-        transform: rotate(-1.5deg);
-      }
-
-      .intro-blog::before {
-        position: absolute;
-        top: -0.04em;
-        right: -0.12em;
-        bottom: -0.02em;
-        left: -0.12em;
-        z-index: -2;
-        border: 1px solid rgb(255 189 55 / 0.42);
-        background: rgb(255 0 115 / 0.24);
-        content: "";
-      }
-
-      .intro-blog::after {
-        height: 0.34em;
-        background: var(--pink);
-        box-shadow:
-          0.12em 0.12em 0 var(--purple),
-          -0.08em 0.22em 0 rgb(255 189 55 / 0.72);
       }
 
       .intro-blog:hover,
       .intro-blog:focus {
-        color: #fff4d9;
-      }
-
-      .intro-blog:hover::after,
-      .intro-blog:focus-visible::after {
-        height: 0.74em;
-        transform: translateY(0.07em);
+        background: rgb(255 189 55 / 0.9);
+        color: var(--background);
       }
 
       .intro-blog:focus-visible {
-        border-radius: 0.15rem;
         outline: 3px solid var(--focus);
         outline-offset: 0.2rem;
       }
 
-      .intro-emphasis:nth-of-type(2)::after {
-        background: var(--purple);
-        box-shadow: 0.12em 0.12em 0 var(--pink);
+      .keyword-film {
+        background: rgb(82 0 255 / 0.72);
+        transform: rotate(1.6deg);
       }
 
-      .intro-emphasis:nth-of-type(3)::after,
-      .intro-emphasis:nth-of-type(4)::after {
-        background: rgb(255 189 55 / 0.38);
-        box-shadow: 0.12em 0.12em 0 var(--pink);
+      .keyword-nostalgia {
+        background: rgb(255 189 55 / 0.88);
+        color: var(--background);
+        transform: rotate(-1.2deg);
+      }
+
+      .keyword-lego {
+        background: rgb(35 0 173 / 0.78);
+        transform: rotate(0.8deg);
       }
 
       .section-connector {
@@ -365,9 +351,32 @@
         color: #fff4d9;
       }
 
+      .social-platform {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.55rem;
+      }
+
+      .social-icon {
+        width: 1.2em;
+        height: 1.2em;
+        flex: 0 0 auto;
+        filter:
+          brightness(0)
+          saturate(100%)
+          invert(86%)
+          sepia(95%)
+          saturate(591%)
+          hue-rotate(331deg)
+          brightness(101%)
+          contrast(102%)
+          drop-shadow(0.08em 0.08em 0 rgb(255 0 115 / 0.62));
+      }
+
       .social-link span:last-child {
         order: 3;
         color: var(--pink);
+        overflow-wrap: anywhere;
         text-align: right;
         text-shadow: 0.08em 0.08em 0 var(--purple);
       }
@@ -459,12 +468,12 @@
         <h1 id="site-title">Alex van der Weij</h1>
         <div class="intro-card">
           <p class="intro">
-            Hoi! 👋 mijn naam is Alex. Ik ben een
-            <a class="intro-emphasis intro-blog" href="https://alexx.fyi/">schrijvertje</a>,
-            <span class="intro-emphasis">filmliefhebber</span> en maker uit
+            Hoi! 👋 mijn naam is <strong class="intro-name">Alex</strong>. Ik ben een
+            <a class="intro-emphasis intro-blog keyword-blog" href="https://alexx.fyi/">schrijvertje</a>,
+            <span class="intro-emphasis keyword-film">filmliefhebber</span> en maker uit
             Nederland, met een zwak voor
-            <span class="intro-emphasis">nostalgie</span>,
-            <span class="intro-emphasis">LEGO</span> en kleine digitale projecten.
+            <span class="intro-emphasis keyword-nostalgia">nostalgie</span>,
+            <span class="intro-emphasis keyword-lego">LEGO</span> en kleine digitale projecten.
           </p>
         </div>
       </section>
@@ -474,18 +483,76 @@
         <ul class="social-list">
           <li>
             <a class="social-link" href="https://www.threads.net/@alexx.fyi">
-              <span>Threads</span>
+              <span class="social-platform">
+                <img class="social-icon" src="assets/icons/threads.svg" alt="" aria-hidden="true">
+                Threads
+              </span>
+              <span>@alexx.fyi</span>
+            </a>
+          </li>
+          <li>
+            <a class="social-link" href="https://bsky.app/profile/alexx.fyi">
+              <span class="social-platform">
+                <img class="social-icon" src="assets/icons/bluesky.svg" alt="" aria-hidden="true">
+                Bluesky
+              </span>
+              <span>@alexx.fyi</span>
+            </a>
+          </li>
+          <li>
+            <a class="social-link" href="https://mastodon.nl/@alxndrr" rel="me">
+              <span class="social-platform">
+                <img class="social-icon" src="assets/icons/mastodon.svg" alt="" aria-hidden="true">
+                Mastodon
+              </span>
+              <span>@alxndrr@mastodon.nl</span>
+            </a>
+          </li>
+          <li>
+            <a class="social-link" href="https://www.instagram.com/alexx.fyi/">
+              <span class="social-platform">
+                <img class="social-icon" src="assets/icons/instagram.svg" alt="" aria-hidden="true">
+                Instagram
+              </span>
               <span>@alexx.fyi</span>
             </a>
           </li>
           <li>
             <a class="social-link" href="https://alexx.fyi/">
-              <span>Blog</span>
+              <span class="social-platform">
+                <img class="social-icon" src="assets/icons/rss.svg" alt="" aria-hidden="true">
+                Blog
+              </span>
               <span>alexx.fyi</span>
+            </a>
+          </li>
+          <li>
+            <a
+              class="social-link"
+              href="#"
+              data-email-user="hoi"
+              data-email-domain="alexvanderweij.nl"
+            >
+              <span class="social-platform">
+                <img class="social-icon" src="assets/icons/envelope.svg" alt="" aria-hidden="true">
+                Email
+              </span>
+              <span data-email-label>mail mij</span>
             </a>
           </li>
         </ul>
       </section>
     </main>
+    <script>
+      document.querySelectorAll("[data-email-user][data-email-domain]").forEach((link) => {
+        const address = `${link.dataset.emailUser}@${link.dataset.emailDomain}`;
+        link.href = `mailto:${address}`;
+
+        const label = link.querySelector("[data-email-label]");
+        if (label) {
+          label.textContent = address;
+        }
+      });
+    </script>
   </body>
 </html>
