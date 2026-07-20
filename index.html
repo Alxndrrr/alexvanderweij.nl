@@ -451,6 +451,14 @@
       }
 
       @media (max-width: 43.99rem) {
+        html {
+          scrollbar-width: none;
+        }
+
+        html::-webkit-scrollbar {
+          display: none;
+        }
+
         main {
           padding-top: clamp(1.5rem, 9vw, 2.75rem);
         }
