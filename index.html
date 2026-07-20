@@ -155,10 +155,14 @@
         text-align: center;
         text-shadow: 0.08em 0.08em 0 rgb(255 0 115 / 0.58);
         text-transform: uppercase;
+        transition:
+          opacity 140ms ease,
+          transform 140ms ease;
       }
 
-      body.intro-is-pinned h1 {
+      body.intro-is-collapsed h1 {
         opacity: 0;
+        transform: translateY(-125%);
       }
 
       .intro-card {
@@ -185,14 +189,19 @@
           0 0 var(--intro-clip-bottom, 0px) 0
           round var(--intro-clip-radius, clamp(1.5rem, 4vw, 3rem))
         );
-        will-change: clip-path;
+        backface-visibility: hidden;
+        will-change: clip-path, transform;
       }
 
       .intro-card.is-pinned {
         position: fixed;
         left: 50%;
         width: min(calc(100% - var(--page-gutter) - var(--page-gutter)), 74rem);
-        transform: translate(-50%, var(--intro-push-y, 0px));
+        transform: translate3d(
+          -50%,
+          calc(var(--intro-stage-y, 0px) + var(--intro-push-y, 0px)),
+          0
+        );
       }
 
       .intro-card-placeholder {
@@ -253,9 +262,11 @@
         position: absolute;
         inset: 0;
         z-index: -1;
+        backface-visibility: hidden;
         border-radius: inherit;
         pointer-events: none;
         content: "";
+        transform: translateZ(0);
       }
 
       .intro-card::before {
@@ -488,12 +499,17 @@
           drop-shadow(0.08em 0.08em 0 rgb(255 0 115 / 0.62));
       }
 
-      .social-link span:last-child {
-        order: 3;
+      .social-platform-name {
         color: var(--pink);
+        text-shadow: 0.08em 0.08em 0 var(--purple);
+      }
+
+      .social-link > span:last-child {
+        order: 3;
+        color: var(--foreground);
         overflow-wrap: anywhere;
         text-align: right;
-        text-shadow: 0.08em 0.08em 0 var(--purple);
+        text-shadow: 0.08em 0.08em 0 rgb(255 0 115 / 0.72);
       }
 
       .social-link:hover span:first-child,
@@ -501,8 +517,8 @@
         color: var(--foreground);
       }
 
-      .social-link:hover span:last-child,
-      .social-link:focus span:last-child {
+      .social-link:hover > span:last-child,
+      .social-link:focus > span:last-child {
         color: #fff4d9;
       }
 
@@ -603,6 +619,10 @@
       @media (prefers-reduced-motion: reduce) {
         html {
           scroll-behavior: auto;
+        }
+
+        h1 {
+          transition: none;
         }
 
         .section-connector,
@@ -713,6 +733,7 @@
     </main>
     <script>
       const introCard = document.querySelector(".intro-card");
+      const siteTitle = document.querySelector("h1");
       const introCardPlaceholder = document.querySelector(".intro-card-placeholder");
       const introMorphAnchor = document.querySelector(".intro-morph-anchor");
       const introCopy = document.querySelector(".intro");
@@ -726,6 +747,7 @@
 
       if (
         introCard &&
+        siteTitle &&
         introCardPlaceholder &&
         introMorphAnchor &&
         introCopy &&
@@ -743,6 +765,7 @@
         let renderedMorphPosition = 0;
         let lastMorphTime = 0;
         let measuredViewportWidth = window.innerWidth;
+        let isMobileLayout = window.innerWidth < 704;
         let resizeTimer;
         let socialRevealZone = "";
 
@@ -806,6 +829,13 @@
           const progress = reducedMotion.matches
             ? Number(rawProgress >= 0.5)
             : rawProgress * rawProgress * (3 - 2 * rawProgress);
+          const rawTitleProgress = Math.min(
+            1,
+            Math.max(0, (morphPosition - 0.28) / 0.16)
+          );
+          const titleProgress = reducedMotion.matches
+            ? Number(rawTitleProgress >= 0.5)
+            : rawTitleProgress * rawTitleProgress * (3 - 2 * rawTitleProgress);
           const easedLineProgress = reducedMotion.matches
             ? Number(lineProgress >= 0.5)
             : lineProgress * lineProgress * (3 - 2 * lineProgress);
@@ -831,6 +861,10 @@
           }
 
           introCard.style.setProperty("--intro-clip-bottom", `${clipBottom}px`);
+          const stageOffset = shouldPin
+            ? mix(introMorphMetrics.titleClearance, 0, titleProgress)
+            : 0;
+          introCard.style.setProperty("--intro-stage-y", `${stageOffset}px`);
           introCard.style.setProperty(
             "--intro-clip-radius",
             `${mix(introMorphMetrics.radius, introMorphMetrics.targetRadius, progress)}px`
@@ -858,7 +892,7 @@
               )
             : 0;
           const cardTop = shouldPin
-            ? introMorphMetrics.stickyTop - pushDistance
+            ? introMorphMetrics.stickyTop + stageOffset - pushDistance
             : introCard.getBoundingClientRect().top;
           introCard.style.setProperty("--intro-push-y", `${-pushDistance}px`);
           document.body.classList.toggle(
@@ -883,6 +917,7 @@
             Math.max(0, pressureOpacity).toFixed(3)
           );
           document.body.classList.toggle("intro-line-active", pressureOpacity > 0.01);
+          document.body.classList.toggle("intro-is-collapsed", titleProgress > 0.001);
           introDetails.style.opacity = ((1 - progress) * (1 - progress)).toFixed(3);
           introDetails.style.visibility = progress > 0.98 ? "hidden" : "visible";
           renderSocialReveal();
@@ -894,7 +929,7 @@
           const targetMorphPosition =
             (window.scrollY - introMorphMetrics.start) / introMorphMetrics.distance;
 
-          if (reducedMotion.matches) {
+          if (reducedMotion.matches || isMobileLayout) {
             renderedMorphPosition = targetMorphPosition;
           } else {
             const elapsed = lastMorphTime ? Math.min(48, time - lastMorphTime) : 16;
@@ -926,20 +961,26 @@
           document.body.classList.remove("intro-is-pinned");
           document.body.classList.remove("intro-is-pushed");
           document.body.classList.remove("intro-line-active");
+          document.body.classList.remove("intro-is-collapsed");
           introCardPlaceholder.style.height = "0px";
           introIsPinned = false;
           introCard.style.removeProperty("--intro-clip-bottom");
           introCard.style.removeProperty("--intro-clip-radius");
           introCard.style.removeProperty("--intro-push-y");
+          introCard.style.removeProperty("--intro-stage-y");
           introCopy.style.removeProperty("--intro-copy-shift");
           postIntro.style.removeProperty("--intro-flow-margin");
           postIntro.style.removeProperty("--intro-flow-transform");
 
-          const isMobile = window.innerWidth < 704;
+          isMobileLayout = window.innerWidth < 704;
           const height = introCard.offsetHeight;
           const anchorTop = introMorphAnchor.offsetTop;
-          const targetHeight = isMobile ? 152 : 150;
+          const targetHeight = isMobileLayout ? 152 : 150;
           const stickyTop = Math.min(32, Math.max(16, window.innerWidth * 0.03));
+          const titleStyle = window.getComputedStyle(siteTitle);
+          const titleClearance =
+            siteTitle.getBoundingClientRect().height +
+            Number.parseFloat(titleStyle.marginBottom);
           const radius = Number.parseFloat(window.getComputedStyle(introCard).borderTopLeftRadius);
           const cardRect = introCard.getBoundingClientRect();
           const leadRect = introLead.getBoundingClientRect();
@@ -949,15 +990,16 @@
             window.scrollY + socialsSection.getBoundingClientRect().top;
 
           introMorphMetrics = {
-            pinStart: anchorTop - stickyTop,
+            pinStart: anchorTop - stickyTop - titleClearance,
             start: 0,
-            distance: isMobile ? 640 : 720,
+            distance: isMobileLayout ? 640 : 720,
             height,
             targetHeight,
             targetCopyShift,
             connectorGap,
             connectorTargetTop,
             stickyTop,
+            titleClearance,
             radius,
             targetRadius: radius,
           };
