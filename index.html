@@ -408,133 +408,6 @@
         bottom: 0;
       }
 
-      .nostalgia-section {
-        position: relative;
-        left: 50%;
-        width: 100vw;
-        min-height: 152svh;
-        margin-top: clamp(1.6rem, 4vw, 3rem);
-        margin-left: -50vw;
-      }
-
-      .nostalgia-stage {
-        position: sticky;
-        top: 0;
-        isolation: isolate;
-        height: 100vh;
-        height: 100svh;
-        overflow: hidden;
-        background: var(--background);
-      }
-
-      .nostalgia-media {
-        position: absolute;
-        inset: 0;
-        z-index: -2;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        object-position: center center;
-        opacity: var(--nostalgia-opacity, 1);
-        transition: opacity 80ms linear;
-        will-change: opacity;
-      }
-
-      .nostalgia-stage::after {
-        position: absolute;
-        inset: 0;
-        z-index: -1;
-        background: linear-gradient(
-          to bottom,
-          rgb(24 18 11 / 0.04) 5%,
-          rgb(24 18 11 / 0.18) 34%,
-          rgb(24 18 11 / 0.78) 67%,
-          rgb(24 18 11 / 0.97) 100%
-        );
-        content: "";
-        pointer-events: none;
-      }
-
-      .nostalgia-stage::before {
-        position: absolute;
-        inset: 0 0 auto;
-        z-index: 0;
-        height: clamp(2rem, 5svh, 3.5rem);
-        background: linear-gradient(
-          to bottom,
-          rgb(24 18 11 / 0.72) 0%,
-          transparent 100%
-        );
-        content: "";
-        pointer-events: none;
-      }
-
-      .nostalgia-content {
-        position: absolute;
-        inset: auto 0 0;
-        width: min(calc(100% - var(--page-gutter) - var(--page-gutter)), 66rem);
-        margin: 0 auto;
-        padding: clamp(2rem, 5vw, 4.5rem) 0;
-        color: #fff4d9;
-        opacity: var(--nostalgia-copy-opacity, 0);
-        text-shadow: 0 1px 0 rgb(0 0 0 / 0.4);
-        transform: translateY(var(--nostalgia-copy-y, 105%));
-        transition:
-          opacity 80ms linear,
-          transform 80ms linear;
-        will-change: opacity, transform;
-      }
-
-      .nostalgia-title {
-        margin: 0 0 clamp(1rem, 2vw, 1.5rem);
-        color: var(--foreground);
-        font-family: "Press Start 2P", ui-monospace, monospace;
-        font-size: clamp(2rem, 5vw, 4rem);
-        font-weight: 400;
-        line-height: 1.2;
-        text-shadow:
-          0.08em 0.08em 0 var(--pink),
-          0.14em 0.14em 0 var(--purple);
-      }
-
-      .nostalgia-copy {
-        max-width: 65ch;
-        font-family: ui-sans-serif, system-ui, sans-serif;
-        font-size: clamp(1rem, 1.7vw, 1.22rem);
-        line-height: 1.55;
-      }
-
-      .nostalgia-copy p {
-        margin: 0 0 0.85em;
-      }
-
-      .nostalgia-copy p:last-child {
-        margin-bottom: 0;
-      }
-
-      .nostalgia-copy em {
-        color: var(--foreground);
-      }
-
-      .nostalgia-link {
-        color: var(--pink);
-        font-weight: 700;
-        text-decoration-line: underline;
-        text-decoration-color: var(--foreground);
-        text-decoration-thickness: 0.12em;
-        text-underline-offset: 0.2em;
-      }
-
-      .nostalgia-link:hover,
-      .nostalgia-link:focus {
-        color: var(--foreground);
-        text-decoration-color: var(--pink);
-      }
-
-      .section-connector--secondary {
-        height: clamp(10rem, 24vw, 18rem);
-      }
-
       .socials-section {
         display: grid;
         gap: clamp(1rem, 2vw, 1.4rem);
@@ -720,28 +593,6 @@
           height: clamp(14rem, 65vw, 18rem);
         }
 
-        .nostalgia-section {
-          min-height: 164svh;
-        }
-
-        .nostalgia-media {
-          object-position: 52% center;
-        }
-
-        .nostalgia-content {
-          width: calc(100% - 2.5rem);
-          padding: 1.5rem 0 1.25rem;
-        }
-
-        .nostalgia-copy {
-          font-size: 0.92rem;
-          line-height: 1.42;
-        }
-
-        .section-connector--secondary {
-          height: clamp(10rem, 54vw, 14rem);
-        }
-
         .social-link {
           grid-template-columns: auto minmax(1.5rem, 1fr) auto;
           gap: 0.55rem;
@@ -755,8 +606,6 @@
         }
 
         .section-connector,
-        .nostalgia-media,
-        .nostalgia-content,
         .social-platform-name,
         .social-link > span:last-child {
           animation: none;
@@ -789,30 +638,9 @@
       </section>
       <div class="post-intro">
         <div class="section-connector intro-connector" aria-hidden="true"></div>
-        <section class="nostalgia-section" aria-labelledby="nostalgia-title">
-          <div class="nostalgia-stage">
-            <img
-              class="nostalgia-media"
-              src="assets/90s-alex.jpg"
-              alt="Twee kinderen met zonnebrillen, een koptelefoon en een cassettebandje in een keuken"
-              width="1916"
-              height="821"
-            >
-            <div class="nostalgia-content">
-              <h2 class="nostalgia-title" id="nostalgia-title">90's Kid</h2>
-              <div class="nostalgia-copy">
-                <p>Geboren in de jaren ’80 en daardoor absoluut een ‘90s kid. De tijd dat trends nog gewoon rages waren. De tijd van te veel zakken chips eten om alle Flippo’s te verzamelen en de tijd van stiekem je Tamagotchi mee de klas in smokkelen en hopen dat de meester de piepjes niet hoort.</p>
-                <p>Ik was vooral buiten te vinden, want voor ons bestond het internet toen nog niet. Maar als ik niet buiten was, moest ik ieder uur nieuwe AA-batterijen in mijn <em>Game Boy</em> stoppen, zodat ik Pokémon Red kon blijven spelen...</p>
-                <p>Onze regelmatige bezoekjes aan de videotheek zijn een van mijn <em>core memories</em>, want ik kon uren langs de schappen lopen om de perfecte videoband uit te zoeken. Ook al was die film waarschijnlijk niet geschikt voor mijn leeftijd.</p>
-                <p>Mijn liefde voor de jaren ’80 en ’90 is vaak terug te vinden in de stukken die ik op het internet lees. Je kunt deze verhalen <a class="nostalgia-link" href="https://alexx.fyi/">hier vinden</a>.</p>
-              </div>
-            </div>
-          </div>
-        </section>
-        <div class="section-connector section-connector--secondary" aria-hidden="true"></div>
         <section class="socials-section" aria-labelledby="socials-title">
-        <h2 class="section-title" id="socials-title">Socials</h2>
-        <ul class="social-list">
+          <h2 class="section-title" id="socials-title">Socials</h2>
+          <ul class="social-list">
           <li>
             <a class="social-link" href="https://www.threads.net/@alexx.fyi">
               <span class="social-platform">
@@ -872,7 +700,7 @@
               <span data-email-label>mail mij</span>
             </a>
           </li>
-        </ul>
+          </ul>
         </section>
         <footer class="site-footer">
           <p>
@@ -893,9 +721,6 @@
       const introPressureLine = document.querySelector(".intro-pressure-line");
       const postIntro = document.querySelector(".post-intro");
       const sectionConnector = document.querySelector(".intro-connector");
-      const nostalgiaSection = document.querySelector(".nostalgia-section");
-      const nostalgiaMedia = document.querySelector(".nostalgia-media");
-      const nostalgiaContent = document.querySelector(".nostalgia-content");
       const socialsSection = document.querySelector(".socials-section");
       const socialRevealRows = document.querySelectorAll(".social-link");
 
@@ -909,9 +734,6 @@
         introPressureLine &&
         postIntro &&
         sectionConnector &&
-        nostalgiaSection &&
-        nostalgiaMedia &&
-        nostalgiaContent &&
         socialsSection
       ) {
         const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -922,49 +744,9 @@
         let lastMorphTime = 0;
         let measuredViewportWidth = window.innerWidth;
         let resizeTimer;
-        let lastNostalgiaProgress = -1;
         let socialRevealZone = "";
 
         const mix = (from, to, progress) => from + (to - from) * progress;
-
-        const renderNostalgia = () => {
-          if (reducedMotion.matches) {
-            nostalgiaMedia.style.setProperty("--nostalgia-opacity", "1");
-            nostalgiaContent.style.setProperty("--nostalgia-copy-y", "0%");
-            nostalgiaContent.style.setProperty("--nostalgia-copy-opacity", "1");
-            return;
-          }
-
-          const sectionRect = nostalgiaSection.getBoundingClientRect();
-          const scrollDistance = Math.max(
-            1,
-            nostalgiaSection.offsetHeight - window.innerHeight
-          );
-          const animationDistance = scrollDistance;
-          const progress = Math.min(1, Math.max(0, -sectionRect.top / animationDistance));
-          if (Math.abs(progress - lastNostalgiaProgress) < 0.001) return;
-          lastNostalgiaProgress = progress;
-
-          const rawCopyProgress = Math.min(
-            1,
-            Math.max(0, (progress - 0.08) / 0.92)
-          );
-          const copyProgress =
-            rawCopyProgress * rawCopyProgress * (3 - 2 * rawCopyProgress);
-
-          nostalgiaMedia.style.setProperty(
-            "--nostalgia-opacity",
-            mix(1, 0.48, progress).toFixed(3)
-          );
-          nostalgiaContent.style.setProperty(
-            "--nostalgia-copy-y",
-            `${mix(105, 0, copyProgress).toFixed(2)}%`
-          );
-          nostalgiaContent.style.setProperty(
-            "--nostalgia-copy-opacity",
-            copyProgress.toFixed(3)
-          );
-        };
 
         const renderSocialReveal = () => {
           const sectionRect = socialsSection.getBoundingClientRect();
@@ -1103,7 +885,6 @@
           document.body.classList.toggle("intro-line-active", pressureOpacity > 0.01);
           introDetails.style.opacity = ((1 - progress) * (1 - progress)).toFixed(3);
           introDetails.style.visibility = progress > 0.98 ? "hidden" : "visible";
-          renderNostalgia();
           renderSocialReveal();
         };
 
@@ -1141,7 +922,6 @@
         };
 
         const measureIntroMorph = () => {
-          lastNostalgiaProgress = -1;
           introCard.classList.remove("is-pinned");
           document.body.classList.remove("intro-is-pinned");
           document.body.classList.remove("intro-is-pushed");
@@ -1166,7 +946,7 @@
           const targetCopyShift = targetHeight / 2 - (leadRect.top - cardRect.top + leadRect.height / 2);
           const connectorGap = Number.parseFloat(window.getComputedStyle(sectionConnector).marginTop);
           const connectorTargetTop =
-            window.scrollY + nostalgiaSection.getBoundingClientRect().top;
+            window.scrollY + socialsSection.getBoundingClientRect().top;
 
           introMorphMetrics = {
             pinStart: anchorTop - stickyTop,
