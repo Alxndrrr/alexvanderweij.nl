@@ -411,7 +411,7 @@
         position: relative;
         left: 50%;
         width: 100vw;
-        min-height: 190svh;
+        min-height: 152svh;
         margin-top: clamp(1.6rem, 4vw, 3rem);
         margin-left: -50vw;
       }
@@ -451,6 +451,20 @@
           rgb(24 18 11 / 0.18) 34%,
           rgb(24 18 11 / 0.78) 67%,
           rgb(24 18 11 / 0.97) 100%
+        );
+        content: "";
+        pointer-events: none;
+      }
+
+      .nostalgia-stage::before {
+        position: absolute;
+        inset: 0 0 auto;
+        z-index: 0;
+        height: clamp(2rem, 5svh, 3.5rem);
+        background: linear-gradient(
+          to bottom,
+          rgb(24 18 11 / 0.72) 0%,
+          transparent 100%
         );
         content: "";
         pointer-events: none;
@@ -701,7 +715,7 @@
         }
 
         .nostalgia-section {
-          min-height: 210svh;
+          min-height: 164svh;
         }
 
         .nostalgia-media {
@@ -920,15 +934,14 @@
             1,
             nostalgiaSection.offsetHeight - window.innerHeight
           );
-          const isMobile = window.innerWidth < 704;
-          const animationDistance = scrollDistance * (isMobile ? 0.58 : 1);
+          const animationDistance = scrollDistance;
           const progress = Math.min(1, Math.max(0, -sectionRect.top / animationDistance));
           if (Math.abs(progress - lastNostalgiaProgress) < 0.001) return;
           lastNostalgiaProgress = progress;
 
           const rawCopyProgress = Math.min(
             1,
-            Math.max(0, (progress - 0.08) / 0.58)
+            Math.max(0, (progress - 0.08) / 0.92)
           );
           const copyProgress =
             rawCopyProgress * rawCopyProgress * (3 - 2 * rawCopyProgress);
@@ -937,7 +950,7 @@
             "--nostalgia-scale",
             mix(1.24, 1.01, progress).toFixed(3)
           );
-          const blur = mix(0, isMobile ? 1.75 : 6, progress);
+          const blur = mix(0, 1.75, progress);
           nostalgiaMedia.style.setProperty(
             "--nostalgia-filter",
             blur < 0.05 ? "none" : `blur(${blur.toFixed(2)}px)`
