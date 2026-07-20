@@ -35,18 +35,11 @@
       content="Alex van der Weij is schrijver, filmliefhebber en maker uit Nederland, met een zwak voor nostalgie, LEGO en kleine digitale projecten."
     >
 
-    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Press+Start+2P&display=swap"
-    >
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
     >
     <script
       defer
@@ -98,13 +91,11 @@
         min-height: 100vh;
         min-height: 100svh;
         margin: 0;
-        overflow: hidden;
+        overflow-x: hidden;
         background:
-          radial-gradient(circle at 76% 20%, rgb(255 0 115 / 0.88) 0 16%, transparent 43%),
-          radial-gradient(circle at 68% 70%, rgb(82 0 255 / 0.9) 0 20%, transparent 50%),
-          radial-gradient(circle at 18% 66%, rgb(255 0 115 / 0.38) 0 20%, transparent 48%),
-          radial-gradient(circle at 42% 36%, rgb(255 189 55 / 0.35) 0 16%, transparent 42%),
-          linear-gradient(110deg, var(--background) 0 42%, #241127 63%, #2a0928 100%);
+          radial-gradient(circle at 12% 12%, rgb(255 0 115 / 0.12) 0 14rem, transparent 32rem),
+          radial-gradient(circle at 86% 92%, rgb(82 0 255 / 0.18) 0 18rem, transparent 38rem),
+          linear-gradient(135deg, #18120b 0%, #120d16 48%, #0c0911 100%);
         color: var(--foreground);
         font-family:
           Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
@@ -113,46 +104,26 @@
         -webkit-font-smoothing: antialiased;
       }
 
-      body::before {
-        position: fixed;
-        inset: 0;
-        z-index: 0;
-        pointer-events: none;
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140' viewBox='0 0 140 140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.75' numOctaves='4' seed='11' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0.50 0 0 0 0 0.50 0 0 0 0 0.50 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
-        background-size: 140px 140px;
-        filter: contrast(240%);
-        mix-blend-mode: hard-light;
-        opacity: 0.38;
-      }
-
-      body::after {
-        position: fixed;
-        inset: 0;
-        z-index: 0;
-        pointer-events: none;
-        background-image:
-          radial-gradient(circle, rgb(255 244 217 / 0.18) 0 0.45px, transparent 0.55px),
-          radial-gradient(circle, rgb(0 0 0 / 0.22) 0 0.45px, transparent 0.55px);
-        background-position: 0 0, 1.5px 1.5px;
-        background-size: 3px 3px;
-        mix-blend-mode: overlay;
-        opacity: 0.28;
-      }
-
       main {
         position: relative;
         z-index: 1;
         min-height: 100vh;
         min-height: 100svh;
+        width: min(100%, 78rem);
+        margin: 0 auto;
+        padding: clamp(2rem, 6vw, 5rem) clamp(1rem, 4vw, 2rem);
         display: grid;
-        grid-template-rows: auto 1fr auto;
-        border-block: 1px solid var(--rule);
+        align-content: start;
+      }
+
+      .hero {
+        display: grid;
+        gap: clamp(1rem, 2.8vw, 1.8rem);
       }
 
       h1 {
         margin: 0;
-        padding: clamp(1rem, 2.8vw, 1.8rem);
-        border-bottom: 1px solid var(--rule);
+        padding: 0;
         color: var(--foreground);
         font-family: "Press Start 2P", ui-monospace, monospace;
         font-size: clamp(0.95rem, 2.4vw, 1.55rem);
@@ -164,10 +135,59 @@
         text-transform: uppercase;
       }
 
+      .intro-card {
+        position: relative;
+        isolation: isolate;
+        min-height: clamp(24rem, 58svh, 38rem);
+        overflow: hidden;
+        display: grid;
+        align-items: center;
+        border: 1px solid var(--rule);
+        border-radius: clamp(1.5rem, 4vw, 3rem);
+        background:
+          radial-gradient(circle at 76% 20%, rgb(255 0 115 / 0.88) 0 16%, transparent 43%),
+          radial-gradient(circle at 68% 70%, rgb(82 0 255 / 0.9) 0 20%, transparent 50%),
+          radial-gradient(circle at 18% 66%, rgb(255 0 115 / 0.38) 0 20%, transparent 48%),
+          radial-gradient(circle at 42% 36%, rgb(255 189 55 / 0.35) 0 16%, transparent 42%),
+          linear-gradient(110deg, var(--background) 0 42%, #241127 63%, #2a0928 100%);
+        box-shadow:
+          0 2rem 5rem rgb(0 0 0 / 0.34),
+          inset 0 1px 0 rgb(255 189 55 / 0.22);
+      }
+
+      .intro-card::before,
+      .intro-card::after {
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        border-radius: inherit;
+        pointer-events: none;
+        content: "";
+      }
+
+      .intro-card::before {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140' viewBox='0 0 140 140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.75' numOctaves='4' seed='11' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0.50 0 0 0 0 0.50 0 0 0 0 0.50 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+        background-size: 140px 140px;
+        filter: contrast(260%);
+        mix-blend-mode: hard-light;
+        opacity: 0.42;
+      }
+
+      .intro-card::after {
+        background-image:
+          radial-gradient(circle, rgb(255 244 217 / 0.18) 0 0.45px, transparent 0.55px),
+          radial-gradient(circle, rgb(0 0 0 / 0.24) 0 0.45px, transparent 0.55px);
+        background-position: 0 0, 1.5px 1.5px;
+        background-size: 3px 3px;
+        mix-blend-mode: overlay;
+        opacity: 0.34;
+      }
+
       .intro {
-        align-self: center;
+        position: relative;
+        z-index: 1;
         width: min(54rem, 100%);
-        margin: 0 auto;
+        margin: 0;
         padding: clamp(2rem, 4.5vw, 3.75rem) clamp(1.25rem, 7vw, 5rem);
         color: var(--foreground);
         font-family: "Instrument Serif", Georgia, serif;
@@ -254,108 +274,23 @@
         box-shadow: 0.12em 0.12em 0 var(--pink);
       }
 
-      .contact-strip {
-        display: grid;
-        grid-template-columns: minmax(7rem, 0.8fr) minmax(0, 1.7fr) auto;
-        align-items: center;
-        gap: 1rem;
-        padding: clamp(1rem, 2.8vw, 1.6rem) clamp(1.25rem, 3vw, 2rem);
-        border-top: 1px solid var(--rule);
-        color: var(--foreground);
-      }
-
-      .contact-label {
-        font-family: "Press Start 2P", ui-monospace, monospace;
-        font-size: clamp(0.7rem, 1.5vw, 1rem);
-        text-align: left;
-        text-transform: lowercase;
-      }
-
-      .email-link {
-        justify-self: start;
-        color: var(--foreground);
-        font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
-        font-size: clamp(1.05rem, 2.4vw, 1.75rem);
-        font-weight: 800;
-        text-decoration: none;
-      }
-
-      .email-link::after {
-        margin-left: 0.35em;
-        content: "->";
-      }
-
-      .email-link:hover,
-      .email-link:focus {
-        color: var(--deep);
-      }
-
-      .email-link:focus-visible {
-        border-radius: 0.15rem;
-        outline: 3px solid var(--focus);
-        outline-offset: 0.2rem;
-      }
-
-      .socials {
-        display: flex;
-        justify-content: flex-end;
-        align-items: center;
-        gap: 1rem;
-      }
-
-      .social-link {
-        width: auto;
-        height: auto;
-        display: inline-grid;
-        place-items: center;
-        border: 0;
-        background: transparent;
-        color: var(--deep);
-        text-decoration: none;
-        font-size: 1.45rem;
-        text-shadow: 0.08em 0.08em 0 var(--purple);
-        transition:
-          color 160ms ease,
-          opacity 160ms ease,
-          transform 160ms ease;
-      }
-
-      .social-link:nth-child(2) {
-        color: var(--purple-glow);
-        text-shadow: 0.08em 0.08em 0 var(--pink);
-      }
-
-      .social-link:nth-child(3) {
-        color: var(--pink);
-        text-shadow: 0.08em 0.08em 0 var(--deep);
-      }
-
-      .social-link:hover {
-        opacity: 0.78;
-        transform: translateY(-2px);
-      }
-
-      .social-link:focus-visible {
-        outline: 3px solid var(--focus);
-        outline-offset: 4px;
-      }
-
       @media (max-width: 43.99rem) {
-        body {
-          overflow-y: auto;
+        main {
+          padding-top: clamp(1.5rem, 9vw, 2.75rem);
+        }
+
+        h1 {
+          font-size: clamp(0.82rem, 4vw, 1rem);
+        }
+
+        .intro-card {
+          min-height: auto;
+          border-radius: 1.4rem;
         }
 
         .intro {
-          padding-block: 3rem;
-        }
-
-        .contact-strip {
-          grid-template-columns: 1fr;
-          gap: 1rem;
-        }
-
-        .socials {
-          justify-content: flex-start;
+          padding: 2.25rem 1.2rem;
+          font-size: clamp(2.05rem, 10vw, 3rem);
         }
       }
 
@@ -363,64 +298,19 @@
   </head>
   <body>
     <main aria-label="Alex van der Weij">
-      <h1>Alex van der Weij</h1>
-      <p class="intro">
-        Hoi! 👋 mijn naam is Alex. Ik ben een
-        <a class="intro-emphasis intro-blog" href="https://alexx.fyi/">schrijvertje</a>,
-        <span class="intro-emphasis">filmliefhebber</span> en maker uit
-        Nederland, met een zwak voor
-        <span class="intro-emphasis">nostalgie</span>,
-        <span class="intro-emphasis">LEGO</span> en kleine digitale projecten.
-      </p>
-      <section class="contact-strip" aria-label="Contact en links">
-        <span class="contact-label">contact</span>
-        <a
-          class="email-link"
-          href="#"
-          data-email-user="hoi"
-          data-email-domain="alexvanderweij.nl"
-        >
-          mail mij
-        </a>
-        <nav class="socials" aria-label="Sociale links">
-          <a
-            class="social-link"
-            href="https://alexx.fyi/"
-            aria-label="Blog van Alex van der Weij"
-            title="Blog"
-          >
-            <i class="fa-solid fa-marker" aria-hidden="true"></i>
-          </a>
-          <a
-            class="social-link"
-            href="https://www.threads.net/@alexx.fyi"
-            aria-label="Alex van der Weij op Threads"
-            title="Threads"
-          >
-            <i class="fa-brands fa-threads" aria-hidden="true"></i>
-          </a>
-          <a
-            class="social-link"
-            href="#"
-            data-email-user="hoi"
-            data-email-domain="alexvanderweij.nl"
-            aria-label="Mail Alex van der Weij"
-            title="Email"
-          >
-            <i class="fa-solid fa-envelope" aria-hidden="true"></i>
-          </a>
-        </nav>
+      <section class="hero" aria-labelledby="site-title">
+        <h1 id="site-title">Alex van der Weij</h1>
+        <div class="intro-card">
+          <p class="intro">
+            Hoi! 👋 mijn naam is Alex. Ik ben een
+            <a class="intro-emphasis intro-blog" href="https://alexx.fyi/">schrijvertje</a>,
+            <span class="intro-emphasis">filmliefhebber</span> en maker uit
+            Nederland, met een zwak voor
+            <span class="intro-emphasis">nostalgie</span>,
+            <span class="intro-emphasis">LEGO</span> en kleine digitale projecten.
+          </p>
+        </div>
       </section>
     </main>
-    <script>
-      document.querySelectorAll("[data-email-user][data-email-domain]").forEach((link) => {
-        const address = `${link.dataset.emailUser}@${link.dataset.emailDomain}`;
-        link.href = `mailto:${address}`;
-
-        if (link.classList.contains("email-link")) {
-          link.textContent = address;
-        }
-      });
-    </script>
   </body>
 </html>
