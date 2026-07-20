@@ -110,6 +110,7 @@
         width: min(100%, 78rem);
         margin: 0 auto;
         padding: clamp(2rem, 6vw, 5rem) clamp(1rem, 4vw, 2rem);
+        padding-bottom: max(12rem, 55svh);
         display: grid;
         align-content: start;
         gap: 0;
@@ -186,6 +187,84 @@
         background-size: 3px 3px;
         mix-blend-mode: overlay;
         opacity: 0.34;
+      }
+
+      .intro-end-sentinel {
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        width: 1px;
+        height: 1px;
+        pointer-events: none;
+      }
+
+      .compact-intro-shell {
+        position: fixed;
+        inset: 0 0 auto;
+        z-index: 20;
+        display: flex;
+        justify-content: center;
+        padding: clamp(1rem, 3vw, 2rem) 1rem clamp(2rem, 5vw, 4rem);
+        background: linear-gradient(
+          to bottom,
+          var(--background) 0 calc(100% - 2rem),
+          transparent 100%
+        );
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(-1rem);
+        transition:
+          opacity 220ms ease,
+          transform 280ms ease,
+          visibility 0s linear 280ms;
+        visibility: hidden;
+      }
+
+      .compact-intro-shell.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+        transition-delay: 0s;
+        visibility: visible;
+      }
+
+      .compact-intro {
+        position: relative;
+        isolation: isolate;
+        width: max-content;
+        max-width: calc(100vw - 2rem);
+        overflow: hidden;
+        padding: 0.7rem 1.15rem 0.8rem;
+        border: 1px solid var(--rule);
+        border-radius: 1.1rem;
+        background:
+          radial-gradient(circle at 80% 10%, rgb(255 0 115 / 0.88) 0 18%, transparent 48%),
+          radial-gradient(circle at 68% 90%, rgb(82 0 255 / 0.9) 0 24%, transparent 55%),
+          linear-gradient(110deg, var(--background) 0 35%, #241127 65%, #2a0928 100%);
+        box-shadow:
+          0 1rem 2.5rem rgb(0 0 0 / 0.4),
+          inset 0 1px 0 rgb(255 189 55 / 0.2);
+        color: var(--foreground);
+        font-family: "Instrument Serif", Georgia, serif;
+        font-size: 2rem;
+        line-height: 1;
+        white-space: nowrap;
+      }
+
+      .compact-intro::before {
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140' viewBox='0 0 140 140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.75' numOctaves='4' seed='11' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0.50 0 0 0 0 0.50 0 0 0 0 0.50 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+        background-size: 140px 140px;
+        content: "";
+        filter: contrast(240%);
+        mix-blend-mode: hard-light;
+        opacity: 0.36;
+      }
+
+      .compact-intro strong {
+        color: #fff4d9;
+        font-weight: 700;
       }
 
       .intro {
@@ -483,6 +562,17 @@
           font-size: clamp(2.05rem, 10vw, 3rem);
         }
 
+        .compact-intro-shell {
+          padding-top: 1rem;
+          padding-bottom: 2.5rem;
+        }
+
+        .compact-intro {
+          padding: 0.62rem 0.85rem 0.68rem;
+          border-radius: 0.9rem;
+          font-size: 1.1rem;
+        }
+
         .section-connector {
           height: clamp(8rem, 34vw, 12rem);
         }
@@ -500,15 +590,20 @@
         }
 
         .section-connector,
+        .compact-intro-shell,
         .section-title,
         .social-list li {
           animation: none;
+          transition: none;
         }
       }
 
     </style>
   </head>
   <body>
+    <div class="compact-intro-shell" aria-hidden="true">
+      <div class="compact-intro">Hoi! 👋 mijn naam is <strong>Alex</strong></div>
+    </div>
     <main aria-label="Alex van der Weij">
       <section class="hero" aria-labelledby="site-title">
         <h1 id="site-title">Alex van der Weij</h1>
@@ -521,6 +616,7 @@
             <span class="intro-emphasis keyword-nostalgia">nostalgie</span>,
             <span class="intro-emphasis keyword-lego">LEGO</span> en kleine digitale projecten.
           </p>
+          <span class="intro-end-sentinel" aria-hidden="true"></span>
         </div>
       </section>
       <div class="section-connector" aria-hidden="true"></div>
@@ -597,6 +693,21 @@
       </footer>
     </main>
     <script>
+      const introEnd = document.querySelector(".intro-end-sentinel");
+      const compactIntro = document.querySelector(".compact-intro-shell");
+
+      if (introEnd && compactIntro && "IntersectionObserver" in window) {
+        const compactIntroObserver = new IntersectionObserver(
+          ([entry]) => {
+            const hasPassedIntro = !entry.isIntersecting && entry.boundingClientRect.top < 104;
+            compactIntro.classList.toggle("is-visible", hasPassedIntro);
+          },
+          { rootMargin: "-104px 0px 0px", threshold: 0 }
+        );
+
+        compactIntroObserver.observe(introEnd);
+      }
+
       document.querySelectorAll("[data-email-user][data-email-domain]").forEach((link) => {
         const address = `${link.dataset.emailUser}@${link.dataset.emailDomain}`;
         link.href = `mailto:${address}`;
