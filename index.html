@@ -717,7 +717,7 @@
           if (!introMorphMetrics) return;
 
           const lineProgress = Math.min(1, Math.max(0, morphPosition));
-          const rawProgress = Math.min(1, Math.max(0, (morphPosition - 0.34) / 0.66));
+          const rawProgress = Math.min(1, Math.max(0, (morphPosition - 0.06) / 0.42));
           const progress = reducedMotion.matches
             ? Number(rawProgress >= 0.5)
             : rawProgress * rawProgress * (3 - 2 * rawProgress);
