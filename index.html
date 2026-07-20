@@ -106,8 +106,8 @@
       body.intro-is-pinned::after {
         position: fixed;
         inset: 0 0 auto;
-        z-index: 11;
-        height: clamp(1rem, 3vw, 2rem);
+        z-index: 9;
+        height: calc(clamp(1rem, 3vw, 2rem) + 1rem);
         background: var(--background);
         content: "";
         pointer-events: none;
@@ -115,7 +115,6 @@
 
       main {
         position: relative;
-        z-index: 1;
         min-height: 100vh;
         min-height: 100svh;
         width: min(100%, 78rem);
@@ -266,9 +265,9 @@
       .intro {
         position: relative;
         z-index: 1;
-        width: min(54rem, 100%);
-        margin: 0;
-        padding: clamp(2rem, 4.5vw, 3.75rem) clamp(1.25rem, 7vw, 5rem);
+        width: min(68rem, 100%);
+        margin: 0 auto;
+        padding: clamp(2rem, 4.5vw, 3.75rem) clamp(1.25rem, 5vw, 4.5rem);
         color: var(--foreground);
         font-family: "Instrument Serif", Georgia, serif;
         font-size: clamp(2.35rem, 4.8vw, 4.35rem);
@@ -717,7 +716,7 @@
           if (!introMorphMetrics) return;
 
           const lineProgress = Math.min(1, Math.max(0, morphPosition));
-          const rawProgress = Math.min(1, Math.max(0, (morphPosition - 0.06) / 0.42));
+          const rawProgress = Math.min(1, Math.max(0, morphPosition / 0.28));
           const progress = reducedMotion.matches
             ? Number(rawProgress >= 0.5)
             : rawProgress * rawProgress * (3 - 2 * rawProgress);
@@ -821,7 +820,7 @@
 
           introMorphMetrics = {
             pinStart: anchorTop - stickyTop,
-            start: anchorTop + height - 260,
+            start: 0,
             distance: isMobile ? 640 : 720,
             height,
             targetHeight,
