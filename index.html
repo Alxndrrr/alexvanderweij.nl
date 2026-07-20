@@ -3,6 +3,8 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#18120b">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>Alex van der Weij</title>
     <meta
       name="description"
@@ -85,16 +87,19 @@
 
       html {
         min-height: 100%;
-        background: var(--background);
+        min-height: 100dvh;
+        overscroll-behavior-y: none;
+        background-color: #18120b;
         scroll-behavior: smooth;
       }
 
       body {
         min-height: 100vh;
         min-height: 100svh;
+        min-height: 100dvh;
         margin: 0;
         overflow-x: hidden;
-        background: var(--background);
+        background-color: #18120b;
         color: var(--foreground);
         font-family:
           Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
@@ -429,7 +434,7 @@
         height: calc(100% + 2rem);
         object-fit: cover;
         object-position: center center;
-        filter: blur(var(--nostalgia-blur, 0px));
+        filter: var(--nostalgia-filter, none);
         opacity: var(--nostalgia-opacity, 1);
         transform: scale(var(--nostalgia-scale, 1.24));
         transform-origin: center center;
@@ -903,7 +908,7 @@
         const renderNostalgia = () => {
           if (reducedMotion.matches) {
             nostalgiaMedia.style.setProperty("--nostalgia-scale", "1.03");
-            nostalgiaMedia.style.setProperty("--nostalgia-blur", "0px");
+            nostalgiaMedia.style.setProperty("--nostalgia-filter", "none");
             nostalgiaMedia.style.setProperty("--nostalgia-opacity", "1");
             nostalgiaContent.style.setProperty("--nostalgia-copy-y", "0%");
             nostalgiaContent.style.setProperty("--nostalgia-copy-opacity", "1");
@@ -915,7 +920,9 @@
             1,
             nostalgiaSection.offsetHeight - window.innerHeight
           );
-          const progress = Math.min(1, Math.max(0, -sectionRect.top / scrollDistance));
+          const isMobile = window.innerWidth < 704;
+          const animationDistance = scrollDistance * (isMobile ? 0.58 : 1);
+          const progress = Math.min(1, Math.max(0, -sectionRect.top / animationDistance));
           if (Math.abs(progress - lastNostalgiaProgress) < 0.001) return;
           lastNostalgiaProgress = progress;
 
@@ -930,9 +937,10 @@
             "--nostalgia-scale",
             mix(1.24, 1.01, progress).toFixed(3)
           );
+          const blur = mix(0, isMobile ? 1.75 : 6, progress);
           nostalgiaMedia.style.setProperty(
-            "--nostalgia-blur",
-            `${mix(0, 6, progress).toFixed(2)}px`
+            "--nostalgia-filter",
+            blur < 0.05 ? "none" : `blur(${blur.toFixed(2)}px)`
           );
           nostalgiaMedia.style.setProperty(
             "--nostalgia-opacity",
@@ -1116,6 +1124,7 @@
         };
 
         const measureIntroMorph = () => {
+          lastNostalgiaProgress = -1;
           introCard.classList.remove("is-pinned");
           document.body.classList.remove("intro-is-pinned");
           document.body.classList.remove("intro-is-pushed");
