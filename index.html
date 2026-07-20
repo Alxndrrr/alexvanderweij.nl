@@ -76,6 +76,7 @@
         --purple-glow: #9b67ff;
         --pink-glow: #ff4fa0;
         --rule: rgb(255 189 55 / 0.28);
+        --page-gutter: clamp(1rem, 4vw, 2rem);
       }
 
       * {
@@ -102,6 +103,16 @@
         -webkit-font-smoothing: antialiased;
       }
 
+      body.intro-is-pinned::after {
+        position: fixed;
+        inset: 0 0 auto;
+        z-index: 11;
+        height: clamp(1rem, 3vw, 2rem);
+        background: var(--background);
+        content: "";
+        pointer-events: none;
+      }
+
       main {
         position: relative;
         z-index: 1;
@@ -109,7 +120,7 @@
         min-height: 100svh;
         width: min(100%, 78rem);
         margin: 0 auto;
-        padding: clamp(2rem, 6vw, 5rem) clamp(1rem, 4vw, 2rem);
+        padding: clamp(2rem, 6vw, 5rem) var(--page-gutter);
         padding-bottom: max(36rem, 80svh);
         display: grid;
         align-content: start;
@@ -147,7 +158,9 @@
         display: grid;
         align-items: center;
         border: 1px solid var(--rule);
-        border-radius: clamp(1.5rem, 4vw, 3rem);
+        border-radius:
+          var(--intro-radius-x, clamp(1.5rem, 4vw, 3rem)) /
+          var(--intro-radius-y, clamp(1.5rem, 4vw, 3rem));
         background:
           radial-gradient(circle at 76% 20%, rgb(255 0 115 / 0.88) 0 16%, transparent 43%),
           radial-gradient(circle at 68% 70%, rgb(82 0 255 / 0.9) 0 20%, transparent 50%),
@@ -160,6 +173,19 @@
         transform: scaleY(var(--intro-card-scale, 1));
         transform-origin: center top;
         will-change: transform;
+      }
+
+      .intro-card.is-pinned {
+        position: fixed;
+        left: 50%;
+        width: min(calc(100% - var(--page-gutter) - var(--page-gutter)), 74rem);
+        transform: translateX(-50%) scaleY(var(--intro-card-scale, 1));
+      }
+
+      .intro-card-placeholder {
+        width: 100%;
+        height: 0;
+        pointer-events: none;
       }
 
       .intro-morph-anchor {
@@ -498,7 +524,8 @@
 
         .intro-card {
           min-height: auto;
-          border-radius: 1.4rem;
+          --intro-radius-x: 1.4rem;
+          --intro-radius-y: 1.4rem;
         }
 
         .intro {
@@ -548,6 +575,7 @@
               <span class="intro-emphasis keyword-lego">LEGO</span> en kleine digitale projecten.</span>
           </p>
         </div>
+        <div class="intro-card-placeholder" aria-hidden="true"></div>
       </section>
       <div class="section-connector" aria-hidden="true"></div>
       <section class="socials-section" aria-labelledby="socials-title">
@@ -624,14 +652,16 @@
     </main>
     <script>
       const introCard = document.querySelector(".intro-card");
+      const introCardPlaceholder = document.querySelector(".intro-card-placeholder");
       const introMorphAnchor = document.querySelector(".intro-morph-anchor");
       const introLead = document.querySelector(".intro-lead");
       const introDetails = document.querySelector(".intro-details");
 
-      if (introCard && introMorphAnchor && introLead && introDetails) {
+      if (introCard && introCardPlaceholder && introMorphAnchor && introLead && introDetails) {
         const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
         let introMorphFrame = 0;
         let introMorphMetrics;
+        let introIsPinned = false;
 
         const mix = (from, to, progress) => from + (to - from) * progress;
 
@@ -646,8 +676,24 @@
             ? Number(rawProgress >= 0.5)
             : rawProgress * rawProgress * (3 - 2 * rawProgress);
           const scale = mix(1, introMorphMetrics.targetScale, progress);
+          const shouldPin = window.scrollY >= introMorphMetrics.pinStart;
+
+          if (shouldPin !== introIsPinned) {
+            introCardPlaceholder.style.height = shouldPin ? `${introMorphMetrics.height}px` : "0px";
+            introCard.classList.toggle("is-pinned", shouldPin);
+            document.body.classList.toggle("intro-is-pinned", shouldPin);
+            introIsPinned = shouldPin;
+          }
 
           introCard.style.setProperty("--intro-card-scale", scale.toFixed(4));
+          introCard.style.setProperty(
+            "--intro-radius-x",
+            `${mix(introMorphMetrics.radius, introMorphMetrics.targetRadius, progress)}px`
+          );
+          introCard.style.setProperty(
+            "--intro-radius-y",
+            `${mix(introMorphMetrics.radius, introMorphMetrics.targetRadius / scale, progress)}px`
+          );
           introLead.style.setProperty("--intro-lead-scale", (1 / scale).toFixed(4));
           introDetails.style.opacity = ((1 - progress) * (1 - progress)).toFixed(3);
           introDetails.style.visibility = progress > 0.98 ? "hidden" : "visible";
@@ -661,18 +707,30 @@
         };
 
         const measureIntroMorph = () => {
+          introCard.classList.remove("is-pinned");
+          document.body.classList.remove("intro-is-pinned");
+          introCardPlaceholder.style.height = "0px";
+          introIsPinned = false;
           introCard.style.removeProperty("--intro-card-scale");
+          introCard.style.removeProperty("--intro-radius-x");
+          introCard.style.removeProperty("--intro-radius-y");
           introLead.style.removeProperty("--intro-lead-scale");
 
           const isMobile = window.innerWidth < 704;
           const height = introCard.offsetHeight;
-          const anchorTop = introMorphAnchor.getBoundingClientRect().top + window.scrollY;
+          const anchorTop = introMorphAnchor.offsetTop;
           const targetHeight = isMobile ? 152 : 150;
+          const stickyTop = Math.min(32, Math.max(16, window.innerWidth * 0.03));
+          const radius = Number.parseFloat(window.getComputedStyle(introCard).borderTopLeftRadius);
 
           introMorphMetrics = {
-            start: anchorTop + height - 220,
-            distance: isMobile ? 250 : 320,
+            pinStart: anchorTop - stickyTop,
+            start: anchorTop + height - 260,
+            distance: isMobile ? 400 : 480,
+            height,
             targetScale: targetHeight / height,
+            radius,
+            targetRadius: isMobile ? 22 : 26,
           };
 
           updateIntroMorph();
