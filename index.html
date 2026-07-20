@@ -194,7 +194,7 @@
         left: 50%;
         z-index: 9;
         width: 1px;
-        height: clamp(7rem, 22vw, 15rem);
+        height: var(--intro-pressure-height, clamp(12rem, 28vw, 22rem));
         background-image: linear-gradient(
           to bottom,
           rgb(255 189 55 / 0.76) 0 3px,
@@ -348,7 +348,7 @@
       .section-connector {
         position: relative;
         width: 1px;
-        height: clamp(8rem, 24vw, 18rem);
+        height: clamp(14rem, 32vw, 28rem);
         margin: clamp(1.6rem, 4vw, 3rem) auto 0;
         background-image: linear-gradient(
           to bottom,
@@ -577,7 +577,7 @@
         }
 
         .section-connector {
-          height: clamp(8rem, 34vw, 12rem);
+          height: clamp(14rem, 65vw, 18rem);
         }
 
         .social-link {
@@ -716,21 +716,26 @@
         const renderIntroMorph = (morphPosition) => {
           if (!introMorphMetrics) return;
 
-          const rawProgress = Math.min(1, Math.max(0, morphPosition));
+          const lineProgress = Math.min(1, Math.max(0, morphPosition));
+          const rawProgress = Math.min(1, Math.max(0, (morphPosition - 0.5) / 0.5));
           const progress = reducedMotion.matches
             ? Number(rawProgress >= 0.5)
             : rawProgress * rawProgress * (3 - 2 * rawProgress);
+          const easedLineProgress = reducedMotion.matches
+            ? Number(lineProgress >= 0.5)
+            : lineProgress * lineProgress * (3 - 2 * lineProgress);
           const visibleHeight = mix(introMorphMetrics.height, introMorphMetrics.targetHeight, progress);
           const clipBottom = introMorphMetrics.height - visibleHeight;
+          const pressureHeight = introMorphMetrics.pressureHeight * (1 - easedLineProgress);
           const shouldPin = window.scrollY >= introMorphMetrics.pinStart;
           let pressureOpacity = 0;
 
-          if (!reducedMotion.matches && morphPosition > 0 && morphPosition < 1.18) {
-            pressureOpacity = morphPosition < 0.12
-              ? morphPosition / 0.12
-              : morphPosition <= 1
+          if (!reducedMotion.matches && morphPosition > 0 && morphPosition < 1) {
+            pressureOpacity = morphPosition < 0.08
+              ? morphPosition / 0.08
+              : morphPosition < 0.9
                 ? 1
-                : 1 - (morphPosition - 1) / 0.18;
+                : 1 - (morphPosition - 0.9) / 0.1;
           }
 
           if (shouldPin !== introIsPinned) {
@@ -748,6 +753,10 @@
           introPressureLine.style.setProperty(
             "--intro-pressure-top",
             `${introMorphMetrics.stickyTop + visibleHeight - 1}px`
+          );
+          introPressureLine.style.setProperty(
+            "--intro-pressure-height",
+            `${Math.max(0, pressureHeight)}px`
           );
           introPressureLine.style.setProperty(
             "--intro-pressure-opacity",
@@ -806,16 +815,20 @@
           const targetHeight = isMobile ? 152 : 150;
           const stickyTop = Math.min(32, Math.max(16, window.innerWidth * 0.03));
           const radius = Number.parseFloat(window.getComputedStyle(introCard).borderTopLeftRadius);
+          const pressureHeight = isMobile
+            ? Math.min(240, Math.max(180, window.innerHeight * 0.25))
+            : Math.min(360, Math.max(260, window.innerHeight * 0.34));
 
           introMorphMetrics = {
             pinStart: anchorTop - stickyTop,
             start: anchorTop + height - 260,
-            distance: isMobile ? 400 : 480,
+            distance: isMobile ? 640 : 720,
             height,
             targetHeight,
+            pressureHeight,
             stickyTop,
             radius,
-            targetRadius: isMobile ? 22 : 26,
+            targetRadius: radius,
           };
 
           renderedMorphPosition =
