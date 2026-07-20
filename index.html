@@ -263,7 +263,7 @@
         position: relative;
         width: 1px;
         height: clamp(8rem, 24vw, 18rem);
-        margin: 0 auto;
+        margin: clamp(1.6rem, 4vw, 3rem) auto 0;
         background-image: linear-gradient(
           to bottom,
           rgb(255 189 55 / 0.76) 0 3px,
@@ -399,6 +399,34 @@
         border-radius: 0.35rem;
         outline: 3px solid var(--focus);
         outline-offset: 0.35rem;
+      }
+
+      .site-footer {
+        padding: clamp(1.5rem, 5vw, 3rem) 0 0;
+        font-family: "Press Start 2P", ui-monospace, monospace;
+        font-size: clamp(0.58rem, 1.4vw, 0.78rem);
+        line-height: 1.7;
+        text-align: center;
+      }
+
+      .site-footer p {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.55rem 0.9rem;
+        margin: 0;
+      }
+
+      .footer-copyright {
+        color: rgb(255 0 115 / 0.82);
+      }
+
+      .footer-note {
+        color: rgb(255 189 55 / 0.68);
+      }
+
+      .footer-separator {
+        color: rgb(82 0 255 / 0.9);
       }
 
       @keyframes connector-drift {
@@ -546,6 +574,13 @@
           </li>
         </ul>
       </section>
+      <footer class="site-footer">
+        <p>
+          <span class="footer-copyright">&copy; 2026 Alex van der Weij</span>
+          <span class="footer-separator" aria-hidden="true">//</span>
+          <span class="footer-note">mede mogelijk gemaakt door heel veel middagdutjes</span>
+        </p>
+      </footer>
     </main>
     <script>
       document.querySelectorAll("[data-email-user][data-email-domain]").forEach((link) => {
