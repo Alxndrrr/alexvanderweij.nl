@@ -274,6 +274,8 @@
         font-weight: 400;
         line-height: 1.08;
         text-align: left;
+        transform: translateY(var(--intro-copy-shift, 0px));
+        will-change: transform;
       }
 
       .intro-name {
@@ -357,6 +359,12 @@
         background-size: 1px 12px;
         animation: connector-drift 1.8s linear infinite;
         transition: opacity 140ms ease;
+      }
+
+      .post-intro {
+        display: grid;
+        transform: translateY(calc(0px - var(--intro-flow-lift, 0px)));
+        will-change: transform;
       }
 
       body.intro-line-active .section-connector {
@@ -620,8 +628,9 @@
         </div>
         <div class="intro-card-placeholder" aria-hidden="true"></div>
       </section>
-      <div class="section-connector" aria-hidden="true"></div>
-      <section class="socials-section" aria-labelledby="socials-title">
+      <div class="post-intro">
+        <div class="section-connector" aria-hidden="true"></div>
+        <section class="socials-section" aria-labelledby="socials-title">
         <h2 class="section-title" id="socials-title">Socials</h2>
         <ul class="social-list">
           <li>
@@ -684,23 +693,38 @@
             </a>
           </li>
         </ul>
-      </section>
-      <footer class="site-footer">
-        <p>
-          <span class="footer-copyright">&copy; 2026 Alex van der Weij</span>
-          <span class="footer-separator" aria-hidden="true">//</span>
-          <span class="footer-note">mede mogelijk gemaakt door heel veel middagdutjes</span>
-        </p>
-      </footer>
+        </section>
+        <footer class="site-footer">
+          <p>
+            <span class="footer-copyright">&copy; 2026 Alex van der Weij</span>
+            <span class="footer-separator" aria-hidden="true">//</span>
+            <span class="footer-note">mede mogelijk gemaakt door heel veel middagdutjes</span>
+          </p>
+        </footer>
+      </div>
     </main>
     <script>
       const introCard = document.querySelector(".intro-card");
       const introCardPlaceholder = document.querySelector(".intro-card-placeholder");
       const introMorphAnchor = document.querySelector(".intro-morph-anchor");
+      const introCopy = document.querySelector(".intro");
+      const introLead = document.querySelector(".intro-lead");
       const introDetails = document.querySelector(".intro-details");
       const introPressureLine = document.querySelector(".intro-pressure-line");
+      const postIntro = document.querySelector(".post-intro");
+      const sectionConnector = document.querySelector(".section-connector");
 
-      if (introCard && introCardPlaceholder && introMorphAnchor && introDetails && introPressureLine) {
+      if (
+        introCard &&
+        introCardPlaceholder &&
+        introMorphAnchor &&
+        introCopy &&
+        introLead &&
+        introDetails &&
+        introPressureLine &&
+        postIntro &&
+        sectionConnector
+      ) {
         const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
         let introMorphFrame = 0;
         let introMorphMetrics;
@@ -727,6 +751,7 @@
           const clipBottom = introMorphMetrics.height - visibleHeight;
           const pressureHeight = introMorphMetrics.pressureHeight * (1 - easedLineProgress);
           const shouldPin = window.scrollY >= introMorphMetrics.pinStart;
+          const connectorGap = introMorphMetrics.connectorGap * (1 - easedLineProgress);
           let pressureOpacity = 0;
 
           if (!reducedMotion.matches && morphPosition > 0 && morphPosition < 1) {
@@ -749,9 +774,18 @@
             "--intro-clip-radius",
             `${mix(introMorphMetrics.radius, introMorphMetrics.targetRadius, progress)}px`
           );
+          introCopy.style.setProperty(
+            "--intro-copy-shift",
+            `${mix(0, introMorphMetrics.targetCopyShift, progress)}px`
+          );
+          postIntro.style.setProperty("--intro-flow-lift", `${clipBottom}px`);
+
+          const cardTop = shouldPin
+            ? introMorphMetrics.stickyTop
+            : introCard.getBoundingClientRect().top;
           introPressureLine.style.setProperty(
             "--intro-pressure-top",
-            `${introMorphMetrics.stickyTop + visibleHeight - 1}px`
+            `${cardTop + visibleHeight + connectorGap - 1}px`
           );
           introPressureLine.style.setProperty(
             "--intro-pressure-height",
@@ -807,6 +841,8 @@
           introIsPinned = false;
           introCard.style.removeProperty("--intro-clip-bottom");
           introCard.style.removeProperty("--intro-clip-radius");
+          introCopy.style.removeProperty("--intro-copy-shift");
+          postIntro.style.removeProperty("--intro-flow-lift");
 
           const isMobile = window.innerWidth < 704;
           const height = introCard.offsetHeight;
@@ -814,6 +850,10 @@
           const targetHeight = isMobile ? 152 : 150;
           const stickyTop = Math.min(32, Math.max(16, window.innerWidth * 0.03));
           const radius = Number.parseFloat(window.getComputedStyle(introCard).borderTopLeftRadius);
+          const cardRect = introCard.getBoundingClientRect();
+          const leadRect = introLead.getBoundingClientRect();
+          const targetCopyShift = targetHeight / 2 - (leadRect.top - cardRect.top + leadRect.height / 2);
+          const connectorGap = Number.parseFloat(window.getComputedStyle(sectionConnector).marginTop);
           const pressureHeight = isMobile
             ? Math.min(240, Math.max(180, window.innerHeight * 0.25))
             : Math.min(360, Math.max(260, window.innerHeight * 0.34));
@@ -824,6 +864,8 @@
             distance: isMobile ? 640 : 720,
             height,
             targetHeight,
+            targetCopyShift,
+            connectorGap,
             pressureHeight,
             stickyTop,
             radius,
