@@ -119,10 +119,6 @@
         pointer-events: none;
       }
 
-      body.intro-is-pushed::after {
-        opacity: 0;
-      }
-
       main {
         position: relative;
         min-height: 100vh;
@@ -206,7 +202,7 @@
         width: min(calc(100% - var(--page-gutter) - var(--page-gutter)), 74rem);
         transform: translate3d(
           -50%,
-          calc(var(--intro-stage-y, 0px) + var(--intro-push-y, 0px)),
+          var(--intro-stage-y, 0px),
           0
         );
       }
@@ -866,9 +862,9 @@
           if (!reducedMotion.matches && morphPosition > 0 && morphPosition < 1) {
             pressureOpacity = morphPosition < 0.08
               ? morphPosition / 0.08
-              : morphPosition < 0.9
+              : morphPosition < 0.72
                 ? 1
-                : 1 - (morphPosition - 0.9) / 0.1;
+                : 1 - (morphPosition - 0.72) / 0.18;
           }
 
           if (shouldPin !== introIsPinned) {
@@ -902,22 +898,9 @@
 
           const connectorTargetTop =
             introMorphMetrics.connectorTargetTop - window.scrollY - clipBottom;
-          const connectorBottomBall =
-            connectorTargetTop - introMorphMetrics.connectorGap;
-          const pushDistance = shouldPin && progress > 0.999
-            ? Math.max(
-                0,
-                introMorphMetrics.stickyTop + visibleHeight - connectorBottomBall
-              )
-            : 0;
           const cardTop = shouldPin
-            ? introMorphMetrics.stickyTop + stageOffset - pushDistance
+            ? introMorphMetrics.stickyTop + stageOffset
             : introCard.getBoundingClientRect().top;
-          introCard.style.setProperty("--intro-push-y", `${-pushDistance}px`);
-          document.body.classList.toggle(
-            "intro-is-pushed",
-            shouldPin && cardTop + visibleHeight <= 0
-          );
           const pressureCalculationTop =
             cardTop + visibleHeight + connectorGap - 1;
           const pressureVisualGap =
@@ -982,14 +965,12 @@
         const measureIntroMorph = () => {
           introCard.classList.remove("is-pinned");
           document.body.classList.remove("intro-is-pinned");
-          document.body.classList.remove("intro-is-pushed");
           document.body.classList.remove("intro-line-active");
           document.body.classList.remove("intro-is-collapsed");
           introCardPlaceholder.style.height = "0px";
           introIsPinned = false;
           introCard.style.removeProperty("--intro-clip-bottom");
           introCard.style.removeProperty("--intro-clip-radius");
-          introCard.style.removeProperty("--intro-push-y");
           introCard.style.removeProperty("--intro-stage-y");
           introCard.style.removeProperty("--intro-visible-height");
           introCard.style.removeProperty("--intro-full-height");
