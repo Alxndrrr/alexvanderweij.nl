@@ -809,15 +809,20 @@
             }
 
             const titleRect = nextTitle.getBoundingClientRect();
-            const pushStart = window.innerHeight * 0.76;
-            const pushDistance = window.innerHeight * 0.34;
+            const isMobileViewport = window.innerWidth < 704;
+            const pushStart = window.innerHeight * (isMobileViewport ? 0.88 : 0.82);
+            const pushDistance = window.innerHeight * (isMobileViewport ? 0.62 : 0.54);
             const progress = clamp((pushStart - titleRect.top) / pushDistance, 0, 1);
-            const gapProgress = smooth(clamp(progress / 0.42, 0, 1));
-            const collapseProgress = smooth(clamp((progress - 0.42) / 0.58, 0, 1));
+            const gapProgress = smooth(clamp(progress / 0.56, 0, 1));
+            const collapseProgress = smooth(clamp((progress - 0.32) / 0.68, 0, 1));
             const fullHeight = Number.parseFloat(connector.dataset.fullHeight);
             const fullTitleGap = Number.parseFloat(nextSection.dataset.fullTitleGap);
-            const minTitleGap = clamp(fullTitleGap * 0.34, 14, 24);
-            const minConnectorHeight = clamp(fullHeight * 0.36, 52, 82);
+            const minTitleGap = isMobileViewport
+              ? clamp(fullTitleGap * 0.18, 8, 16)
+              : clamp(fullTitleGap * 0.28, 12, 22);
+            const minConnectorHeight = isMobileViewport
+              ? clamp(fullHeight * 0.24, 42, 58)
+              : clamp(fullHeight * 0.3, 48, 76);
             const currentTitleGap = fullTitleGap - (fullTitleGap - minTitleGap) * gapProgress;
             const currentHeight = fullHeight - (fullHeight - minConnectorHeight) * collapseProgress;
 

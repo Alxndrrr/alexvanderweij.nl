@@ -66,3 +66,9 @@ De connectorpush is daarna opnieuw opgebouwd in twee fases:
 - Eerst wordt de ruimte tussen de onderkant van de connector en de volgende sectiekop kleiner gemaakt.
 - Daarna wordt de daadwerkelijke hoogte van de connector korter, zodat de sectiekop en de onderkant van de lijn samen omhoog bewegen.
 - De eerdere aanpak met alleen een bottom-collapse in een vaste container is verwijderd, omdat die de ruimte naar de titel juist groter maakte.
+
+De timing van deze animatie is daarna vertraagd en mobiel sterker gemaakt:
+
+- De push-zone is langer gemaakt, zodat het inklappen vloeiender voelt.
+- Op mobiel start het effect eerder en loopt het over een groter deel van de viewport.
+- Op mobiel mogen de titelruimte en connectorhoogte verder teruglopen, zodat het effect zichtbaar genoeg is.
