@@ -40,3 +40,5 @@ Vervolgens verfijnd:
 - De e-mailkaart heeft extra grain in de achtergrond gekregen.
 
 Daarna zijn de twee gestippelde connectorlijnen korter gemaakt, inclusief de mobiele hoogte.
+
+De grain van de e-mailkaart is op mobiel rustiger gemaakt met grotere grain-tegels en een lagere overlay-opacity, zodat hij visueel dichter bij desktop ligt.
