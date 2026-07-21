@@ -54,3 +54,9 @@ Daarna zijn twee scroll-effecten teruggebracht:
 - De twee gestippelde connectorlijnen schuiven tijdens scrollen visueel in elkaar en worden langer wanneer er terug omhoog wordt gescrold.
 - De bolletjes blijven los van elkaar doordat de maximale krimp per lijn in JavaScript wordt begrensd.
 - De scroll-updates lopen via `requestAnimationFrame` en respecteren `prefers-reduced-motion`.
+
+Daarna is de connectoranimatie aangepast:
+
+- De gestippelde lijn heeft nu een eigen inset ten opzichte van de bolletjes, zodat de lijn niet over de bolletjes heen loopt.
+- Alleen de onderkant van de connector schuift omhoog; de bovenkant blijft staan.
+- De krimp wordt aangestuurd door de positie van de eerstvolgende sectiekop, zodat het voelt alsof `Socials` en `Contact` de lijn omhoogduwen.
