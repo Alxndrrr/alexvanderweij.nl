@@ -38,3 +38,5 @@ Vervolgens verfijnd:
 - De e-mailkaart is licht schuin gezet.
 - Het envelop-icoon staat niet meer in een eigen boxed vlak.
 - De e-mailkaart heeft extra grain in de achtergrond gekregen.
+
+Daarna zijn de twee gestippelde connectorlijnen korter gemaakt, inclusief de mobiele hoogte.
