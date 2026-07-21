@@ -140,7 +140,6 @@
         text-align: center;
         text-shadow: 0.08em 0.08em 0 rgb(255 0 115 / 0.58);
         text-transform: uppercase;
-        transition: opacity 140ms ease;
       }
 
       h1.is-hidden {
@@ -622,7 +621,7 @@
         }
 
         .section-connector {
-          height: clamp(8rem, 42vw, 12rem);
+          height: var(--connector-current-height, clamp(8rem, 42vw, 12rem));
         }
 
         .social-link {
@@ -789,7 +788,8 @@
         if (siteTitle && introCard) {
           const titleRect = siteTitle.getBoundingClientRect();
           const introRect = introCard.getBoundingClientRect();
-          siteTitle.classList.toggle("is-hidden", introRect.bottom <= titleRect.bottom + 2);
+          const titleHideBuffer = Math.max(10, titleRect.height * 0.28);
+          siteTitle.classList.toggle("is-hidden", introRect.bottom <= titleRect.bottom + titleHideBuffer);
         }
 
         if (!reducedMotion.matches) {

@@ -72,3 +72,8 @@ De timing van deze animatie is daarna vertraagd en mobiel sterker gemaakt:
 - De push-zone is langer gemaakt, zodat het inklappen vloeiender voelt.
 - Op mobiel start het effect eerder en loopt het over een groter deel van de viewport.
 - Op mobiel mogen de titelruimte en connectorhoogte verder teruglopen, zodat het effect zichtbaar genoeg is.
+
+Daarna zijn twee bugs gecorrigeerd:
+
+- De naam verdwijnt nu zonder opacity-transition en iets eerder achter de introkaart, zodat hij niet kort onder de kaart zichtbaar wordt.
+- De mobiele connectorhoogte gebruikt nu ook `--connector-current-height`; de media query overschrijft de scrollgestuurde hoogte niet meer.
