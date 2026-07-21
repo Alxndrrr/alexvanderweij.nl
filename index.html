@@ -79,6 +79,7 @@
         --pink-glow: #ff4fa0;
         --rule: rgb(255 189 55 / 0.28);
         --page-gutter: clamp(1rem, 4vw, 2rem);
+        --section-line-gap: clamp(2rem, 5vw, 3.25rem);
       }
 
       * {
@@ -276,7 +277,7 @@
         position: relative;
         width: 1px;
         height: clamp(9rem, 22vw, 18rem);
-        margin: clamp(1.6rem, 4vw, 3rem) auto 0;
+        margin: var(--section-line-gap) auto 0;
         background-image: linear-gradient(
           to bottom,
           rgb(82 0 255 / 0.92) 0 3px,
@@ -316,8 +317,8 @@
       .socials-section {
         display: grid;
         gap: clamp(1rem, 2vw, 1.4rem);
-        padding-top: clamp(4rem, 7vw, 5rem);
-        padding-bottom: clamp(3rem, 10vw, 7rem);
+        padding-top: var(--section-line-gap);
+        padding-bottom: 0;
       }
 
       .section-title {
@@ -424,7 +425,7 @@
       .email-section {
         display: grid;
         gap: clamp(1.1rem, 2vw, 1.5rem);
-        padding-top: clamp(3.5rem, 7vw, 5rem);
+        padding-top: var(--section-line-gap);
         padding-bottom: clamp(3rem, 8vw, 5.5rem);
       }
 
@@ -433,6 +434,7 @@
       }
 
       .email-card {
+        appearance: none;
         position: relative;
         display: grid;
         grid-template-columns: auto 1fr;
@@ -454,6 +456,10 @@
         box-shadow:
           0 1.2rem 3.5rem rgb(0 0 0 / 0.24),
           inset 0 1px 0 rgb(255 244 217 / 0.18);
+        color: inherit;
+        cursor: pointer;
+        font: inherit;
+        text-align: left;
         transform: rotate(1.35deg);
       }
 
@@ -522,14 +528,13 @@
         text-shadow: 0.08em 0.08em 0 rgb(255 0 115 / 0.72);
       }
 
-      .email-link:hover,
-      .email-link:focus {
+      .email-card:hover .email-link,
+      .email-card:focus .email-link {
         color: #fff4d9;
         text-decoration-color: var(--foreground);
       }
 
-      .email-link:focus-visible {
-        border-radius: 0.35rem;
+      .email-card:focus-visible {
         outline: 3px solid var(--focus);
         outline-offset: 0.35rem;
       }
@@ -573,6 +578,10 @@
       }
 
       @media (max-width: 43.99rem) {
+        :root {
+          --section-line-gap: clamp(1.65rem, 8vw, 2.4rem);
+        }
+
         main {
           padding-top: clamp(1.5rem, 9vw, 2.75rem);
         }
@@ -700,21 +709,21 @@
         <div class="section-connector" aria-hidden="true"></div>
         <section class="email-section" aria-labelledby="email-title">
           <h2 class="section-title" id="email-title">Contact</h2>
-          <div class="email-card">
+          <button
+            class="email-card"
+            type="button"
+            data-contact-local="aW9o"
+            data-contact-domain="bG4uamlld3JlZG5hdnhlbGE="
+            aria-label="Stuur Alex een e-mail"
+          >
             <span class="email-icon-wrap" aria-hidden="true">
               <img class="email-icon" src="assets/icons/email.svg" alt="">
             </span>
             <div class="email-content">
               <p class="email-text">Even hoi zeggen? Stuur mij gerust een email</p>
-              <a
-                class="email-link"
-                href="#"
-                data-email-user="hoi"
-                data-email-domain="alexvanderweij.nl"
-                data-email-label
-              >mail mij</a>
+              <span class="email-link" data-contact-label>mail mij</span>
             </div>
-          </div>
+          </button>
         </section>
         <footer class="site-footer">
           <p>
@@ -726,16 +735,20 @@
       </div>
     </main>
     <script>
-      document.querySelectorAll("[data-email-user][data-email-domain]").forEach((link) => {
-        const address = `${link.dataset.emailUser}@${link.dataset.emailDomain}`;
-        link.href = `mailto:${address}`;
+      document.querySelectorAll("[data-contact-local][data-contact-domain]").forEach((card) => {
+        const decodePart = (value) => atob(value).split("").reverse().join("");
+        const local = decodePart(card.dataset.contactLocal);
+        const domain = decodePart(card.dataset.contactDomain);
+        const address = `${local}@${domain}`;
+        const label = card.querySelector("[data-contact-label]");
 
-        const label = link.matches("[data-email-label]")
-          ? link
-          : link.querySelector("[data-email-label]");
         if (label) {
-          label.textContent = address;
+          label.textContent = `${local} [at] ${domain.replace(".", " [punt] ")}`;
         }
+
+        card.addEventListener("click", () => {
+          window.location.href = `mailto:${address}`;
+        });
       });
     </script>
   </body>

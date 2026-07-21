@@ -29,7 +29,7 @@ Gedaan:
 - De nieuwe sectie is verbonden met dezelfde gestippelde verticale connector.
 - Het aangeleverde envelop-icoon is toegevoegd als `assets/icons/email.svg`.
 - De tekst `Even hoi zeggen? Stuur mij gerust een email` is toegevoegd.
-- Het adres `hoi@alexvanderweij.nl` wordt via de bestaande JavaScript-opbouw als zichtbare link en `mailto:` ingesteld.
+- Het e-mailadres wordt via JavaScript opgebouwd, zonder het volledige adres als platte tekst in de HTML te zetten.
 
 Vervolgens verfijnd:
 
@@ -42,3 +42,7 @@ Vervolgens verfijnd:
 Daarna zijn de twee gestippelde connectorlijnen korter gemaakt, inclusief de mobiele hoogte.
 
 De grain van de e-mailkaart is op mobiel rustiger gemaakt met grotere grain-tegels en een lagere overlay-opacity, zodat hij visueel dichter bij desktop ligt.
+
+De verticale spacing rond de gestippelde connectorlijnen is gelijkgetrokken met `--section-line-gap`, zodat de afstand van content naar lijn en van lijn naar volgende sectie in balans blijft op desktop en mobiel.
+
+De volledige e-mailkaart is klikbaar gemaakt. De adresdelen staan licht gecodeerd in HTML en de echte `mailto:` wordt pas bij klikken opgebouwd.
