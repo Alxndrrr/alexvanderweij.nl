@@ -79,3 +79,8 @@ Daarna zijn twee bugs gecorrigeerd:
 - De mobiele connectorhoogte gebruikt nu ook `--connector-current-height`; de media query overschrijft de scrollgestuurde hoogte niet meer.
 
 Vervolgens zijn de scroll-effecten van de gestippelde connectorlijnen weer verwijderd. De lijnen zijn opnieuw statisch, met behoud van de inset waardoor de stippellijn niet over de bolletjes loopt. Het scroll-effect voor de sticky naam is blijven staan.
+
+Voor mobiel is daarna voorkomen dat de sticky naam bij snel scrollen nog kort onder de introkaart zichtbaar wordt:
+
+- `post-intro` heeft een eigen achtergrond en hogere laag gekregen, zodat het vervolg de naam afdekt.
+- De titelzichtbaarheid wordt direct op scroll bijgewerkt in plaats van via een later `requestAnimationFrame`.

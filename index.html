@@ -308,7 +308,10 @@
       }
 
       .post-intro {
+        position: relative;
+        z-index: 2;
         display: grid;
+        background: var(--background);
         overflow-anchor: none;
       }
 
@@ -765,29 +768,19 @@
     <script>
       const siteTitle = document.querySelector("h1");
       const introCard = document.querySelector(".intro-card");
-      let scrollEffectsFrame = 0;
-
-      const updateScrollEffects = () => {
+      const updateTitleVisibility = () => {
         if (siteTitle && introCard) {
           const titleRect = siteTitle.getBoundingClientRect();
           const introRect = introCard.getBoundingClientRect();
           const titleHideBuffer = Math.max(10, titleRect.height * 0.28);
           siteTitle.classList.toggle("is-hidden", introRect.bottom <= titleRect.bottom + titleHideBuffer);
         }
-
-        scrollEffectsFrame = 0;
       };
 
-      const requestScrollEffectsUpdate = () => {
-        if (!scrollEffectsFrame) {
-          scrollEffectsFrame = window.requestAnimationFrame(updateScrollEffects);
-        }
-      };
-
-      updateScrollEffects();
-      document.fonts?.ready.then(updateScrollEffects);
-      window.addEventListener("scroll", requestScrollEffectsUpdate, { passive: true });
-      window.addEventListener("resize", requestScrollEffectsUpdate);
+      updateTitleVisibility();
+      document.fonts?.ready.then(updateTitleVisibility);
+      window.addEventListener("scroll", updateTitleVisibility, { passive: true });
+      window.addEventListener("resize", updateTitleVisibility);
 
       document.querySelectorAll("[data-contact-local][data-contact-domain]").forEach((card) => {
         const decodePart = (value) => atob(value).split("").reverse().join("");
