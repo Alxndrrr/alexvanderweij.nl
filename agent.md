@@ -46,3 +46,11 @@ De grain van de e-mailkaart is op mobiel rustiger gemaakt met grotere grain-tege
 De verticale spacing rond de gestippelde connectorlijnen is gelijkgetrokken met `--section-line-gap`, zodat de afstand van content naar lijn en van lijn naar volgende sectie in balans blijft op desktop en mobiel.
 
 De volledige e-mailkaart is klikbaar gemaakt. De adresdelen staan licht gecodeerd in HTML en de echte `mailto:` wordt pas bij klikken opgebouwd.
+
+Daarna zijn twee scroll-effecten teruggebracht:
+
+- De naam bovenaan is weer sticky gemaakt en ligt visueel achter de introkaart.
+- De naam wordt verborgen zodra de introkaart voorbij is, zodat hij niet onderaan opnieuw zichtbaar wordt.
+- De twee gestippelde connectorlijnen schuiven tijdens scrollen visueel in elkaar en worden langer wanneer er terug omhoog wordt gescrold.
+- De bolletjes blijven los van elkaar doordat de maximale krimp per lijn in JavaScript wordt begrensd.
+- De scroll-updates lopen via `requestAnimationFrame` en respecteren `prefers-reduced-motion`.

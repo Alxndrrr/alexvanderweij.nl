@@ -126,6 +126,9 @@
       }
 
       h1 {
+        position: sticky;
+        top: clamp(2rem, 6vw, 5rem);
+        z-index: 0;
         margin: 0 0 clamp(1.1rem, 3vw, 2.1rem);
         padding: 0;
         color: var(--foreground);
@@ -137,9 +140,16 @@
         text-align: center;
         text-shadow: 0.08em 0.08em 0 rgb(255 0 115 / 0.58);
         text-transform: uppercase;
+        transition: opacity 140ms ease;
+      }
+
+      h1.is-hidden {
+        opacity: 0;
       }
 
       .intro-card {
+        position: relative;
+        z-index: 1;
         min-height: clamp(24rem, 58svh, 38rem);
         overflow: hidden;
         border: 1px solid var(--rule);
@@ -274,10 +284,20 @@
       }
 
       .section-connector {
+        --connector-collapse: 0px;
         position: relative;
         width: 1px;
         height: clamp(9rem, 22vw, 18rem);
         margin: var(--section-line-gap) auto 0;
+        transition: opacity 140ms ease;
+      }
+
+      .section-connector-line {
+        position: absolute;
+        top: var(--connector-collapse);
+        bottom: var(--connector-collapse);
+        left: 0;
+        width: 1px;
         background-image: linear-gradient(
           to bottom,
           rgb(82 0 255 / 0.92) 0 3px,
@@ -285,7 +305,7 @@
         );
         background-size: 1px 12px;
         animation: connector-drift 1.8s linear infinite;
-        transition: opacity 140ms ease;
+        pointer-events: none;
       }
 
       .post-intro {
@@ -307,11 +327,11 @@
       }
 
       .section-connector::before {
-        top: 0;
+        top: var(--connector-collapse);
       }
 
       .section-connector::after {
-        bottom: 0;
+        bottom: var(--connector-collapse);
       }
 
       .socials-section {
@@ -530,7 +550,6 @@
 
       .email-card:hover .email-link,
       .email-card:focus .email-link {
-        color: #fff4d9;
         text-decoration-color: var(--foreground);
       }
 
@@ -587,6 +606,7 @@
         }
 
         h1 {
+          top: clamp(1.5rem, 9vw, 2.75rem);
           font-size: clamp(0.95rem, 5.2vw, 1.35rem);
         }
 
@@ -629,7 +649,11 @@
       }
 
       @media (prefers-reduced-motion: reduce) {
-        .section-connector {
+        h1 {
+          transition: none;
+        }
+
+        .section-connector-line {
           animation: none;
         }
       }
@@ -655,7 +679,9 @@
         </div>
       </section>
       <div class="post-intro">
-        <div class="section-connector intro-connector" aria-hidden="true"></div>
+        <div class="section-connector intro-connector" aria-hidden="true">
+          <span class="section-connector-line"></span>
+        </div>
         <section class="socials-section" aria-labelledby="socials-title">
           <h2 class="section-title" id="socials-title">Socials</h2>
           <ul class="social-list">
@@ -706,7 +732,9 @@
           </li>
           </ul>
         </section>
-        <div class="section-connector" aria-hidden="true"></div>
+        <div class="section-connector" aria-hidden="true">
+          <span class="section-connector-line"></span>
+        </div>
         <section class="email-section" aria-labelledby="email-title">
           <h2 class="section-title" id="email-title">Contact</h2>
           <button
@@ -735,6 +763,57 @@
       </div>
     </main>
     <script>
+      const siteTitle = document.querySelector("h1");
+      const introCard = document.querySelector(".intro-card");
+      const sectionConnectors = document.querySelectorAll(".section-connector");
+      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+      let scrollEffectsFrame = 0;
+
+      const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+      const smooth = (value) => value * value * (3 - 2 * value);
+
+      const updateScrollEffects = () => {
+        if (siteTitle && introCard) {
+          const titleRect = siteTitle.getBoundingClientRect();
+          const introRect = introCard.getBoundingClientRect();
+          siteTitle.classList.toggle("is-hidden", introRect.bottom <= titleRect.bottom + 2);
+        }
+
+        if (!reducedMotion.matches) {
+          sectionConnectors.forEach((connector) => {
+            const rect = connector.getBoundingClientRect();
+            const start = window.innerHeight * 0.86;
+            const distance = window.innerHeight * 0.58;
+            const progress = smooth(clamp((start - rect.top) / distance, 0, 1));
+            const minGap = clamp(rect.height * 0.34, 48, 76);
+            const maxCollapse = Math.max(0, (rect.height - minGap) / 2);
+
+            connector.style.setProperty(
+              "--connector-collapse",
+              `${(maxCollapse * progress).toFixed(2)}px`
+            );
+          });
+        } else {
+          sectionConnectors.forEach((connector) => {
+            connector.style.removeProperty("--connector-collapse");
+          });
+        }
+
+        scrollEffectsFrame = 0;
+      };
+
+      const requestScrollEffectsUpdate = () => {
+        if (!scrollEffectsFrame) {
+          scrollEffectsFrame = window.requestAnimationFrame(updateScrollEffects);
+        }
+      };
+
+      updateScrollEffects();
+      document.fonts?.ready.then(updateScrollEffects);
+      window.addEventListener("scroll", requestScrollEffectsUpdate, { passive: true });
+      window.addEventListener("resize", requestScrollEffectsUpdate);
+      reducedMotion.addEventListener("change", updateScrollEffects);
+
       document.querySelectorAll("[data-contact-local][data-contact-domain]").forEach((card) => {
         const decodePart = (value) => atob(value).split("").reverse().join("");
         const local = decodePart(card.dataset.contactLocal);
