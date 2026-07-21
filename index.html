@@ -284,20 +284,18 @@
       }
 
       .section-connector {
-        --connector-bottom-collapse: 0px;
         --connector-dot-line-gap: 0.72rem;
-        --connector-top-collapse: 0px;
         position: relative;
         width: 1px;
-        height: clamp(9rem, 22vw, 18rem);
+        height: var(--connector-current-height, clamp(9rem, 22vw, 18rem));
         margin: var(--section-line-gap) auto 0;
         transition: opacity 140ms ease;
       }
 
       .section-connector-line {
         position: absolute;
-        top: calc(var(--connector-top-collapse) + var(--connector-dot-line-gap));
-        bottom: calc(var(--connector-bottom-collapse) + var(--connector-dot-line-gap));
+        top: var(--connector-dot-line-gap);
+        bottom: var(--connector-dot-line-gap);
         left: 0;
         width: 1px;
         background-image: linear-gradient(
@@ -330,17 +328,17 @@
       }
 
       .section-connector::before {
-        top: var(--connector-top-collapse);
+        top: 0;
       }
 
       .section-connector::after {
-        bottom: var(--connector-bottom-collapse);
+        bottom: 0;
       }
 
       .socials-section {
         display: grid;
         gap: clamp(1rem, 2vw, 1.4rem);
-        padding-top: var(--section-line-gap);
+        padding-top: var(--section-title-gap, var(--section-line-gap));
         padding-bottom: 0;
       }
 
@@ -448,7 +446,7 @@
       .email-section {
         display: grid;
         gap: clamp(1.1rem, 2vw, 1.5rem);
-        padding-top: var(--section-line-gap);
+        padding-top: var(--section-title-gap, var(--section-line-gap));
         padding-bottom: clamp(3rem, 8vw, 5.5rem);
       }
 
@@ -771,11 +769,23 @@
       const sectionConnectors = document.querySelectorAll(".section-connector");
       const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
       let scrollEffectsFrame = 0;
+      let measuredScrollEffectsWidth = window.innerWidth;
 
       const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
       const smooth = (value) => value * value * (3 - 2 * value);
 
       const updateScrollEffects = () => {
+        if (Math.abs(window.innerWidth - measuredScrollEffectsWidth) > 2) {
+          measuredScrollEffectsWidth = window.innerWidth;
+          sectionConnectors.forEach((connector) => {
+            const nextSection = connector.nextElementSibling;
+            connector.style.removeProperty("--connector-current-height");
+            delete connector.dataset.fullHeight;
+            nextSection?.style.removeProperty("--section-title-gap");
+            if (nextSection) delete nextSection.dataset.fullTitleGap;
+          });
+        }
+
         if (siteTitle && introCard) {
           const titleRect = siteTitle.getBoundingClientRect();
           const introRect = introCard.getBoundingClientRect();
@@ -784,29 +794,41 @@
 
         if (!reducedMotion.matches) {
           sectionConnectors.forEach((connector) => {
-            const rect = connector.getBoundingClientRect();
             const nextSection = connector.nextElementSibling;
             const nextTitle = nextSection?.querySelector(".section-title");
 
             if (!nextTitle) return;
 
+            if (!connector.dataset.fullHeight) {
+              connector.dataset.fullHeight = connector.getBoundingClientRect().height.toFixed(2);
+            }
+
+            if (!nextSection.dataset.fullTitleGap) {
+              nextSection.dataset.fullTitleGap =
+                Number.parseFloat(window.getComputedStyle(nextSection).paddingTop).toFixed(2);
+            }
+
             const titleRect = nextTitle.getBoundingClientRect();
             const pushStart = window.innerHeight * 0.76;
-            const pushDistance = window.innerHeight * 0.26;
-            const progress = smooth(clamp((pushStart - titleRect.top) / pushDistance, 0, 1));
-            const minDotGap = clamp(rect.height * 0.36, 52, 82);
-            const maxBottomCollapse = Math.max(0, rect.height - minDotGap);
+            const pushDistance = window.innerHeight * 0.34;
+            const progress = clamp((pushStart - titleRect.top) / pushDistance, 0, 1);
+            const gapProgress = smooth(clamp(progress / 0.42, 0, 1));
+            const collapseProgress = smooth(clamp((progress - 0.42) / 0.58, 0, 1));
+            const fullHeight = Number.parseFloat(connector.dataset.fullHeight);
+            const fullTitleGap = Number.parseFloat(nextSection.dataset.fullTitleGap);
+            const minTitleGap = clamp(fullTitleGap * 0.34, 14, 24);
+            const minConnectorHeight = clamp(fullHeight * 0.36, 52, 82);
+            const currentTitleGap = fullTitleGap - (fullTitleGap - minTitleGap) * gapProgress;
+            const currentHeight = fullHeight - (fullHeight - minConnectorHeight) * collapseProgress;
 
-            connector.style.setProperty(
-              "--connector-bottom-collapse",
-              `${(maxBottomCollapse * progress).toFixed(2)}px`
-            );
-            connector.style.setProperty("--connector-top-collapse", "0px");
+            nextSection.style.setProperty("--section-title-gap", `${currentTitleGap.toFixed(2)}px`);
+            connector.style.setProperty("--connector-current-height", `${currentHeight.toFixed(2)}px`);
           });
         } else {
           sectionConnectors.forEach((connector) => {
-            connector.style.removeProperty("--connector-bottom-collapse");
-            connector.style.removeProperty("--connector-top-collapse");
+            const nextSection = connector.nextElementSibling;
+            connector.style.removeProperty("--connector-current-height");
+            nextSection?.style.removeProperty("--section-title-gap");
           });
         }
 

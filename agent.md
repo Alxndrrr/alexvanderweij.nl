@@ -60,3 +60,9 @@ Daarna is de connectoranimatie aangepast:
 - De gestippelde lijn heeft nu een eigen inset ten opzichte van de bolletjes, zodat de lijn niet over de bolletjes heen loopt.
 - Alleen de onderkant van de connector schuift omhoog; de bovenkant blijft staan.
 - De krimp wordt aangestuurd door de positie van de eerstvolgende sectiekop, zodat het voelt alsof `Socials` en `Contact` de lijn omhoogduwen.
+
+De connectorpush is daarna opnieuw opgebouwd in twee fases:
+
+- Eerst wordt de ruimte tussen de onderkant van de connector en de volgende sectiekop kleiner gemaakt.
+- Daarna wordt de daadwerkelijke hoogte van de connector korter, zodat de sectiekop en de onderkant van de lijn samen omhoog bewegen.
+- De eerdere aanpak met alleen een bottom-collapse in een vaste container is verwijderd, omdat die de ruimte naar de titel juist groter maakte.
