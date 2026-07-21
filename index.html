@@ -286,7 +286,7 @@
         --connector-dot-line-gap: 0.72rem;
         position: relative;
         width: 1px;
-        height: var(--connector-current-height, clamp(9rem, 22vw, 18rem));
+        height: clamp(9rem, 22vw, 18rem);
         margin: var(--section-line-gap) auto 0;
         transition: opacity 140ms ease;
       }
@@ -337,7 +337,7 @@
       .socials-section {
         display: grid;
         gap: clamp(1rem, 2vw, 1.4rem);
-        padding-top: var(--section-title-gap, var(--section-line-gap));
+        padding-top: var(--section-line-gap);
         padding-bottom: 0;
       }
 
@@ -445,7 +445,7 @@
       .email-section {
         display: grid;
         gap: clamp(1.1rem, 2vw, 1.5rem);
-        padding-top: var(--section-title-gap, var(--section-line-gap));
+        padding-top: var(--section-line-gap);
         padding-bottom: clamp(3rem, 8vw, 5.5rem);
       }
 
@@ -621,7 +621,7 @@
         }
 
         .section-connector {
-          height: var(--connector-current-height, clamp(8rem, 42vw, 12rem));
+          height: clamp(8rem, 42vw, 12rem);
         }
 
         .social-link {
@@ -765,76 +765,14 @@
     <script>
       const siteTitle = document.querySelector("h1");
       const introCard = document.querySelector(".intro-card");
-      const sectionConnectors = document.querySelectorAll(".section-connector");
-      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
       let scrollEffectsFrame = 0;
-      let measuredScrollEffectsWidth = window.innerWidth;
-
-      const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
-      const smooth = (value) => value * value * (3 - 2 * value);
 
       const updateScrollEffects = () => {
-        if (Math.abs(window.innerWidth - measuredScrollEffectsWidth) > 2) {
-          measuredScrollEffectsWidth = window.innerWidth;
-          sectionConnectors.forEach((connector) => {
-            const nextSection = connector.nextElementSibling;
-            connector.style.removeProperty("--connector-current-height");
-            delete connector.dataset.fullHeight;
-            nextSection?.style.removeProperty("--section-title-gap");
-            if (nextSection) delete nextSection.dataset.fullTitleGap;
-          });
-        }
-
         if (siteTitle && introCard) {
           const titleRect = siteTitle.getBoundingClientRect();
           const introRect = introCard.getBoundingClientRect();
           const titleHideBuffer = Math.max(10, titleRect.height * 0.28);
           siteTitle.classList.toggle("is-hidden", introRect.bottom <= titleRect.bottom + titleHideBuffer);
-        }
-
-        if (!reducedMotion.matches) {
-          sectionConnectors.forEach((connector) => {
-            const nextSection = connector.nextElementSibling;
-            const nextTitle = nextSection?.querySelector(".section-title");
-
-            if (!nextTitle) return;
-
-            if (!connector.dataset.fullHeight) {
-              connector.dataset.fullHeight = connector.getBoundingClientRect().height.toFixed(2);
-            }
-
-            if (!nextSection.dataset.fullTitleGap) {
-              nextSection.dataset.fullTitleGap =
-                Number.parseFloat(window.getComputedStyle(nextSection).paddingTop).toFixed(2);
-            }
-
-            const titleRect = nextTitle.getBoundingClientRect();
-            const isMobileViewport = window.innerWidth < 704;
-            const pushStart = window.innerHeight * (isMobileViewport ? 0.88 : 0.82);
-            const pushDistance = window.innerHeight * (isMobileViewport ? 0.62 : 0.54);
-            const progress = clamp((pushStart - titleRect.top) / pushDistance, 0, 1);
-            const gapProgress = smooth(clamp(progress / 0.56, 0, 1));
-            const collapseProgress = smooth(clamp((progress - 0.32) / 0.68, 0, 1));
-            const fullHeight = Number.parseFloat(connector.dataset.fullHeight);
-            const fullTitleGap = Number.parseFloat(nextSection.dataset.fullTitleGap);
-            const minTitleGap = isMobileViewport
-              ? clamp(fullTitleGap * 0.18, 8, 16)
-              : clamp(fullTitleGap * 0.28, 12, 22);
-            const minConnectorHeight = isMobileViewport
-              ? clamp(fullHeight * 0.24, 42, 58)
-              : clamp(fullHeight * 0.3, 48, 76);
-            const currentTitleGap = fullTitleGap - (fullTitleGap - minTitleGap) * gapProgress;
-            const currentHeight = fullHeight - (fullHeight - minConnectorHeight) * collapseProgress;
-
-            nextSection.style.setProperty("--section-title-gap", `${currentTitleGap.toFixed(2)}px`);
-            connector.style.setProperty("--connector-current-height", `${currentHeight.toFixed(2)}px`);
-          });
-        } else {
-          sectionConnectors.forEach((connector) => {
-            const nextSection = connector.nextElementSibling;
-            connector.style.removeProperty("--connector-current-height");
-            nextSection?.style.removeProperty("--section-title-gap");
-          });
         }
 
         scrollEffectsFrame = 0;
@@ -850,7 +788,6 @@
       document.fonts?.ready.then(updateScrollEffects);
       window.addEventListener("scroll", requestScrollEffectsUpdate, { passive: true });
       window.addEventListener("resize", requestScrollEffectsUpdate);
-      reducedMotion.addEventListener("change", updateScrollEffects);
 
       document.querySelectorAll("[data-contact-local][data-contact-domain]").forEach((card) => {
         const decodePart = (value) => atob(value).split("").reverse().join("");

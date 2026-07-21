@@ -77,3 +77,5 @@ Daarna zijn twee bugs gecorrigeerd:
 
 - De naam verdwijnt nu zonder opacity-transition en iets eerder achter de introkaart, zodat hij niet kort onder de kaart zichtbaar wordt.
 - De mobiele connectorhoogte gebruikt nu ook `--connector-current-height`; de media query overschrijft de scrollgestuurde hoogte niet meer.
+
+Vervolgens zijn de scroll-effecten van de gestippelde connectorlijnen weer verwijderd. De lijnen zijn opnieuw statisch, met behoud van de inset waardoor de stippellijn niet over de bolletjes loopt. Het scroll-effect voor de sticky naam is blijven staan.
