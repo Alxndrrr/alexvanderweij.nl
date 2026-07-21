@@ -421,6 +421,119 @@
         outline-offset: 0.35rem;
       }
 
+      .email-section {
+        display: grid;
+        gap: clamp(1.1rem, 2vw, 1.5rem);
+        padding-top: clamp(3.5rem, 7vw, 5rem);
+        padding-bottom: clamp(3rem, 8vw, 5.5rem);
+      }
+
+      .email-section .section-title {
+        transform: none;
+      }
+
+      .email-card {
+        position: relative;
+        display: grid;
+        grid-template-columns: auto 1fr;
+        align-items: center;
+        gap: clamp(1rem, 3vw, 1.6rem);
+        width: min(100%, 46rem);
+        margin: 0 auto;
+        padding: clamp(1.1rem, 3vw, 1.6rem);
+        overflow: hidden;
+        border: 1px solid var(--rule);
+        border-radius: clamp(1rem, 3vw, 1.6rem);
+        background:
+          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140' viewBox='0 0 140 140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.55' numOctaves='4' seed='23' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0.58 0 0 0 0 0.58 0 0 0 0 0.58 0 0 0 0.72 0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E"),
+          radial-gradient(circle at 84% 18%, rgb(255 0 115 / 0.42) 0 16%, transparent 42%),
+          radial-gradient(circle at 12% 82%, rgb(82 0 255 / 0.46) 0 18%, transparent 46%),
+          linear-gradient(125deg, rgb(255 189 55 / 0.08), rgb(255 0 115 / 0.08));
+        background-blend-mode: hard-light, normal, normal, normal;
+        background-size: 140px 140px, auto, auto, auto;
+        box-shadow:
+          0 1.2rem 3.5rem rgb(0 0 0 / 0.24),
+          inset 0 1px 0 rgb(255 244 217 / 0.18);
+        transform: rotate(1.35deg);
+      }
+
+      .email-card::before {
+        position: absolute;
+        inset: 0;
+        background-image:
+          radial-gradient(circle, rgb(255 244 217 / 0.14) 0 0.45px, transparent 0.55px),
+          radial-gradient(circle, rgb(0 0 0 / 0.22) 0 0.45px, transparent 0.55px);
+        background-position: 0 0, 1.5px 1.5px;
+        background-size: 3px 3px;
+        content: "";
+        mix-blend-mode: overlay;
+        opacity: 0.36;
+        pointer-events: none;
+      }
+
+      .email-icon-wrap {
+        position: relative;
+        width: clamp(3.4rem, 10vw, 5rem);
+        aspect-ratio: 1;
+      }
+
+      .email-icon {
+        width: 100%;
+        height: 100%;
+        filter:
+          brightness(0)
+          saturate(100%)
+          invert(86%)
+          sepia(95%)
+          saturate(591%)
+          hue-rotate(331deg)
+          brightness(101%)
+          contrast(102%)
+          drop-shadow(0.12em 0.12em 0 rgb(82 0 255 / 0.76))
+          drop-shadow(-0.06em 0.12em 0 rgb(255 0 115 / 0.56));
+      }
+
+      .email-content {
+        position: relative;
+        display: grid;
+        gap: 0.45rem;
+        min-width: 0;
+      }
+
+      .email-text {
+        margin: 0;
+        color: #fff4d9;
+        font-family: "Instrument Serif", Georgia, serif;
+        font-size: clamp(1.55rem, 4vw, 2.35rem);
+        line-height: 1.1;
+      }
+
+      .email-link {
+        width: fit-content;
+        max-width: 100%;
+        color: var(--foreground);
+        font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+        font-size: clamp(0.95rem, 2.3vw, 1.2rem);
+        font-weight: 700;
+        overflow-wrap: anywhere;
+        text-decoration-color: var(--pink);
+        text-decoration-thickness: 0.12em;
+        text-underline-offset: 0.18em;
+        text-shadow: 0.08em 0.08em 0 rgb(255 0 115 / 0.72);
+      }
+
+      .email-link:hover,
+      .email-link:focus {
+        color: #fff4d9;
+        text-decoration-color: var(--foreground);
+      }
+
+      .email-link:focus-visible {
+        border-radius: 0.35rem;
+        outline: 3px solid var(--focus);
+        outline-offset: 0.35rem;
+      }
+
       .site-footer {
         padding: clamp(1.5rem, 5vw, 3rem) 0 0;
         font-family: "Press Start 2P", ui-monospace, monospace;
@@ -486,6 +599,17 @@
           grid-template-columns: auto minmax(1.5rem, 1fr) auto;
           gap: 0.55rem;
           font-size: clamp(0.78rem, 3.6vw, 0.95rem);
+        }
+
+        .email-card {
+          grid-template-columns: 1fr;
+          justify-items: start;
+          border-radius: 1.1rem;
+          transform: rotate(0.8deg);
+        }
+
+        .email-icon-wrap {
+          width: 3.4rem;
         }
       }
 
@@ -565,21 +689,26 @@
               <span>alexx.fyi</span>
             </a>
           </li>
-          <li>
-            <a
-              class="social-link"
-              href="#"
-              data-email-user="hoi"
-              data-email-domain="alexvanderweij.nl"
-            >
-              <span class="social-platform">
-                <img class="social-icon" src="assets/icons/envelope.svg" alt="" aria-hidden="true">
-                <span class="social-platform-name">Email</span>
-              </span>
-              <span data-email-label>mail mij</span>
-            </a>
-          </li>
           </ul>
+        </section>
+        <div class="section-connector" aria-hidden="true"></div>
+        <section class="email-section" aria-labelledby="email-title">
+          <h2 class="section-title" id="email-title">Contact</h2>
+          <div class="email-card">
+            <span class="email-icon-wrap" aria-hidden="true">
+              <img class="email-icon" src="assets/icons/email.svg" alt="">
+            </span>
+            <div class="email-content">
+              <p class="email-text">Even hoi zeggen? Stuur mij gerust een email</p>
+              <a
+                class="email-link"
+                href="#"
+                data-email-user="hoi"
+                data-email-domain="alexvanderweij.nl"
+                data-email-label
+              >mail mij</a>
+            </div>
+          </div>
         </section>
         <footer class="site-footer">
           <p>
@@ -595,7 +724,9 @@
         const address = `${link.dataset.emailUser}@${link.dataset.emailDomain}`;
         link.href = `mailto:${address}`;
 
-        const label = link.querySelector("[data-email-label]");
+        const label = link.matches("[data-email-label]")
+          ? link
+          : link.querySelector("[data-email-label]");
         if (label) {
           label.textContent = address;
         }
