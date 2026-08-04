@@ -90,3 +90,5 @@ Voor mobiel is daarna voorkomen dat de sticky naam bij snel scrollen nog kort on
 Onder Threads is een Letterboxd-link toegevoegd aan de social media accounts, inclusief een nieuw pixelachtig Letterboxd-icoon in `assets/icons/letterboxd.svg`.
 
 Daarna is het Letterboxd-icoon aangepast naar dezelfde monochrome pixelstijl als de andere social iconen, zodat het dezelfde CSS-filter en schaduw gebruikt.
+
+Daarna is het Letterboxd-icoon vervangen door het aangeleverde custom cassette-icoon uit `cassette-tape.svg`.
