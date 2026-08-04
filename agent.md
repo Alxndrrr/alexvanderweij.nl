@@ -84,3 +84,7 @@ Voor mobiel is daarna voorkomen dat de sticky naam bij snel scrollen nog kort on
 
 - `post-intro` heeft een eigen achtergrond en hogere laag gekregen, zodat het vervolg de naam afdekt.
 - De titelzichtbaarheid wordt direct op scroll bijgewerkt in plaats van via een later `requestAnimationFrame`.
+
+## Nieuwe wijziging
+
+Onder Threads is een Letterboxd-link toegevoegd aan de social media accounts, inclusief de officiële Letterboxd dots-decal in `assets/icons/letterboxd.svg`.
