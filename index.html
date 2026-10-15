@@ -6,6 +6,12 @@
     <meta name="robots" content="index, follow">
     <meta name="theme-color" content="#18120b">
     <title>Alex van der Weij</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+    >
     <style>
       :root {
         color-scheme: dark;
@@ -32,9 +38,9 @@
         background: var(--background);
         color: var(--foreground);
         font-family:
-          Georgia,
-          "Times New Roman",
-          serif;
+          "Press Start 2P",
+          ui-monospace,
+          monospace;
         text-rendering: optimizeLegibility;
         -webkit-font-smoothing: antialiased;
       }
@@ -42,9 +48,9 @@
       h1 {
         margin: 0;
         padding: 1rem;
-        font-size: clamp(3rem, 9vw, 6rem);
+        font-size: clamp(1.5rem, 5vw, 3rem);
         font-weight: 400;
-        line-height: 1;
+        line-height: 1.35;
         letter-spacing: 0;
         text-align: center;
         text-shadow: 0.04em 0.04em 0 var(--shadow);
@@ -52,7 +58,7 @@
 
       @media (max-width: 43.99rem) {
         h1 {
-          display: none;
+          font-size: clamp(1rem, 6.4vw, 1.45rem);
         }
       }
     </style>
